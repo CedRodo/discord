@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="./assets/css/fontawesome/css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
+    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script defer src="./assets/js/script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="chat_title-container">
+            <div class="chat_title_avatar-wrapper">
+                <img class="chat_title_avatar" src="" alt="">
+                <i class="fa-brands fa-discord"></i>
+            </div>
+            <div class="chat_title">Messages privés</div>
+            <div class="chat_app_actions-container">
+                <div class="chat_app_features-container">
+                    <button class="chat_app_feature" id="show_inbox" title="Boîte de réception"><i class="fa-solid fa-inbox"></i></button>
+                    <button class="chat_app_feature" id="show_help" title="Aide"><i class="fa-solid fa-circle-question"></i></button>
+                </div>
+                <hr>
+                <div class="chat_app_window_actions-container">
+                    <button class="chat_app_window_action" id="minimize"><span></span></button>
+                    <button class="chat_app_window_action" id="maximize"><span></span></button>
+                    <button class="chat_app_window_action" id="close"><span></span><span></span></button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>        
+        <div class="chat_sidebar">
+            <div class="private_messages_last_chat-container">
+                <div class="show_private_messages-container" title="Messages privés">
+                    <div class="show_private_messages_avatar-wrapper">
+                        <img class="show_private_messages_avatar" src="./discord_logo.png" alt="">
+                    </div>
+                </div>
+                <div class="show_last_chat-container" title="UserPrivate1234">
+                    <div class="show_last_chat_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                        <img class="show_last_chat_avatar" src="./discord_logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="servers-container">
+                <div class="server-container" title="Messages privés">
+                    <div class="server_avatar-wrapper">
+                        <img class="server_avatar" src="./discord_logo.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="top_section-container">
+                <div class="search-container">
+                    <input class="search-input" id="chat_search" type="text" placeholder="Rechercher/lancer une conversation">
+                </div>
+                <div class="off_chat-container">
+                    <div class="users_groups_actions-container">
+                        <div class="users_groups_actions-title"><i class="fa-solid fa-user"></i><span>Amis</span></div>
+                        <div class="users_groups_actions_buttons-container">
+                            <button class="users_group_action" id="users_group_all" type="button">Tous</button>
+                            <button class="users_group_action" id="users_group_add" type="button">Ajouter</button>
+                        </div>
+                    </div>
+                    <div class="users_groups_add_new_group" title="Nouveau groupe privé"><i class="fa-solid fa-comment"></i></div>
+                </div>
+                <div class="on_chat-container">
+                    <div class="chat_room_name-container">
+                        <div class="chat_room_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                            <img class="chat_room_avatar" src="./discord_logo.png" alt="">
+                        </div>                        
+                        <div class="chat_room_name">OtherUserPrivate</div>
+                    </div>
+                    <div class="chat_room_end_section-container">
+                        <div class="chat_room_actions-container">
+                            <button class="chat_room_action" id="chat_room_vocal_call" title="Démarrer un appel vocal"><i class="fa-solid fa-phone-volume"></i></button>
+                            <button class="chat_room_action" id="chat_room_video_call" title="Démarrer un appel vidéo"><i class="fa-solid fa-video"></i></button>
+                            <button class="chat_room_action" id="chat_room_pined_messages" title="Messages épinglés"><i class="fa-solid fa-thumbtack"></i></button>
+                            <button class="chat_room_action" id="chat_room_add_friends" title="Ajouter des amis au groupe privé"><i class="fa-solid fa-user-plus"></i></button>
+                            <button class="chat_room_action" id="chat_room_hide_profile" title="Masquer le profil d'utilisateur'"><i class="fa-solid fa-circle-user"></i></button>
+                        </div>
+                        <div class="chat_room_search-container">
+                            <input class="chat_room_search" id="chat_room_search" type="text" placeholder="Rechercher">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main_section-container">
+                <div class="left_panel">
+                    <div class="sections-container" data-section="friends">
+                        <div class="section section_friends"><span class="section_logo"><i class="fa-solid fa-user"></i></span><span class="section_title">Amis</span></div>
+                        <div class="section section_nitro"><span class="section_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="section_title">Nitro</span></div>
+                        <div class="section section_shop"><span class="section_logo"><i class="fa-solid fa-shop"></i></span><span class="section_title">Boutique</span></div>
+                    </div>
+                    <div class="private_messages">
+                        <div class="private_messages-title">Messages privés</div>
+                        <div class="users_private-container">
+                            <div class="user_private-container" data-status="online" aria-selected="false" tabindex="0">
+                                <div class="user_private_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                                    <img class="user_private_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                                <div class="user_private_name">OtherUserPrivate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_window-container">
+                    <div class="chat_window">
+                        <div class="chat_message-container">
+                            <div class="chat_message-left_section">
+                                <div class="chat_message_user_avatar-wrapper" style="--bgcolor_pref: #996998;">
+                                    <img class="chat_message_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                            </div>
+                            <div class="chat_message-main_section">
+                                <div class="chat_message-top_section">
+                                    <div class="chat_message_user_name" style="--color_pref: yellow">UserPrivate1234</div>
+                                    <div class="chat_message_date">18/06/2025 23:48</div>
+                                </div>
+                                <div class="chat_message-bottom_section">
+                                    <div class="chat_message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati similique beatae, aut quam ipsam harum rerum placeat mollitia dolorem natus dolores blanditiis enim magni eveniet doloribus architecto vitae alias eum.
+Fuga commodi doloribus, maiores ipsa optio ullam ipsum sit voluptatibus deserunt libero hic ab quisquam corporis velit, porro magni blanditiis eos aliquid in ipsam omnis magnam iusto? Vel, voluptas ipsa?
+Doloribus eos aut assumenda, iure saepe est corporis debitis modi enim cumque id distinctio repellendus natus impedit rem ipsam facilis dicta. Suscipit fuga nesciunt optio sapiente odio inventore deleniti recusandae.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat_message-container">
+                            <div class="chat_message-left_section">
+                                <div class="chat_message_user_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                                    <img class="chat_message_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                            </div>
+                            <div class="chat_message-main_section">
+                                <div class="chat_message-top_section">
+                                    <div class="chat_message_user_name" style="--color_pref: crimson">OtherUserPrivate</div>
+                                    <div class="chat_message_date">18/06/2025 23:53</div>
+                                </div>
+                                <div class="chat_message-bottom_section">
+                                    <div class="chat_message">Aut officia nisi aut repudiandae placeat vel quod placeat aut ratione officia aut autem laboriosam et asperiores nostrum ea pariatur consectetur.</div>
+                                    <div class="chat_message">Aut commodi natus ut molestiae minima sed dolores neque ea commodi omnis non sapiente eligendi.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat_message-container">
+                            <div class="chat_message-left_section">
+                                <div class="chat_message_user_avatar-wrapper" style="--bgcolor_pref: #996998;">
+                                    <img class="chat_message_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                            </div>
+                            <div class="chat_message-main_section">
+                                <div class="chat_message-top_section">
+                                    <div class="chat_message_user_name" style="--color_pref: yellow">UserPrivate1234</div>
+                                    <div class="chat_message_date">18/06/2025 23:57</div>
+                                </div>
+                                <div class="chat_message-bottom_section">
+                                    <div class="chat_message">Rem omnis eius in quae magni ut voluptate molestiae. Est maxime expedita ut aliquam perspiciatis nam nihil perspiciatis eum ipsum provident nam officiis odio et quam libero.</div>
+                                    <div class="chat_message">Ab sapiente nulla qui neque rerum et saepe Quis et voluptas sunt aut pariatur porro.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat_message-container">
+                            <div class="chat_message-left_section">
+                                <div class="chat_message_user_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                                    <img class="chat_message_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                            </div>
+                            <div class="chat_message-main_section">
+                                <div class="chat_message-top_section">
+                                    <div class="chat_message_user_name" style="--color_pref: crimson">OtherUserPrivate</div>
+                                    <div class="chat_message_date">18/06/2025 23:59</div>
+                                </div>
+                                <div class="chat_message-bottom_section">
+                                    <div class="chat_message">Est soluta temporibus et impedit veniam ab consequuntur sint in omnis laboriosam et consectetur enim.</div>
+                                    <div class="chat_message">Qui iste esse qui doloremque aliquam qui consequatur eveniet ab unde repudiandae et voluptas quia At dicta galisum.</div>
+                                    <div class="chat_message">Cum nihil eligendi non veniam repudiandae non consequatur quia ad dolor possimus ad molestiae officia ut galisum dolorem in ipsum corporis.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat_message_to_send-container">
+                        <div class="chat_message_to_send_special_actions-container">
+                            <button class="chat_message_to_send_special_actions" id="message_special_actions"><i class="fa-solid fa-circle-plus"></i></button>
+                        </div>
+                        <input class="chat_message_to_send-input" id="message_to_send" type="text" placeholder="Envoyer un message">
+                        <div class="chat_message_to_send_actions-container">
+                            <button class="chat_message_to_send_action" id="message_to_send_gift"><i class="fa-solid fa-gift"></i></button>
+                            <button class="chat_message_to_send_action" id="message_to_send_gif_images"><i class="fa-solid fa-image"></i></button>
+                            <button class="chat_message_to_send_action" id="message_to_send_stickers"><i class="fa-solid fa-note-sticky"></i></button>
+                            <button class="chat_message_to_send_action" id="message_to_send_emojis"><i class="fa-solid fa-face-laugh"></i></button>
+                            <button class="chat_message_to_send_action" id="message_to_send_games"><i class="fa-solid fa-gamepad"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="right_panel">
+                    <div class="connection_status-container">
+                        <div class="connection_status-title">
+                            <span>En ligne</span><span>─</span><span class="connection_status_users_number">1</span>
+                        </div>
+                        <div class="connection_status_users-container online_status_users-container">
+                            <div class="connection_status_user-container" tabindex="0">
+                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #996998;">
+                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                                <div class="connection_status_user_name" style="--color_pref: yellow">UserPrivate1234</div>
+                            </div>
+                            <div class="connection_status_user-container" tabindex="0">
+                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                                <div class="connection_status_user_name" style="--color_pref: crimson">OtherUserPrivate</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="connection_status-container">
+                        <div class="connection_status-title">
+                            <span>Hors ligne</span><span>─</span><span class="connection_status_users_number">1</span>
+                        </div>
+                        <div class="connection_status_users-container offline_status_users-container">
+                            <div class="connection_status_user-container" tabindex="0">
+                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #af0b0b;">
+                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                                <div class="connection_status_user_name" style="--color_pref: #763cd4">OfflineUser</div>
+                            </div>
+                            <div class="connection_status_user-container" tabindex="1">
+                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #9d6bee;">
+                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                </div>
+                                <div class="connection_status_user_name" style="--color_pref: #16a03f">NotVisibleUser87</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
