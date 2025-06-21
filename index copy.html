@@ -31,7 +31,7 @@
             </div>
         </div>
     </header>
-    <main>        
+    <main data-view="rooms">        
         <div class="chat_sidebar">
             <div class="private_messages_last_chat-container">
                 <div class="show_private_messages-container" title="Messages privés">
@@ -196,41 +196,43 @@ Doloribus eos aut assumenda, iure saepe est corporis debitis modi enim cumque id
                     </div>
                 </div>
                 <div class="right_panel">
-                    <div class="connection_status-container">
-                        <div class="connection_status-title">
-                            <span>En ligne</span><span>─</span><span class="connection_status_users_number">1</span>
-                        </div>
-                        <div class="connection_status_users-container online_status_users-container">
-                            <div class="connection_status_user-container" tabindex="0">
-                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #996998;">
-                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
-                                </div>
-                                <div class="connection_status_user_name" style="--color_pref: yellow">UserPrivate1234</div>
+                    <div class="connection_status_panel">
+                        <div class="connection_status-container">
+                            <div class="connection_status-title">
+                                <span>En ligne</span><span>─</span><span class="connection_status_users_number">1</span>
                             </div>
-                            <div class="connection_status_user-container" tabindex="0">
-                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
-                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                            <div class="connection_status_users-container online_status_users-container">
+                                <div class="connection_status_user-container" tabindex="0">
+                                    <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #996998;">
+                                        <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                    </div>
+                                    <div class="connection_status_user_name" style="--color_pref: yellow">UserPrivate1234</div>
                                 </div>
-                                <div class="connection_status_user_name" style="--color_pref: crimson">OtherUserPrivate</div>
+                                <div class="connection_status_user-container" tabindex="0">
+                                    <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
+                                        <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                    </div>
+                                    <div class="connection_status_user_name" style="--color_pref: crimson">OtherUserPrivate</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="connection_status-container">
-                        <div class="connection_status-title">
-                            <span>Hors ligne</span><span>─</span><span class="connection_status_users_number">1</span>
-                        </div>
-                        <div class="connection_status_users-container offline_status_users-container">
-                            <div class="connection_status_user-container" tabindex="0">
-                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #af0b0b;">
-                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
-                                </div>
-                                <div class="connection_status_user_name" style="--color_pref: #763cd4">OfflineUser</div>
+                        <div class="connection_status-container">
+                            <div class="connection_status-title">
+                                <span>Hors ligne</span><span>─</span><span class="connection_status_users_number">1</span>
                             </div>
-                            <div class="connection_status_user-container" tabindex="1">
-                                <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #9d6bee;">
-                                    <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                            <div class="connection_status_users-container offline_status_users-container">
+                                <div class="connection_status_user-container" tabindex="0">
+                                    <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #af0b0b;">
+                                        <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                    </div>
+                                    <div class="connection_status_user_name" style="--color_pref: #763cd4">OfflineUser</div>
                                 </div>
-                                <div class="connection_status_user_name" style="--color_pref: #16a03f">NotVisibleUser87</div>
+                                <div class="connection_status_user-container" tabindex="1">
+                                    <div class="connection_status_user_avatar-wrapper" style="--bgcolor_pref: #9d6bee;">
+                                        <img class="connection_status_user_avatar" src="./discord_logo.png" alt="">
+                                    </div>
+                                    <div class="connection_status_user_name" style="--color_pref: #16a03f">NotVisibleUser87</div>
+                                </div>
                             </div>
                         </div>
                     </div>

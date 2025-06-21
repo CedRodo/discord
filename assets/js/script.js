@@ -63,4 +63,26 @@ chat.messageToSend.addEventListener("keydown", (event) => {
     }
 });
 
+const sidebarButtons = document.querySelectorAll(".sidebar_button");
+
+sidebarButtons.forEach((button) => {
+    button.addEventListener("click", sidebarButtonsActivation);
+});
+
+function sidebarButtonsActivation(event) {
+    sidebarButtons.forEach(button => button.classList.remove("active"));
+    event.currentTarget.classList.add("active");
+}
+
+const leftPanelButtons = document.querySelectorAll(".left_panel_button");
+
+leftPanelButtons.forEach((button) => {
+    button.addEventListener("click", leftPanelButtonsActivation);
+});
+
+function leftPanelButtonsActivation(event) {
+    leftPanelButtons.forEach(button => button.classList.remove("active"));
+    event.currentTarget.classList.add("active");
+}
+
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discord</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/fontawesome/css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="./assets/css/fonts.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
     <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script defer src="./assets/js/User.js"></script>
@@ -40,19 +41,19 @@
     <main>        
         <div class="chat_sidebar">
             <div class="private_messages_last_chat-container">
-                <div class="show_private_messages-container" title="Messages privés">
+                <div class="show_private_messages-container sidebar_button" title="Messages privés">
                     <div class="show_private_messages_avatar-wrapper">
                         <img class="show_private_messages_avatar" src="./assets/img/discord_logo.png" alt="">
                     </div>
                 </div>
-                <div class="show_last_chat-container" title="UserPrivate1234">
+                <div class="show_last_chat-container sidebar_button" title="UserPrivate1234">
                     <div class="show_last_chat_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
                         <img class="show_last_chat_avatar" src="./assets/img/discord_logo.png" alt="">
                     </div>
                 </div>
             </div>
             <div class="servers-container">
-                <div class="server-container" title="Messages privés">
+                <div class="server-container sidebar_button" title="Nom du server">
                     <div class="server_avatar-wrapper">
                         <img class="server_avatar" src="./assets/img/discord_logo.png" alt="">
                     </div>
@@ -98,14 +99,14 @@
             <div class="main_section-container">
                 <div class="left_panel">
                     <div class="sections-container" data-section="friends">
-                        <div class="section section_friends"><span class="section_logo"><i class="fa-solid fa-user"></i></span><span class="section_title">Amis</span></div>
-                        <div class="section section_nitro"><span class="section_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="section_title">Nitro</span></div>
-                        <div class="section section_shop"><span class="section_logo"><i class="fa-solid fa-shop"></i></span><span class="section_title">Boutique</span></div>
+                        <div class="section section_friends left_panel_button"><span class="section_logo"><i class="fa-solid fa-user"></i></span><span class="section_title">Amis</span></div>
+                        <div class="section section_nitro left_panel_button"><span class="section_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="section_title">Nitro</span></div>
+                        <div class="section section_shop left_panel_button"><span class="section_logo"><i class="fa-solid fa-shop"></i></span><span class="section_title">Boutique</span></div>
                     </div>
                     <div class="private_messages">
                         <div class="private_messages-title">Messages privés</div>
                         <div class="users_private-container">
-                            <div class="user_private-container" data-status="online" aria-selected="false" tabindex="0">
+                            <div class="user_private-container left_panel_button" data-status="online" aria-selected="false" tabindex="0">
                                 <div class="user_private_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
                                     <img class="user_private_avatar" src="./assets/img/discord_logo.png" alt="">
                                 </div>
@@ -120,7 +121,8 @@
                         <div class="chat_message_to_send_special_actions-container">
                             <button class="chat_message_to_send_special_actions" id="message_special_actions"><i class="fa-solid fa-circle-plus"></i></button>
                         </div>
-                        <input class="chat_message_to_send-input" id="message_to_send" type="text" placeholder="Envoyer un message">
+                        <!-- <input class="chat_message_to_send-input" id="message_to_send" type="text" placeholder="Envoyer un message"> -->
+                        <textarea class="chat_message_to_send-input" id="message_to_send" placeholder="Envoyer un message" wrap="soft"></textarea>
                         <div class="chat_message_to_send_actions-container">
                             <button class="chat_message_to_send_action" id="message_to_send_gift"><i class="fa-solid fa-gift"></i></button>
                             <button class="chat_message_to_send_action" id="message_to_send_gif_images"><i class="fa-solid fa-image"></i></button>
@@ -131,17 +133,47 @@
                     </div>
                 </div>
                 <div class="right_panel">
-                    <div class="connection_status-container">
-                        <div class="connection_status-title">
-                            <span>En ligne</span><span>─</span><span class="connection_status_users_number" id="online_users_number"></span>
+                    <div class="connection_status_panel">
+                        <div class="connection_status-container">
+                            <div class="connection_status-title">
+                                <span>En ligne</span><span>─</span><span class="connection_status_users_number" id="online_users_number"></span>
+                            </div>
+                            <div class="connection_status_users-container online_status_users-container"></div>
                         </div>
-                        <div class="connection_status_users-container online_status_users-container"></div>
+                        <div class="connection_status-container">
+                            <div class="connection_status-title">
+                                <span>Hors ligne</span><span>─</span><span class="connection_status_users_number" id="offline_users_number"></span>
+                            </div>
+                            <div class="connection_status_users-container offline_status_users-container"></div>
+                        </div>
                     </div>
-                    <div class="connection_status-container">
-                        <div class="connection_status-title">
-                            <span>Hors ligne</span><span>─</span><span class="connection_status_users_number" id="offline_users_number"></span>
+                    <div class="chat_user_profile_panel">
+                        <div class="chat_user_profile-top_section"></div>
+                        <div class="chat_user_profile-bottom_section">
+                            <div class="chat_user_profile_name_username-container">
+                                <div class="chat_user_profile_name-container">
+                                    <div class="chat_user_profile_name"></div>
+                                </div>
+                                <div class="chat_user_profile_username-container">
+                                    <div class="chat_user_profile_username"></div>
+                                </div>
+                            </div>
+                            <div class="chat_user_profile_details-container">
+                                <div class="chat_user_profile_details_about_me-container">
+                                    <div class="chat_user_profile_details_about_me_title">À propos de moi</div>
+                                    <div class="chat_user_profile_details_about_me_content">Nouvel utitilisateur</div>
+                                </div>
+                                <div class="chat_user_profile_details_member_since-container">
+                                    <div class="chat_user_profile_details_member_since_title">Membre depuis</div>
+                                    <div class="chat_user_profile_details_member_since_content">30 mars 2020</div>
+                                </div>
+                            </div>
+                            <div class="chat_user_profile_in_common_servers-container">
+                                <span>Serveurs en commun</span>
+                                <span>─</span>
+                                <span class="chat_user_profile_in_common_servers_number">1</span>
+                            </span>
                         </div>
-                        <div class="connection_status_users-container offline_status_users-container"></div>
                     </div>
                 </div>
             </div>
