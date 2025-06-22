@@ -2,6 +2,8 @@ class User {
     constructor(userData) {
         this.ref = userData.ref;
         this.name = userData.name;
+        this.username = userData.username;
+        this.date = userData.date;
         this.color = userData.color;
         this.avatar = userData.avatar;
         this.status = userData.status;

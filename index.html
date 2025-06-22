@@ -12,6 +12,7 @@
     <script defer src="./assets/js/ChatUser.js"></script>
     <script defer src="./assets/js/Chat.js"></script>
     <script defer src="./assets/js/Room.js"></script>
+    <script defer src="./assets/js/PrivateMessages.js"></script>
     <script defer src="./assets/js/Message.js"></script>
     <script defer src="./assets/js/App.js"></script>
     <script defer src="./assets/js/script.js"></script>
@@ -38,7 +39,7 @@
             </div>
         </div>
     </header>
-    <main>        
+    <main data-view="chatuser">        
         <div class="chat_sidebar">
             <div class="private_messages_last_chat-container">
                 <div class="show_private_messages-container sidebar_button" title="Messages privés">
@@ -77,10 +78,13 @@
                 </div>
                 <div class="on_chat-container">
                     <div class="chat_room_name-container">
-                        <div class="chat_room_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
-                            <img class="chat_room_avatar" src="./assets/img/discord_logo.png" alt="">
+                        <div class="chat_room_avatar-wrapper">
+                            <img class="chat_room_avatar" src="" alt="">
+                            <div class="chat_room_profile_status-wrapper">
+                                <div class="chat_room_profile_status" data-status=""></div>
+                            </div>
                         </div>                        
-                        <div class="chat_room_name">OtherUserPrivate</div>
+                        <div class="chat_room_name"></div>
                     </div>
                     <div class="chat_room_end_section-container">
                         <div class="chat_room_actions-container">
@@ -98,21 +102,14 @@
             </div>
             <div class="main_section-container">
                 <div class="left_panel">
-                    <div class="sections-container" data-section="friends">
-                        <div class="section section_friends left_panel_button"><span class="section_logo"><i class="fa-solid fa-user"></i></span><span class="section_title">Amis</span></div>
-                        <div class="section section_nitro left_panel_button"><span class="section_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="section_title">Nitro</span></div>
-                        <div class="section section_shop left_panel_button"><span class="section_logo"><i class="fa-solid fa-shop"></i></span><span class="section_title">Boutique</span></div>
+                    <div class="features-container">
+                        <div class="feature feature_friends left_panel_button" data-feature="friends"><span class="feature_logo"><i class="fa-solid fa-user"></i></span><span class="feature_title">Amis</span></div>
+                        <div class="feature feature_nitro left_panel_button" data-feature="nitro"><span class="feature_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="feature_title">Nitro</span></div>
+                        <div class="feature feature_shop left_panel_button" data-feature="shop"><span class="feature_logo"><i class="fa-solid fa-shop"></i></span><span class="feature_title">Boutique</span></div>
                     </div>
                     <div class="private_messages">
                         <div class="private_messages-title">Messages privés</div>
-                        <div class="users_private-container">
-                            <div class="user_private-container left_panel_button" data-status="online" aria-selected="false" tabindex="0">
-                                <div class="user_private_avatar-wrapper" style="--bgcolor_pref: #70c31d;">
-                                    <img class="user_private_avatar" src="./assets/img/discord_logo.png" alt="">
-                                </div>
-                                <div class="user_private_name">OtherUserPrivate</div>
-                            </div>
-                        </div>
+                        <div class="users_private-container"></div>
                     </div>
                 </div>
                 <div class="chat_window-container">
@@ -148,7 +145,20 @@
                         </div>
                     </div>
                     <div class="chat_user_profile_panel">
-                        <div class="chat_user_profile-top_section"></div>
+                        <div class="chat_user_profile-top_section">
+                            <div class="chat_user_profile_features-container">
+                                <div class="chat_user_profile_feature chat_user_profile_add"><i class="fa-solid fa-user-plus"></i></div>
+                                <div class="chat_user_profile_feature chat_user_profile_plus"><i class="fa-solid fa-ellipsis"></i></div>
+                            </div>
+                            <div class="chat_user_profile_avatar-container">
+                                <div class="chat_user_profile_avatar-wrapper">
+                                    <img class="chat_user_profile_avatar" src="./assets/img/discord_logo.png" alt="">
+                                </div>
+                                <div class="chat_user_profile_status-wrapper">
+                                    <div class="chat_user_profile_status" data-status=""></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="chat_user_profile-bottom_section">
                             <div class="chat_user_profile_name_username-container">
                                 <div class="chat_user_profile_name-container">
@@ -161,17 +171,18 @@
                             <div class="chat_user_profile_details-container">
                                 <div class="chat_user_profile_details_about_me-container">
                                     <div class="chat_user_profile_details_about_me_title">À propos de moi</div>
-                                    <div class="chat_user_profile_details_about_me_content">Nouvel utitilisateur</div>
+                                    <div class="chat_user_profile_details_about_me_content"></div>
                                 </div>
                                 <div class="chat_user_profile_details_member_since-container">
                                     <div class="chat_user_profile_details_member_since_title">Membre depuis</div>
-                                    <div class="chat_user_profile_details_member_since_content">30 mars 2020</div>
+                                    <div class="chat_user_profile_details_member_since_content"></div>
                                 </div>
                             </div>
                             <div class="chat_user_profile_in_common_servers-container">
                                 <span>Serveurs en commun</span>
                                 <span>─</span>
                                 <span class="chat_user_profile_in_common_servers_number">1</span>
+                                <span class="chat_user_profile_in_common_servers_arrow"><i class="fa-solid fa-chevron-right"></i></span>
                             </span>
                         </div>
                     </div>
