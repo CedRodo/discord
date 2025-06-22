@@ -61,25 +61,6 @@ const chatUser4 = new ChatUser(user4);
 privateMessages.addChatUser(chatUser4);
 console.log("privateMessages:", privateMessages);
 
-// const chat = new Chat();
-
-// chat.messageToSend.addEventListener("keydown", (event) => {
-//     if (event.key === "Enter") {
-//         if (event.currentTarget.value === "") return;
-//         const message = new Message(event.currentTarget.value);
-//         console.log("message:", message);
-//         chat.sendMessage(chatUser1, message);
-//         event.currentTarget.value = "";
-//     }
-//     if (event.key === "Pause") {
-//         if (event.currentTarget.value === "") return;
-//         const message = new Message(event.currentTarget.value);
-//         console.log("message:", message);
-//         chat.sendMessage(chatUser2, message);
-//         event.currentTarget.value = "";
-//     }
-// });
-
 const sidebarButtons = document.querySelectorAll(".sidebar_button");
 
 sidebarButtons.forEach((button) => {

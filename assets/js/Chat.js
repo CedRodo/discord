@@ -14,13 +14,14 @@ class Chat {
         document.querySelector(".chat_room_name").textContent = this.chatUser.name;
     }
     eventListeners() {
-        this.messageToSend.addEventListener("keydown", (event) => {
+        this.messageToSend.addEventListener("keyup", (event) => {
             if (event.key === "Enter") {
                 if (event.currentTarget.value === "") return;
                 const message = new Message(event.currentTarget.value);
                 console.log("message:", message);
                 this.sendMessage(message);
                 event.currentTarget.value = "";
+                setTimeout(() => { this.messageToSend.value = ""; }, 0);
             }
             if (event.key === "Pause") {
                 if (event.currentTarget.value === "") return;
@@ -28,10 +29,11 @@ class Chat {
                 console.log("message:", message);
                 this.sendMessage(message);
                 event.currentTarget.value = "";
+                setTimeout(() => { this.messageToSend.value = ""; }, 0);
             }
         });
     }
-    sendMessage(message) {
+    async sendMessage(message) {
         if (this.checkIfSameLastChatUser(this.chatUser.ref)) {
             const chatMessageContainers = this.chatWindow.querySelectorAll(".chat_message-container");
             const lastChatMessageContainer = chatMessageContainers[chatMessageContainers.length - 1];
@@ -44,7 +46,7 @@ class Chat {
             chatMessageDate.innerText = message.date.substring(0, message.date.length - 3);
         } else {
             console.log("new message");
-            this.chatWindow.appendChild(this.createNewSection(message));
+            this.chatWindow.appendChild(await this.createNewSection(message));
         }
         this.lastChatUserRef = this.chatUser.ref;
     }
@@ -57,7 +59,7 @@ class Chat {
             return false;
         }
     }
-    createNewSection(message) {
+    async createNewSection(message) {
         console.log("createNewSection");
         const chatMessageContainer = document.createElement("div");
         chatMessageContainer.classList.add("chat_message-container");
