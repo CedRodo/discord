@@ -30,7 +30,8 @@ const user1 = new User({
     date: "30 mars 2020",
     color: "#ffff00",
     avatar: { image: "discord_logo.png", bgcolor: "#996998" },
-    status: "online"
+    status: "online",
+    local: false
 });
 room1.addUser(user1);
 room2.addUser(user1);
@@ -42,7 +43,8 @@ const user2 = new User({
     date: "25 septembre 2021",
     color: "#dc143c",
     avatar: { image: "discord_logo.png", bgcolor: "#70c31d" },
-    status: "busy"
+    status: "busy",
+    local: false
 });
 room1.addUser(user2);
 
@@ -53,7 +55,8 @@ const user3 = new User({
     date: "2 december 2017",
     color: "#b53fb5",
     avatar: { image: "discord_logo.png", bgcolor: "#e7c2de" },
-    status: "sleep"
+    status: "sleep",
+    local: false
 });
 room1.addUser(user3);
 
@@ -64,7 +67,8 @@ const user4 = new User({
     date: "7 janvier 2016",
     color: "#763cd4",
     avatar: { image: "discord_logo.png", bgcolor: "#af0b0b" },
-    status: "offline"
+    status: "offline",
+    local: false
 });
 room1.addUser(user4);
 room2.addUser(user4);
@@ -76,7 +80,20 @@ const user5 = new User({
     date: "11 avril 2019",
     color: "#16a03f",
     avatar: { image: "discord_logo.png", bgcolor: "#9d6bee" },
-    status: "notvisible"
+    status: "notvisible",
+    local: false
+});
+room1.addUser(user5);
+
+const localUser = new User({
+    ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
+    name: "localUser",
+    username: "localone",
+    date: "29 december 2022",
+    color: "#c6ade1",
+    avatar: { image: "discord_logo.png", bgcolor: "#5fc4be" },
+    status: "online",
+    local: true
 });
 room1.addUser(user5);
 
@@ -93,6 +110,10 @@ privateMessages.addChatUser(chatUser4);
 const chatUser5 = new ChatUser(user5);
 privateMessages.addChatUser(chatUser5);
 console.log("privateMessages:", privateMessages);
+
+const localChatUser = new ChatUser(localUser);
+
+const chat = new Chat(localUser, privateMessages);
 
 const sidebarButtons = document.querySelectorAll(".sidebar_button");
 
@@ -113,6 +134,7 @@ function showPrivateMessages() {
     document.querySelector(".chat_title").textContent = "Messages privés";
     document.querySelector(".chat_room_name-container").classList.add("hide");
     document.querySelector(".chat_user_profile_panel").classList.add("hide");
+    document.querySelector(".chat_message_to_send-container").classList.add("hide");
     privateMessages.showChatUsers();
 }
 

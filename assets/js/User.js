@@ -7,6 +7,7 @@ class User {
         this.color = userData.color;
         this.avatar = userData.avatar;
         this.status = userData.status;
+        this.local = userData.local;
     }
 
     setStatus(status) {

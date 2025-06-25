@@ -1,5 +1,6 @@
 class PrivateMessages {
     chatUsersList = [];
+    activeRemoteChatUser = null;
     constructor() {
     }
     addChatUser(chatUser) {
@@ -50,14 +51,20 @@ class PrivateMessages {
 
             document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
 
-            userPrivateContainer.addEventListener("click", userPrivateContainerButtonsActivation);
-
-            function userPrivateContainerButtonsActivation(event) {
+            userPrivateContainer.addEventListener("click", event => {
                 document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
                 event.currentTarget.classList.add("active");
+                this.activeRemoteChatUser = chatUser;
                 chatUser.showProfile();
-                chatUser.chat.showChatUser();
-            }
+                document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
+                document.querySelector(".chat_room_avatar").src = `./assets/img/${chatUser.avatar.image}`;
+                document.querySelector(".chat_room_profile_status").dataset.status = chatUser.status;
+                document.querySelector(".chat_room_name").textContent = chatUser.name;
+                if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
+                    document.querySelector(".chat_room_name-container").classList.remove("hide");
+                if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
+                    document.querySelector(".chat_message_to_send-container").classList.remove("hide");
+            });
         });
     }
 }

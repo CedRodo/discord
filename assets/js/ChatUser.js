@@ -8,7 +8,7 @@ class ChatUser {
         this.status = user.status;
         this.aboutme = "Aucun texte";
         this.membersince = user.date;
-        this.chat = new Chat(this);
+        this.isLocal = user.local;
     }
 
     showProfile() {

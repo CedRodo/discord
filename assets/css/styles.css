@@ -1053,6 +1053,8 @@ main {
     align-items: center;
     border-radius: 50%;
     background-color: var(--bgcolor_pref);
+    user-select: none;
+    position: relative;
 }
 
 .chat_message_user_profile_status-wrapper {
