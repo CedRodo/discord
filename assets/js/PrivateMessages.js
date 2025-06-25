@@ -64,6 +64,10 @@ class PrivateMessages {
                     document.querySelector(".chat_room_name-container").classList.remove("hide");
                 if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
                     document.querySelector(".chat_message_to_send-container").classList.remove("hide");
+                while (document.querySelector(".chat_window").firstChild) {
+                    document.querySelector(".chat_window").lastChild.remove();
+                }
+                document.querySelector(".chat_window").messageToSend.value = "";
             });
         });
     }

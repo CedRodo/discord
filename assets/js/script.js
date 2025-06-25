@@ -134,7 +134,11 @@ function showPrivateMessages() {
     document.querySelector(".chat_title").textContent = "Messages privés";
     document.querySelector(".chat_room_name-container").classList.add("hide");
     document.querySelector(".chat_user_profile_panel").classList.add("hide");
-    document.querySelector(".chat_message_to_send-container").classList.add("hide");
+    document.querySelector(".chat_message_to_send-container").classList.add("hide"); 
+    while (chat.chatWindow.firstChild) {
+        chat.chatWindow.lastChild.remove();
+    }
+    chat.messageToSend.value = "";
     privateMessages.showChatUsers();
 }
 
@@ -143,6 +147,10 @@ function showServer(serverName) {
     document.querySelector("main").dataset.view = "rooms";
     document.querySelector(".chat_title").textContent = serverName;
     document.querySelector(".chat_room_name-container").classList.add("hide");
+    while (chat.chatWindow.firstChild) {
+        chat.chatWindow.lastChild.remove();
+    }
+    chat.messageToSend.value = "";
     const serverToShow = app.serversList.find(server => {
         console.log("server.name:", server.name);
         return server.name === serverName;
