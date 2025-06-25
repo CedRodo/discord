@@ -29,6 +29,10 @@ body {
     color: var(--color_6);
 }
 
+.hide {
+    visibility: hidden;
+}
+
 button {
     outline: none;
     border: none;
@@ -214,7 +218,7 @@ main {
 /* Chat sidebar */
 
 .chat_sidebar {
-    width: 70px;
+    width: 72px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -390,7 +394,7 @@ main {
 }
 
 .search-container {
-    width: 306px;
+    width: 303px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -538,6 +542,18 @@ main {
     background-color: #778181;
 }
 
+.chat_room_profile_status[data-status="busy"] {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.chat_room_profile_status[data-status="sleep"] {
+    background-color: var(--color_1);
+    --shadow: orange;
+    box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
+    rotate: z -45deg;
+}
+
 .chat_room_profile_status[data-status="offline"],
 .chat_room_profile_status[data-status="invisible"] {
     border: 3px solid #778181;
@@ -585,9 +601,63 @@ main {
     align-items: center;
     color: var(--color_5);
     font-size: 17px;
+    position: relative;
 }
 
-#chat_room_hide_profile {
+.chat_room_action::after {
+    content: "";
+    width: auto;
+    min-height: 24px;
+    height: auto;
+    padding: 5px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #333232;
+    border-radius: 7px;
+    background-color: #272729;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color_6);
+    position: absolute;
+    top: 48px;
+    left: 50%;
+    z-index: 1;
+    translate: -50% 0;
+    visibility: hidden;
+}
+
+.chat_room_action:hover::after {
+    visibility: visible;
+}
+
+.chat_room_action:hover {
+    color: #a3a3a3;
+}
+
+#chat_room_vocal_call::after {
+    content: "Démarrer un appel vocal";
+    width: 156px;
+}
+
+#chat_room_video_call::after {
+    content: "Démarrer un appel vidéo";
+    width: 150px;
+}
+
+#chat_room_pined_messages::after {
+    content: "Messages épinglés";
+    width: 120px;
+}
+
+#chat_room_add_friends::after {
+    content: "Ajouter des amis au groupe privé";
+    width: 150px;
+}
+
+#chat_room_hide_profile::after {
+    content: "Masquer le profil d'utilisateur";
+    width: 124px;
     color: var(--color_6);
 }
 
@@ -663,15 +733,30 @@ main {
 /* Left panel */
 
 .left_panel {
-    width: 306px;
+    width: 303px;
     height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     flex-shrink: 0;
     border-left: 1px solid var(--color_4);
 }
+
+.chat_users-container,
+.rooms-container {
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+[data-view="chatuser"] .chat_users-container {
+    display: flex;
+}
+
+/* Chat users */
 
 .features-container {
     width: 100%;
@@ -782,8 +867,8 @@ main {
 .user_private_avatar-wrapper {
     width: auto;
     height: 33px;
-    margin-left: 8px;
     aspect-ratio: 1;
+    margin-left: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -814,8 +899,20 @@ main {
     background-color: #778181;
 }
 
+.user_private_profile_status[data-status="busy"] {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.user_private_profile_status[data-status="sleep"] {
+    background-color: var(--color_1);
+    --shadow: orange;
+    box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
+    rotate: z -45deg;
+}
+
 .user_private_profile_status[data-status="offline"],
-.user_private_profile_status[data-status="invisible"] {
+.user_private_profile_status[data-status="notvisible"] {
     border: 3px solid #778181;
     background-color: var(--color_1);
 }
@@ -847,6 +944,58 @@ main {
 
 .user_private-container.active .user_private_name {
     color: var(--color_6);
+}
+
+/* Rooms */
+
+.room-container {
+    width: 95%;
+    height: 40px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+    border-radius: 9px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #817e7e;
+    cursor: pointer;
+    user-select: none;
+}
+
+.room_logo {
+    width: 8%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.room_name {
+    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: var(--color_5);
+}
+
+.room-container:hover {
+    background-color: #1f1d1dad;
+    transition: background 0.2s;
+}
+
+.room-container:hover .room_name {
+    color: var(--color_6);
+    transition: color 0.2s;
+}
+
+.room-container.active .room_name {
+    color: var(--color_6);
+}
+
+[data-view="rooms"] .rooms-container {
+    display: flex;
 }
 
 .left_panel_button:active {
@@ -904,6 +1053,46 @@ main {
     align-items: center;
     border-radius: 50%;
     background-color: var(--bgcolor_pref);
+}
+
+.chat_message_user_profile_status-wrapper {
+    width: 15px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--color_1);
+    position: absolute;
+    bottom: -6%;
+    right: -6%;
+}
+
+.chat_message_user_profile_status {
+    --diameter: 64%;
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: 50%;
+    background-color: #778181;
+}
+
+.chat_message_user_profile_status[data-status="busy"] {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.chat_message_user_profile_status[data-status="sleep"] {
+    background-color: var(--color_1);
+    --shadow: orange;
+    box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
+    rotate: z -45deg;
+}
+
+.chat_message_user_profile_status[data-status="offline"],
+.chat_message_user_profile_status[data-status="notvisible"] {
+    border: 3px solid #778181;
+    background-color: var(--color_1);
 }
 
 .chat_message_user_avatar {
@@ -1010,6 +1199,10 @@ main {
     align-items: center;
 }
 
+.chat_message_to_send_special_actions:hover i {
+    color: var(--color_6);
+}
+
 #message_to_send {
     width: 100%;
     min-height: 100%;
@@ -1062,6 +1255,26 @@ main {
     color: #c3c1c1;
 }
 
+.chat_message_to_send_action i:hover {
+    color: var(--color_6);
+}
+
+#message_to_send_gif_images:hover,
+#message_to_send_stickers:hover,
+#message_to_send_games:hover {
+    animation: actions_hover 0.75s linear;
+}
+
+@keyframes actions_hover {
+    33% {
+        rotate: z 7deg
+    }
+
+    66% {
+        rotate: z -7deg
+    }
+}
+
 /* Right panel */
 
 .right_panel {
@@ -1081,6 +1294,7 @@ main {
 
 [data-view="rooms"] .right_panel {
     width: 267px;
+    padding: 20px 8px;
 }
 
 .connection_status_panel {
@@ -1105,6 +1319,7 @@ main {
 .connection_status-title {
     width: 100%;
     height: 25px;
+    padding: 0 3.5%;
     display: flex;
     gap: 5px;
     font-size: 13px;
@@ -1118,15 +1333,18 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2px;
 }
 
 .connection_status_user-container {
     width: 100%;
-    height: 50px;
-    padding: 2% 5%;
+    height: 39px;
+    padding: 0 7%;
     display: flex;
     align-items: center;
     gap: 7px;
+    border-radius: 9px;
+    cursor: pointer;
 }
 
 .connection_status_user_avatar-wrapper {
@@ -1136,14 +1354,66 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     border-radius: 50%;
     background-color: var(--bgcolor_pref);
+    position: relative;
 }
 
 .connection_status_user_avatar {
     width: 20px;
     padding-bottom: 1px;
     height: auto;
+}
+
+.connection_status_user_profile_status-wrapper {
+    width: 15px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--color_1);
+    position: absolute;
+    bottom: -6%;
+    right: -6%;
+}
+
+.connection_status_user_profile_status {
+    --diameter: 64%;
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: 50%;
+    background-color: #778181;
+}
+
+.connection_status_user_profile_status[data-status="busy"] {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.connection_status_user_profile_status[data-status="sleep"] {
+    background-color: var(--color_1);
+    --shadow: orange;
+    box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
+    rotate: z -45deg;
+}
+
+.connection_status_user_profile_status[data-status="offline"],
+.connection_status_user_profile_status[data-status="notvisible"] {
+    border: 3px solid #778181;
+    background-color: var(--color_1);
+}
+
+.connection_status_user_profile_status-wrapper:has(.connection_status_user_profile_status[data-status="offline"]),
+.connection_status_user_profile_status-wrapper:has(.connection_status_user_profile_status[data-status="notvisible"]) {
+    visibility: hidden;
+}
+
+.connection_status_user-container:not(:hover, .active):has(.connection_status_user_profile_status[data-status="offline"]),
+.connection_status_user-container:not(:hover, .active):has(.connection_status_user_profile_status[data-status="notvisible"]) {
+    filter: brightness(45%);
 }
 
 .connection_status_user_name {
@@ -1153,8 +1423,31 @@ main {
     display: flex;
     justify-content: start;
     align-items: center;
+    flex-shrink: 0;
     font-size: 15px;
     color: var(--color_pref);
+}
+
+.connection_status_user-container:hover {
+    background-color: #28292bad;
+    transition: background 0.2s;
+}
+
+.connection_status_user-container:hover .connection_status_user_name {
+    color: var(--color_6);
+    transition: color 0.2s;
+}
+
+.connection_status_user-container.active .connection_status_user_name {
+    color: var(--color_6);
+}
+
+.connection_status_user-container.active {
+    background-color: #333335 !important;
+}
+
+.connection_status_user-container:active {
+    background-color: #333335 !important;
 }
 
 [data-view="rooms"] .connection_status_panel {
@@ -1334,7 +1627,24 @@ main {
     background-color: #778181;
 }
 
-.chat_user_profile_status[data-status="offline"] {
+.chat_user_profile_status[data-status="online"] {
+    background-color: #778181;
+}
+
+.chat_user_profile_status[data-status="busy"] {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.chat_user_profile_status[data-status="sleep"] {
+    background-color: var(--color_1);
+    --shadow: orange;
+    box-shadow: inset 0 -5px 0 0 var(--shadow), inset 0 -5px 0 2px var(--shadow);
+    rotate: z -45deg;
+}
+
+.chat_user_profile_status[data-status="offline"],
+.chat_user_profile_status[data-status="notvisible"] {
     border: 5px solid #778181;
     background-color: var(--bgcolor_primary);
 }

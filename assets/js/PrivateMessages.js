@@ -1,7 +1,6 @@
 class PrivateMessages {
     chatUsersList = [];
     constructor() {
-
     }
     addChatUser(chatUser) {
         let isAlreadyPresent = false;
@@ -26,7 +25,7 @@ class PrivateMessages {
             const userPrivateContainer = document.createElement("div");
             userPrivateContainer.classList.add("user_private-container", "left_panel_button");
             userPrivateContainer.setAttribute("data-ref", chatUser.ref);
-            userPrivateContainer.setAttribute("data-status", chatUser.ref);
+            // userPrivateContainer.setAttribute("data-status", chatUser.status);
             userPrivateContainer.setAttribute("aria-selected", "false");
             userPrivateContainer.tabIndex = index === 0 ? 0 : -1;
             const userPrivateAvatarWrapper = document.createElement("div");
@@ -36,7 +35,7 @@ class PrivateMessages {
             userPrivateProfileStatusWrapper.classList.add("user_private_profile_status-wrapper");
             const userPrivateProfileStatus = document.createElement("div");
             userPrivateProfileStatus.classList.add("user_private_profile_status");
-            userPrivateProfileStatus.setAttribute("data-status", chatUser.status);
+            userPrivateProfileStatus.setAttribute("data-status", chatUser.status === "notvisible" ? "offline" : chatUser.status);
             userPrivateProfileStatusWrapper.appendChild(userPrivateProfileStatus);
             const userPrivateAvatar = document.createElement("img");
             userPrivateAvatar.classList.add("user_private_avatar");
@@ -48,6 +47,17 @@ class PrivateMessages {
             userPrivateName.innerText = chatUser.name;
             userPrivateContainer.append(userPrivateAvatarWrapper, userPrivateName);
             usersPrivateContainer.appendChild(userPrivateContainer);
-        })
+
+            document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
+
+            userPrivateContainer.addEventListener("click", userPrivateContainerButtonsActivation);
+
+            function userPrivateContainerButtonsActivation(event) {
+                document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
+                event.currentTarget.classList.add("active");
+                chatUser.showProfile();
+                chatUser.chat.showChatUser();
+            }
+        });
     }
 }

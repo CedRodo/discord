@@ -12,6 +12,8 @@ class Chat {
         document.querySelector(".chat_room_avatar").src = `./assets/img/${this.chatUser.avatar.image}`;
         document.querySelector(".chat_room_profile_status").dataset.status = this.chatUser.status;
         document.querySelector(".chat_room_name").textContent = this.chatUser.name;
+        if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
+            document.querySelector(".chat_room_name-container").classList.remove("hide");
     }
     eventListeners() {
         this.messageToSend.addEventListener("keyup", (event) => {
@@ -67,11 +69,16 @@ class Chat {
         chatMessageLeftSection.classList.add("chat_message-left_section");
         const chatMessageUserAvatarWrapper = document.createElement("div");
         chatMessageUserAvatarWrapper.classList.add("chat_message_user_avatar-wrapper");
-        chatMessageUserAvatarWrapper.style.setProperty("--bgcolor_pref", this.chatUser.avatar.bgcolor);
+        chatMessageUserAvatarWrapper.style.setProperty("--bgcolor_pref", this.chatUser.avatar.bgcolor); const chatMessageUserProfileStatusWrapper = document.createElement("div");
+        chatMessageUserProfileStatusWrapper.classList.add("chat_message_user_profile_status-wrapper");
+        const chatMessageUserProfileStatus = document.createElement("div");
+        chatMessageUserProfileStatus.classList.add("chat_message_user_profile_status");
+        chatMessageUserProfileStatus.setAttribute("data-status", user.status === "notvisible" ? "offline" : user.status);
+        chatMessageUserProfileStatusWrapper.appendChild(chatMessageUserProfileStatus);
         const chatMessageUserAvatar = document.createElement("img");
         chatMessageUserAvatar.classList.add("chat_message_user_avatar");
         chatMessageUserAvatar.src = `./assets/img/${this.chatUser.avatar.image}`;
-        chatMessageUserAvatarWrapper.appendChild(chatMessageUserAvatar);
+        chatMessageUserAvatarWrapper.append(chatMessageUserAvatar, chatMessageUserProfileStatusWrapper);
         chatMessageLeftSection.appendChild(chatMessageUserAvatarWrapper);
         const chatMessageMainSection = document.createElement("div");
         chatMessageMainSection.classList.add("chat_message-main_section");

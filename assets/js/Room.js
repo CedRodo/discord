@@ -1,6 +1,5 @@
 class Room {
     name;
-    avatar;
     visibility;
     usersList = [];
     onlineUsers = [];
@@ -9,13 +8,11 @@ class Room {
 
     constructor(roomData) {
         this.name = roomData.name;
-        this.avatar = roomData.avatar;
         this.visibility = roomData.visibility;
     }
 
     addUser(user) {
-        let list = [...this.usersList];
-        const userAlreadyPresent = list.find(u => u.name === user.name);
+        const userAlreadyPresent = this.usersList.find(u => u.name === user.name);
         if (typeof userAlreadyPresent === "undefined") {
             this.usersList.push(user);
             if (user.status === "online" ||
@@ -29,7 +26,7 @@ class Room {
                 this.offlineUsers.sort();
             }
         }
-        this.updateConnectionStatusSection();
+        if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
     }
 
     removeUser(user) {
@@ -41,7 +38,7 @@ class Room {
         if (this.offlineUsers.includes(user.name)) {
             this.offlineUsers.splice(this.offlineUsers.indexOf(user.name), 1);
         }
-        this.updateConnectionStatusSection();
+        if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
     }
 
 
@@ -77,15 +74,29 @@ class Room {
         const connectionStatusUserAvatarWrapper = document.createElement("div");
         connectionStatusUserAvatarWrapper.classList.add("connection_status_user_avatar-wrapper");
         connectionStatusUserAvatarWrapper.style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
+        const connectionStatusUserProfileStatusWrapper = document.createElement("div");
+        connectionStatusUserProfileStatusWrapper.classList.add("connection_status_user_profile_status-wrapper");
+        const connectionStatusUserProfileStatus = document.createElement("div");
+        connectionStatusUserProfileStatus.classList.add("connection_status_user_profile_status");
+        connectionStatusUserProfileStatus.setAttribute("data-status", user.status === "notvisible" ? "offline" : user.status);
+        connectionStatusUserProfileStatusWrapper.appendChild(connectionStatusUserProfileStatus);
         const connectionStatusUserAvatar = document.createElement("img");
         connectionStatusUserAvatar.classList.add("connection_status_user_avatar");
         connectionStatusUserAvatar.src = `./assets/img/${user.avatar.image}`;
-        connectionStatusUserAvatarWrapper.appendChild(connectionStatusUserAvatar);
+        connectionStatusUserAvatarWrapper.append(connectionStatusUserAvatar, connectionStatusUserProfileStatusWrapper);
         const connectionStatusUserName = document.createElement("div");
         connectionStatusUserName.classList.add("connection_status_user_name");
         connectionStatusUserName.style.setProperty("--color_pref", user.color);
         connectionStatusUserName.innerText = user.name;
         connectionStatusUserContainer.append(connectionStatusUserAvatarWrapper, connectionStatusUserName);
+
+        connectionStatusUserContainer.addEventListener("click", connectionStatusUserContainerButtonsActivation);
+
+        function connectionStatusUserContainerButtonsActivation(event) {
+            document.querySelectorAll(".connection_status_user-container").forEach(button => button.classList.remove("active"));
+            event.currentTarget.classList.add("active");
+        }
+
         return connectionStatusUserContainer;
     }
 

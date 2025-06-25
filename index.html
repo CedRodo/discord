@@ -11,6 +11,7 @@
     <script defer src="./assets/js/User.js"></script>
     <script defer src="./assets/js/ChatUser.js"></script>
     <script defer src="./assets/js/Chat.js"></script>
+    <script defer src="./assets/js/AppServer.js"></script>
     <script defer src="./assets/js/Room.js"></script>
     <script defer src="./assets/js/PrivateMessages.js"></script>
     <script defer src="./assets/js/Message.js"></script>
@@ -53,13 +54,7 @@
                     </div>
                 </div>
             </div>
-            <div class="servers-container">
-                <div class="server-container sidebar_button" title="Nom du server">
-                    <div class="server_avatar-wrapper">
-                        <img class="server_avatar" src="./assets/img/discord_logo.png" alt="">
-                    </div>
-                </div>
-            </div>
+            <div class="servers-container"></div>
         </div>
         <div class="chat-container">
             <div class="top_section-container">
@@ -88,11 +83,11 @@
                     </div>
                     <div class="chat_room_end_section-container">
                         <div class="chat_room_actions-container">
-                            <button class="chat_room_action" id="chat_room_vocal_call" title="Démarrer un appel vocal"><i class="fa-solid fa-phone-volume"></i></button>
-                            <button class="chat_room_action" id="chat_room_video_call" title="Démarrer un appel vidéo"><i class="fa-solid fa-video"></i></button>
-                            <button class="chat_room_action" id="chat_room_pined_messages" title="Messages épinglés"><i class="fa-solid fa-thumbtack"></i></button>
-                            <button class="chat_room_action" id="chat_room_add_friends" title="Ajouter des amis au groupe privé"><i class="fa-solid fa-user-plus"></i></button>
-                            <button class="chat_room_action" id="chat_room_hide_profile" title="Masquer le profil d'utilisateur'"><i class="fa-solid fa-circle-user"></i></button>
+                            <button class="chat_room_action" id="chat_room_vocal_call"><i class="fa-solid fa-phone-volume"></i></button>
+                            <button class="chat_room_action" id="chat_room_video_call"><i class="fa-solid fa-video"></i></button>
+                            <button class="chat_room_action" id="chat_room_pined_messages"><i class="fa-solid fa-thumbtack"></i></button>
+                            <button class="chat_room_action" id="chat_room_add_friends"><i class="fa-solid fa-user-plus"></i></button>
+                            <button class="chat_room_action" id="chat_room_hide_profile"><i class="fa-solid fa-circle-user"></i></button>
                         </div>
                         <div class="chat_room_search-container">
                             <input class="chat_room_search" id="chat_room_search" type="text" placeholder="Rechercher">
@@ -102,15 +97,18 @@
             </div>
             <div class="main_section-container">
                 <div class="left_panel">
-                    <div class="features-container">
-                        <div class="feature feature_friends left_panel_button" data-feature="friends"><span class="feature_logo"><i class="fa-solid fa-user"></i></span><span class="feature_title">Amis</span></div>
-                        <div class="feature feature_nitro left_panel_button" data-feature="nitro"><span class="feature_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="feature_title">Nitro</span></div>
-                        <div class="feature feature_shop left_panel_button" data-feature="shop"><span class="feature_logo"><i class="fa-solid fa-shop"></i></span><span class="feature_title">Boutique</span></div>
+                    <div class="chat_users-container">
+                        <div class="features-container">
+                            <div class="feature feature_friends left_panel_button" data-feature="friends"><span class="feature_logo"><i class="fa-solid fa-user"></i></span><span class="feature_title">Amis</span></div>
+                            <div class="feature feature_nitro left_panel_button" data-feature="nitro"><span class="feature_logo"><i class="fa-solid fa-gauge-high"></i></span><span class="feature_title">Nitro</span></div>
+                            <div class="feature feature_shop left_panel_button" data-feature="shop"><span class="feature_logo"><i class="fa-solid fa-shop"></i></span><span class="feature_title">Boutique</span></div>
+                        </div>
+                        <div class="private_messages">
+                            <div class="private_messages-title">Messages privés</div>
+                            <div class="users_private-container"></div>
+                        </div>
                     </div>
-                    <div class="private_messages">
-                        <div class="private_messages-title">Messages privés</div>
-                        <div class="users_private-container"></div>
-                    </div>
+                    <div class="rooms-container"></div>
                 </div>
                 <div class="chat_window-container">
                     <div class="chat_window"></div>
@@ -118,7 +116,6 @@
                         <div class="chat_message_to_send_special_actions-container">
                             <button class="chat_message_to_send_special_actions" id="message_special_actions"><i class="fa-solid fa-circle-plus"></i></button>
                         </div>
-                        <!-- <input class="chat_message_to_send-input" id="message_to_send" type="text" placeholder="Envoyer un message"> -->
                         <textarea class="chat_message_to_send-input" id="message_to_send" placeholder="Envoyer un message" wrap="soft"></textarea>
                         <div class="chat_message_to_send_actions-container">
                             <button class="chat_message_to_send_action" id="message_to_send_gift"><i class="fa-solid fa-gift"></i></button>
@@ -144,7 +141,7 @@
                             <div class="connection_status_users-container offline_status_users-container"></div>
                         </div>
                     </div>
-                    <div class="chat_user_profile_panel">
+                    <div class="chat_user_profile_panel hide">
                         <div class="chat_user_profile-top_section">
                             <div class="chat_user_profile_features-container">
                                 <div class="chat_user_profile_feature chat_user_profile_add"><i class="fa-solid fa-user-plus"></i></div>
