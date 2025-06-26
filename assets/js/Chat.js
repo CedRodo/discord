@@ -81,7 +81,7 @@ class Chat {
         chatMessageUserProfileStatusWrapper.classList.add("chat_message_user_profile_status-wrapper");
         const chatMessageUserProfileStatus = document.createElement("div");
         chatMessageUserProfileStatus.classList.add("chat_message_user_profile_status");
-        chatMessageUserProfileStatus.setAttribute("data-status", this.localChatUser.status === "notvisible" ? "offline" : this.localChatUser.status);
+        chatMessageUserProfileStatus.setAttribute("data-status", this.localChatUser.status === "invisible" ? "offline" : this.localChatUser.status);
         chatMessageUserProfileStatusWrapper.appendChild(chatMessageUserProfileStatus);
         const chatMessageUserAvatar = document.createElement("img");
         chatMessageUserAvatar.classList.add("chat_message_user_avatar");
@@ -94,7 +94,6 @@ class Chat {
         chatMessageTopSection.classList.add("chat_message-top_section");
         const chatMessageUserName = document.createElement("div");
         chatMessageUserName.classList.add("chat_message_user_name");
-        chatMessageUserName.style.setProperty("--color_pref", this.localChatUser.color);
         chatMessageUserName.innerText = this.localChatUser.name;
         const chatMessageDate = document.createElement("div");
         chatMessageDate.classList.add("chat_message_date");

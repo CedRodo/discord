@@ -80,21 +80,50 @@ const user5 = new User({
     date: "11 avril 2019",
     color: "#16a03f",
     avatar: { image: "discord_logo.png", bgcolor: "#9d6bee" },
-    status: "notvisible",
+    status: "invisible",
     local: false
 });
 room1.addUser(user5);
 
+// const localUser = new User({
+//     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
+//     name: "localUser",
+//     username: "localone",
+//     date: "29 decembre 2022",
+//     color: "#c6ade1",
+//     avatar: { image: "discord_logo.png", bgcolor: "#5fc4be" },
+//     status: "online",
+//     local: true
+// });
+
+// const localUser = new User({
+//     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
+//     name: prompt('Name:'),
+//     username: prompt('Username:'),
+//     date: new Date().toLocaleString("fr-FR"),
+//     color: prompt('Text color:'),
+//     avatar: { image: "discord_logo.png", bgcolor: prompt('Background color:') },
+//     status: "online",
+//     local: true
+// });
+
 const localUser = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
-    name: "localUser",
-    username: "localone",
-    date: "29 december 2022",
-    color: "#c6ade1",
-    avatar: { image: "discord_logo.png", bgcolor: "#5fc4be" },
+    name: prompt('Name:'),
+    username: "",
+    date: new Date().toLocaleString("fr-FR"),
+    color: "salmon",
+    avatar: { image: "discord_logo.png", bgcolor: "gold" },
     status: "online",
     local: true
 });
+
+localUser.username = localUser.name + "82";
+
+console.log("localUser:", localUser);
+
+app.setLocalUser(localUser);
+
 room1.addUser(user5);
 
 console.log("room1:", room1);

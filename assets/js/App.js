@@ -5,6 +5,28 @@ class App {
         this.features = document.querySelectorAll(".feature");
         this.features.forEach(feature => feature.addEventListener("click", this.selectFeature.bind(this)));
     }
+    setLocalUser(user) {
+        document.querySelector(".local_user_avatar-wrapper").style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
+        document.querySelector(".local_user_avatar").src = `./assets/img/${user.avatar.image}`;
+        document.querySelector(".local_user_status_logo").dataset.status = user.status;
+        document.querySelector(".local_user_name_display").textContent = user.name;
+        let status = "";
+        switch (user.status) {
+            case "online":
+                status = "en ligne";
+                break;
+            case "busy":
+                status = "occupé";
+                break;
+            case "sleep":
+                status = "inactif";
+                break;
+            case "invisible":
+                status = "invisible";
+                break;
+        }
+        document.querySelector(".local_user_status_display").textContent = status;
+    }
     addServer(server) {
         console.log("addServer server:", server);        
         const serverAlreadyPresent = this.serversList.find(s => s.name === server.name);

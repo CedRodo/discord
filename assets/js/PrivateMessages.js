@@ -36,7 +36,7 @@ class PrivateMessages {
             userPrivateProfileStatusWrapper.classList.add("user_private_profile_status-wrapper");
             const userPrivateProfileStatus = document.createElement("div");
             userPrivateProfileStatus.classList.add("user_private_profile_status");
-            userPrivateProfileStatus.setAttribute("data-status", chatUser.status === "notvisible" ? "offline" : chatUser.status);
+            userPrivateProfileStatus.setAttribute("data-status", chatUser.status === "invisible" ? "offline" : chatUser.status);
             userPrivateProfileStatusWrapper.appendChild(userPrivateProfileStatus);
             const userPrivateAvatar = document.createElement("img");
             userPrivateAvatar.classList.add("user_private_avatar");
@@ -67,7 +67,7 @@ class PrivateMessages {
                 while (document.querySelector(".chat_window").firstChild) {
                     document.querySelector(".chat_window").lastChild.remove();
                 }
-                document.querySelector(".chat_window").messageToSend.value = "";
+                document.getElementById("message_to_send") = "";
             });
         });
     }

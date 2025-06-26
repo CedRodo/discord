@@ -78,7 +78,7 @@ class Room {
         connectionStatusUserProfileStatusWrapper.classList.add("connection_status_user_profile_status-wrapper");
         const connectionStatusUserProfileStatus = document.createElement("div");
         connectionStatusUserProfileStatus.classList.add("connection_status_user_profile_status");
-        connectionStatusUserProfileStatus.setAttribute("data-status", user.status === "notvisible" ? "offline" : user.status);
+        connectionStatusUserProfileStatus.setAttribute("data-status", user.status === "invisible" ? "offline" : user.status);
         connectionStatusUserProfileStatusWrapper.appendChild(connectionStatusUserProfileStatus);
         const connectionStatusUserAvatar = document.createElement("img");
         connectionStatusUserAvatar.classList.add("connection_status_user_avatar");
