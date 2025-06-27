@@ -26,11 +26,17 @@ class App {
                 break;
         }
         document.querySelector(".local_user_status_display").textContent = status;
+        document.querySelector(".local_user_profile_settings-container").style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
         document.querySelector(".local_user_name_status_display-container").addEventListener("click", showLocalUserProfile);
         document.querySelector(".local_user_avatar-wrapper").addEventListener("click", showLocalUserProfile);
         
         function showLocalUserProfile() {        
             document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
+            if (!document.querySelector(".local_user_profile_panel").classList.contains("d-none")) {
+                document.querySelector(".local_user_profile_settings-container").dataset.status = user.status;
+                document.querySelector(".local_user_avatar").src = `./assets/img/${user.avatar.image}`;
+                document.querySelector(".local_user_profile_select_status_title").textContent = status;
+            }
         }
         
         document.querySelector(".local_user_mic").addEventListener("click", micOnOff);

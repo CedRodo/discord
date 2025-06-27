@@ -1013,6 +1013,7 @@ main {
 /* Local user settings */
 
 .local_user_profile_settings-container {
+    --bgcolor_pref: #ffa42b;
     width: 361px;
     height: 58px;
     display: flex;
@@ -1270,7 +1271,6 @@ main {
 /* Local user profile */
 
 .local_user_profile_panel {
-    --bgcolor_pref: #ffa42b;
     --bgcolor_primary: #272729;
     --bgcolor_secondary: #2e2e31;
     width: 300px;
@@ -1509,6 +1509,10 @@ main {
     display: flex;
     justify-content: start;
     align-items: center;
+}
+
+.local_user_profile_select_status_title {
+    text-transform: capitalize;
 }
 
 .local_user_profile_edit_profile-container,
