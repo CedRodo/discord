@@ -5,10 +5,12 @@ class Room {
     onlineUsers = [];
     offlineUsers = [];
     nbOfUsers = 0;
+    privateMessages;
 
-    constructor(roomData) {
+    constructor(roomData, privateMessages) {
         this.name = roomData.name;
         this.visibility = roomData.visibility;
+        this.privateMessages = privateMessages;
     }
 
     addUser(user) {
@@ -90,11 +92,26 @@ class Room {
         connectionStatusUserName.innerText = user.name;
         connectionStatusUserContainer.append(connectionStatusUserAvatarWrapper, connectionStatusUserName);
 
-        connectionStatusUserContainer.addEventListener("click", connectionStatusUserContainerButtonsActivation);
+        connectionStatusUserContainer.addEventListener("click", connectionStatusUserContainerButtonsActivation.bind(this));
 
         function connectionStatusUserContainerButtonsActivation(event) {
             document.querySelectorAll(".connection_status_user-container").forEach(button => button.classList.remove("active"));
             event.currentTarget.classList.add("active");
+            console.log("this.privateMessages:", this.privateMessages);            
+            this.privateMessages.activeRemoteChatUser = user;
+            user.showProfile();
+            document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
+            document.querySelector(".chat_room_avatar").src = `./assets/img/${user.avatar.image}`;
+            document.querySelector(".chat_room_profile_status").dataset.status = user.status;
+            document.querySelector(".chat_room_name").textContent = user.name;
+            if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
+                document.querySelector(".chat_room_name-container").classList.remove("hide");
+            if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
+                document.querySelector(".chat_message_to_send-container").classList.remove("hide");
+            while (document.querySelector(".chat_window").firstChild) {
+                document.querySelector(".chat_window").lastChild.remove();
+            }
+            document.getElementById("message_to_send").value = "";
         }
 
         return connectionStatusUserContainer;

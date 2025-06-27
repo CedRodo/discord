@@ -67,7 +67,7 @@ class PrivateMessages {
                 while (document.querySelector(".chat_window").firstChild) {
                     document.querySelector(".chat_window").lastChild.remove();
                 }
-                document.getElementById("message_to_send") = "";
+                document.getElementById("message_to_send").value = "";
             });
         });
     }

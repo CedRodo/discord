@@ -1,4 +1,6 @@
 const app = new App();
+const settings = new Settings();
+const privateMessages = new PrivateMessages();
 
 const server1 = new AppServer({
     name: "Server 1",
@@ -6,84 +8,72 @@ const server1 = new AppServer({
     visibility: "public"
 });
 
-const room1 = new Room({
-    name: "room 1",
-    visibility: "public"
-});
-
-const room2 = new Room({
-    name: "room 2",
-    visibility: "public"
-});
-
-server1.addRoom(room1);
-server1.addRoom(room2);
-
 app.addServer(server1);
-
-const privateMessages = new PrivateMessages();
 
 const user1 = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
     name: "OnlineUser1234",
     username: "onlineuser1234",
     date: "30 mars 2020",
-    color: "#ffff00",
-    avatar: { image: "discord_logo.png", bgcolor: "#996998" },
+    // color: "#ffff00",
+    color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
+    // avatar: { image: "discord_logo.png", bgcolor: "#996998" },
+    avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "online",
     local: false
 });
-room1.addUser(user1);
-room2.addUser(user1);
 
 const user2 = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
     name: "BusyUser",
     username: "busyuser",
     date: "25 septembre 2021",
-    color: "#dc143c",
-    avatar: { image: "discord_logo.png", bgcolor: "#70c31d" },
+    // color: "#dc143c",
+    color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
+    // avatar: { image: "discord_logo.png", bgcolor: "#70c31d" },
+    avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "busy",
     local: false
 });
-room1.addUser(user2);
 
 const user3 = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
     name: "SleepUser94240",
     username: "imspleeping",
     date: "2 december 2017",
-    color: "#b53fb5",
-    avatar: { image: "discord_logo.png", bgcolor: "#e7c2de" },
+    // color: "#b53fb5",
+    color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
+    // avatar: { image: "discord_logo.png", bgcolor: "#e7c2de" },
+    avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "sleep",
     local: false
 });
-room1.addUser(user3);
 
 const user4 = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
     name: "OfflineUser",
     username: "offlineuser",
     date: "7 janvier 2016",
-    color: "#763cd4",
-    avatar: { image: "discord_logo.png", bgcolor: "#af0b0b" },
+    // color: "#763cd4",
+    color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
+    // avatar: { image: "discord_logo.png", bgcolor: "#af0b0b" },
+    avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "offline",
     local: false
 });
-room1.addUser(user4);
-room2.addUser(user4);
 
 const user5 = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
     name: "NotVisibleUser87",
     username: "notvisibleuser87",
     date: "11 avril 2019",
-    color: "#16a03f",
-    avatar: { image: "discord_logo.png", bgcolor: "#9d6bee" },
+    // color: "#16a03f",
+    color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
+    // avatar: { image: "discord_logo.png", bgcolor: "#9d6bee" },
+    avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "invisible",
     local: false
 });
-room1.addUser(user5);
 
 // const localUser = new User({
 //     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
@@ -107,13 +97,17 @@ room1.addUser(user5);
 //     local: true
 // });
 
+let colorsList = [];
+
 const localUser = new User({
     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
     name: prompt('Name:'),
     username: "",
     date: new Date().toLocaleString("fr-FR"),
-    color: "salmon",
-    avatar: { image: "discord_logo.png", bgcolor: "gold" },
+    // color: "salmon",
+    color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
+    // avatar: { image: "discord_logo.png", bgcolor: "gold" },
+    avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "online",
     local: true
 });
@@ -124,9 +118,23 @@ console.log("localUser:", localUser);
 
 app.setLocalUser(localUser);
 
-room1.addUser(user5);
+console.log("privateMessages:", privateMessages);
+
+const room1 = new Room({
+    name: "room 1",
+    visibility: "public"
+}, privateMessages);
+
+const room2 = new Room({
+    name: "room 2",
+    visibility: "public"
+}, privateMessages);
 
 console.log("room1:", room1);
+console.log("room2:", room2);
+
+server1.addRoom(room1);
+server1.addRoom(room2);
 
 const chatUser1 = new ChatUser(user1);
 privateMessages.addChatUser(chatUser1);
@@ -139,6 +147,14 @@ privateMessages.addChatUser(chatUser4);
 const chatUser5 = new ChatUser(user5);
 privateMessages.addChatUser(chatUser5);
 console.log("privateMessages:", privateMessages);
+
+room1.addUser(chatUser1);
+room2.addUser(chatUser1);
+room1.addUser(chatUser2);
+room1.addUser(chatUser3);
+room1.addUser(chatUser4);
+room2.addUser(chatUser4);
+room1.addUser(chatUser5);
 
 const localChatUser = new ChatUser(localUser);
 
