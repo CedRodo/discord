@@ -1214,6 +1214,10 @@ main {
     }
 }
 
+.local_user_mic i, .local_user_headphones i {
+    transform: rotateY(180deg);
+}
+
 .local_user_options-container[data-mic="off"] {
     & .fa-microphone {
         display: none;
