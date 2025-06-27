@@ -26,6 +26,38 @@ class App {
                 break;
         }
         document.querySelector(".local_user_status_display").textContent = status;
+        document.querySelector(".local_user_name_status_display-container").addEventListener("click", showLocalUserProfile);
+        document.querySelector(".local_user_avatar-wrapper").addEventListener("click", showLocalUserProfile);
+        
+        function showLocalUserProfile() {        
+            document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
+        }
+        
+        document.querySelector(".local_user_mic").addEventListener("click", micOnOff);
+        document.querySelector(".local_user_headphones").addEventListener("click", soundOnOff);
+
+        function micOnOff() {
+            switch (document.querySelector(".local_user_options-container").dataset.mic) {
+                case "off":
+                    document.querySelector(".local_user_options-container").dataset.mic = "on";
+                    break;
+                case "on":
+                    document.querySelector(".local_user_options-container").dataset.mic = "off";
+                    break;
+            }
+        }
+
+        function soundOnOff() {
+            switch (document.querySelector(".local_user_options-container").dataset.sound) {
+                case "off":
+                    document.querySelector(".local_user_options-container").dataset.sound = "on";
+                    break;
+                case "on":
+                    document.querySelector(".local_user_options-container").dataset.sound = "off";
+                    break;
+            }
+        }
+
     }
     addServer(server) {
         console.log("addServer server:", server);        
@@ -70,7 +102,7 @@ class App {
         event.currentTarget.classList.add("active");
         document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", "transparent");
         document.querySelector(".chat_room_avatar").src = "";
-        document.querySelector(".chat_room_profile_status").dataset.status = "";
+        document.querySelector(".chat_room_profile_status_logo").dataset.status = "";
         document.querySelector(".chat_room_name").textContent = "";
         document.querySelector(".chat_room_name-container").classList.add("hide");
         document.querySelector(".chat_user_profile_panel").classList.add("hide");

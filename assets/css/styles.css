@@ -520,7 +520,7 @@ main {
     height: auto;
 }
 
-.chat_room_profile_status-wrapper {
+.chat_room_profile_status_logo-wrapper {
     width: 13px;
     height: auto;
     aspect-ratio: 1;
@@ -534,11 +534,11 @@ main {
     right: -10%;
 }
 
-[data-view="chatuser"] .chat_room_profile_status-wrapper {
+[data-view="chatuser"] .chat_room_profile_status_logo-wrapper {
     display: flex;
 }
 
-.chat_room_profile_status {
+.chat_room_profile_status_logo {
     --diameter: 64%;
     width: var(--diameter);
     height: var(--diameter);
@@ -546,25 +546,25 @@ main {
     background-color: #778181;
 }
 
-.chat_room_profile_status[data-status="busy"] {
+.chat_room_profile_status_logo[data-status="busy"] {
     background-color: red;
     clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.chat_room_profile_status[data-status="sleep"] {
+.chat_room_profile_status_logo[data-status="sleep"] {
     background-color: var(--color_1);
     --shadow: orange;
     box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
     rotate: z -45deg;
 }
 
-.chat_room_profile_status[data-status="offline"],
-.chat_room_profile_status[data-status="invisible"] {
+.chat_room_profile_status_logo[data-status="offline"],
+.chat_room_profile_status_logo[data-status="invisible"] {
     border: 3px solid #778181;
     background-color: var(--color_3);
 }
 
-.chat_room_profile_status[data-status=""] {
+.chat_room_profile_status_logo[data-status=""] {
     visibility: hidden;
 }
 
@@ -881,7 +881,7 @@ main {
     position: relative;
 }
 
-.user_private_profile_status-wrapper {
+.user_private_profile_status_logo-wrapper {
     width: 15px;
     height: auto;
     aspect-ratio: 1;
@@ -895,7 +895,7 @@ main {
     right: -6%;
 }
 
-.user_private_profile_status {
+.user_private_profile_status_logo {
     --diameter: 64%;
     width: var(--diameter);
     height: var(--diameter);
@@ -903,20 +903,20 @@ main {
     background-color: #778181;
 }
 
-.user_private_profile_status[data-status="busy"] {
+.user_private_profile_status_logo[data-status="busy"] {
     background-color: red;
     clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.user_private_profile_status[data-status="sleep"] {
+.user_private_profile_status_logo[data-status="sleep"] {
     background-color: var(--color_1);
     --shadow: orange;
     box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
     rotate: z -45deg;
 }
 
-.user_private_profile_status[data-status="offline"],
-.user_private_profile_status[data-status="invisible"] {
+.user_private_profile_status_logo[data-status="offline"],
+.user_private_profile_status_logo[data-status="invisible"] {
     border: 3px solid #778181;
     background-color: var(--color_1);
 }
@@ -1018,13 +1018,13 @@ main {
     display: flex;
     justify-content: start;
     align-items: center;
-    border: 1px solid #2b2b2f;
+    border: 1px solid #242425;
     border-radius: 8px;
     position: absolute;
     bottom: 7px;
     left: 6px;
     color: #817e7e;
-    background-color: #242429;
+    background-color: #1e1e20;
 }
 
 .local_user_avatar-container {
@@ -1059,7 +1059,7 @@ main {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: var(--color_2);
+    background-color: #1e1e20;
     position: absolute;
     bottom: -8%;
     right: -8%;
@@ -1073,13 +1073,21 @@ main {
     background-color: #778181;
 }
 
+.local_user_status_logo[data-status=""] {
+    visibility: hidden;
+}
+
+.local_user_status_logo[data-status="online"] {
+    background-color: #778181;
+}
+
 .local_user_status_logo[data-status="busy"] {
     background-color: red;
     clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .local_user_status_logo[data-status="sleep"] {
-    background-color: var(--color_2);
+    background-color: #1e1e20;
     --shadow: orange;
     box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
     rotate: z -45deg;
@@ -1124,7 +1132,7 @@ main {
     visibility: hidden;
 }
 
-.local_user_avatar-container:hover ~ .local_user_name_status_display-container::before,
+.local_user_avatar-container:hover~.local_user_name_status_display-container::before,
 .local_user_name_status_display-container:hover::before {
     visibility: visible;
 }
@@ -1257,6 +1265,327 @@ main {
 
 .local_user-container.active .local_user_name_display {
     color: var(--color_6);
+}
+
+/* Local user profile */
+
+.local_user_profile_panel {
+    --bgcolor_pref: #ffa42b;
+    --bgcolor_primary: #272729;
+    --bgcolor_secondary: #2e2e31;
+    width: 300px;
+    height: 394px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border-radius: 7px;
+    background-color: #212123;
+    position: absolute;
+    bottom: 63px;
+    left: 8px;
+    /* overflow: hidden; */
+}
+
+.local_user_profile-top_section {
+    width: 100%;
+    height: 106px;
+    flex-shrink: 0;
+    border-radius: 7px 7px 0 0;
+    position: relative;
+    background-color: var(--bgcolor_pref);
+}
+
+.local_user_profile_avatar-container {
+    width: 92px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #212123;
+    position: absolute;
+    bottom: 0;
+    left: 3%;
+    translate: 0 40%;
+    cursor: pointer;
+    transition: filter 0.2s;
+    user-select: none;
+}
+
+.local_user_profile_avatar-container:hover {
+    filter: brightness(60%);
+}
+
+.local_user_profile_avatar-wrapper {
+    --diameter: 87%;
+    width: var(--diameter);
+    height: var(--diameter);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--bgcolor_pref);
+    user-select: none;
+}
+
+.local_user_profile_avatar {
+    width: 49px;
+    height: auto;
+    user-select: none;
+}
+
+.local_user_profile_status_logo-wrapper {
+    width: 28px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #212123;
+    position: absolute;
+    bottom: 4%;
+    right: 4%;
+}
+
+.local_user_profile_status_logo-wrapper:has([data-status=""]) {
+    visibility: hidden;
+}
+
+.local_user_profile_status_logo {
+    --diameter: 64%;
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: 50%;
+    background-color: #778181;
+}
+
+.local_user_profile_settings-container:has([data-status=""]) .local_user_profile_status_logo {
+    visibility: hidden;
+}
+
+.local_user_profile_settings-container:has([data-status="online"]) .local_user_profile_status_logo {
+    background-color: #778181;
+}
+
+.local_user_profile_settings-container:has([data-status="busy"]) .local_user_profile_status_logo {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.local_user_profile_settings-container:has([data-status="sleep"]) .local_user_profile_status_logo {
+    background-color: #212123;
+    --shadow: orange;
+    box-shadow: inset 0 -5px 0 0 var(--shadow), inset 0 -5px 0 2px var(--shadow);
+    rotate: z -45deg;
+}
+
+.local_user_profile_settings-container:has([data-status="offline"]) .local_user_profile_status_logo,
+.local_user_profile_settings-container:has([data-status="invisible"]) .local_user_profile_status_logo {
+    border: 5px solid #778181;
+    background-color: var(--bgcolor_primary);
+}
+
+.local_user_profile-bottom_section {
+    width: 90%;
+    height: calc(100% - 106px);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 7px;
+}
+
+.local_user_profile_name_username-container {
+    width: 100%;
+    height: 105px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: start;
+    flex-shrink: 0;
+    color: var(--color_6);
+}
+
+.local_user_profile_name-container {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 19px;
+    font-weight: 600;
+    user-select: none;
+}
+
+.local_user_profile_username-container {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 14px;
+    user-select: none;
+}
+
+.local_user_profile_name:hover,
+.local_user_profile_username:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.local_user_profile_actions-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    flex-shrink: 0;
+    gap: 12px;
+    font-size: 14px;
+    color: #acabab;
+}
+
+.local_user_profile_edit_profile_select_status-container {
+    width: 100%;
+    height: 96px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #bfd1e30f;
+}
+
+.local_user_profile_edit_profile-container,
+.local_user_profile_select_status-container,
+.local_user_profile_change_account-wrapper {
+    width: 91%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 0px;
+}
+
+.local_user_profile_edit_profile-container {
+    border-bottom: 1px solid #3d3c3c;
+}
+
+.local_user_profile_change_account-container {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #bfd1e30f;
+    border-radius: 8px;
+}
+
+.local_user_profile_change_account-wrapper {
+    height: 100%;
+}
+
+.local_user_profile_edit_profile_logo,
+.local_user_profile_select_status_logo,
+.local_user_profile_change_account_logo {
+    width: 12.5%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+}
+
+.local_user_profile_edit_profile_title,
+.local_user_profile_select_status_title,
+.local_user_profile_change_account_title {
+    width: 87%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.local_user_profile_edit_profile-container,
+.local_user_profile_select_status-container,
+.local_user_profile_change_account-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.local_user_profile_edit_profile-container::before,
+.local_user_profile_select_status-container::before,
+.local_user_profile_change_account-wrapper::before {
+    content: "";
+    width: 100%;
+    height: 31px;
+    border-radius: 7px;
+    background-color: #353537;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    translate: 0 -50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.local_user_profile_edit_profile-container,
+.local_user_profile_select_status-container,
+.local_user_profile_change_account-container {
+    transition: color 0.25s;
+}
+
+.local_user_profile_edit_profile-container:hover,
+.local_user_profile_select_status-container:hover,
+.local_user_profile_change_account-container:hover {
+    color: var(--color_6);
+    cursor: pointer;
+}
+
+.local_user_profile_edit_profile-container:hover::before,
+.local_user_profile_select_status-container:hover::before,
+.local_user_profile_change_account-container:hover .local_user_profile_change_account-wrapper::before {
+    opacity: 1;
+}
+
+.local_user_profile_select_status_logo_display {
+    --diameter: 13px;
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: 50%;
+    background-color: #778181;
+}
+
+.local_user_profile_settings-container:has([data-status=""]) .local_user_profile_select_status_logo_display {
+    visibility: hidden;
+}
+
+.local_user_profile_settings-container:has([data-status="online"]) .local_user_profile_select_status_logo_display {
+    background-color: #778181;
+}
+
+.local_user_profile_settings-container:has([data-status="busy"]) .local_user_profile_select_status_logo_display {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 39%, 15% 61%, 85% 61%, 85% 39%, 15% 39%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.local_user_profile_settings-container:has([data-status="sleep"]) .local_user_profile_select_status_logo_display {
+    background-color: #2d2d2f;
+    --shadow: orange;
+    box-shadow: inset 0 -4px 0 0 var(--shadow), inset 0 -4px 0 1px var(--shadow);
+    rotate: z -45deg;
+}
+
+.local_user_profile_settings-container:has([data-status="offline"]) .local_user_profile_select_status_logo_display,
+.local_user_profile_settings-container:has([data-status="invisible"]) .local_user_profile_select_status_logo_display {
+    border: 4px solid #778181;
+    background-color: var(--color_1);
 }
 
 /* Chat window */
@@ -1621,7 +1950,7 @@ main {
     height: auto;
 }
 
-.connection_status_user_profile_status-wrapper {
+.connection_status_user_profile_status_logo-wrapper {
     width: 15px;
     height: auto;
     aspect-ratio: 1;
@@ -1635,7 +1964,7 @@ main {
     right: -6%;
 }
 
-.connection_status_user_profile_status {
+.connection_status_user_profile_status_logo {
     --diameter: 64%;
     width: var(--diameter);
     height: var(--diameter);
@@ -1643,31 +1972,31 @@ main {
     background-color: #778181;
 }
 
-.connection_status_user_profile_status[data-status="busy"] {
+.connection_status_user_profile_status_logo[data-status="busy"] {
     background-color: red;
     clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.connection_status_user_profile_status[data-status="sleep"] {
+.connection_status_user_profile_status_logo[data-status="sleep"] {
     background-color: var(--color_1);
     --shadow: orange;
     box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
     rotate: z -45deg;
 }
 
-.connection_status_user_profile_status[data-status="offline"],
-.connection_status_user_profile_status[data-status="invisible"] {
+.connection_status_user_profile_status_logo[data-status="offline"],
+.connection_status_user_profile_status_logo[data-status="invisible"] {
     border: 3px solid #778181;
     background-color: var(--color_1);
 }
 
-.connection_status_user_profile_status-wrapper:has(.connection_status_user_profile_status[data-status="offline"]),
-.connection_status_user_profile_status-wrapper:has(.connection_status_user_profile_status[data-status="invisible"]) {
+.connection_status_user_profile_status_logo-wrapper:has(.connection_status_user_profile_status_logo[data-status="offline"]),
+.connection_status_user_profile_status_logo-wrapper:has(.connection_status_user_profile_status_logo[data-status="invisible"]) {
     visibility: hidden;
 }
 
-.connection_status_user-container:not(:hover, .active):has(.connection_status_user_profile_status[data-status="offline"]),
-.connection_status_user-container:not(:hover, .active):has(.connection_status_user_profile_status[data-status="invisible"]) {
+.connection_status_user-container:not(:hover, .active):has(.connection_status_user_profile_status_logo[data-status="offline"]),
+.connection_status_user-container:not(:hover, .active):has(.connection_status_user_profile_status_logo[data-status="invisible"]) {
     filter: brightness(45%);
 }
 
@@ -1856,7 +2185,7 @@ main {
     user-select: none;
 }
 
-.chat_user_profile_status-wrapper {
+.chat_user_profile_status_logo-wrapper {
     width: 28px;
     height: auto;
     aspect-ratio: 1;
@@ -1870,11 +2199,11 @@ main {
     right: 4%;
 }
 
-.chat_user_profile_status-wrapper:has([data-status=""]) {
+.chat_user_profile_status_logo-wrapper:has([data-status=""]) {
     visibility: hidden;
 }
 
-.chat_user_profile_status {
+.chat_user_profile_status_logo {
     --diameter: 64%;
     width: var(--diameter);
     height: var(--diameter);
@@ -1882,24 +2211,24 @@ main {
     background-color: #778181;
 }
 
-.chat_user_profile_status[data-status="online"] {
+.chat_user_profile_status_logo[data-status="online"] {
     background-color: #778181;
 }
 
-.chat_user_profile_status[data-status="busy"] {
+.chat_user_profile_status_logo[data-status="busy"] {
     background-color: red;
     clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.chat_user_profile_status[data-status="sleep"] {
+.chat_user_profile_status_logo[data-status="sleep"] {
     background-color: var(--color_1);
     --shadow: orange;
     box-shadow: inset 0 -5px 0 0 var(--shadow), inset 0 -5px 0 2px var(--shadow);
     rotate: z -45deg;
 }
 
-.chat_user_profile_status[data-status="offline"],
-.chat_user_profile_status[data-status="invisible"] {
+.chat_user_profile_status_logo[data-status="offline"],
+.chat_user_profile_status_logo[data-status="invisible"] {
     border: 5px solid #778181;
     background-color: var(--bgcolor_primary);
 }
