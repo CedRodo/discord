@@ -68,6 +68,7 @@ class App {
 
     setLocalUser(user) {
         this.localUser = user;
+        console.log("setLocalUser this.localUser:", this.localUser);        
         document.querySelector(".local_user_avatar-wrapper").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
         document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
         document.querySelector(".local_user_status_logo").dataset.status = this.localUser.status;
@@ -90,13 +91,15 @@ class App {
         document.querySelector(".local_user_status_display").textContent = status;
         document.querySelector(".local_user_profile_settings-container").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
         document.querySelector(".local_user_name_status_display-container").addEventListener("click", showLocalUserProfile);
-        document.querySelector(".local_user_avatar-wrapper").addEventListener("click", showLocalUserProfile);
+        document.querySelector(".local_user_avatar-wrapper").addEventListener("click", showLocalUserProfile.bind(this));
         
-        function showLocalUserProfile() {        
+        function showLocalUserProfile() {
             document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
             if (!document.querySelector(".local_user_profile_panel").classList.contains("d-none")) {
                 document.querySelector(".local_user_profile_settings-container").dataset.status = this.localUser.status;
                 document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
+                document.querySelector(".local_user_profile_name").textContent = this.localUser.name;
+                document.querySelector(".local_user_profile_username").textContent = this.localUser.username;
                 document.querySelector(".local_user_profile_select_status_title").textContent = status;
             }
         }
