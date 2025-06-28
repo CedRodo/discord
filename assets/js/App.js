@@ -90,10 +90,11 @@ class App {
         }
         document.querySelector(".local_user_status_display").textContent = status;
         document.querySelector(".local_user_profile_settings-container").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
-        document.querySelector(".local_user_name_status_display-container").addEventListener("click", showLocalUserProfile);
+        document.querySelector(".local_user_name_status_display-container").addEventListener("click", showLocalUserProfile.bind(this));
         document.querySelector(".local_user_avatar-wrapper").addEventListener("click", showLocalUserProfile.bind(this));
-        
+
         function showLocalUserProfile() {
+            console.log("showLocalUserProfile localUser:", this.localUser);
             document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
             if (!document.querySelector(".local_user_profile_panel").classList.contains("d-none")) {
                 document.querySelector(".local_user_profile_settings-container").dataset.status = this.localUser.status;
