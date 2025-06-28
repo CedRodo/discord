@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/fonts.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
     <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script defer src="./assets/js/Login.js"></script>
+    <script defer src="./assets/js/Register.js"></script>
     <script defer src="./assets/js/User.js"></script>
     <script defer src="./assets/js/ChatUser.js"></script>
     <script defer src="./assets/js/Chat.js"></script>
@@ -41,7 +43,7 @@
             </div>
         </div>
     </header>
-    <main data-view="chatuser">        
+    <main data-view="login">                
         <div class="chat_sidebar">
             <div class="private_messages_last_chat-container">
                 <div class="show_private_messages-container sidebar_button active" title="Messages privés">
@@ -95,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>            
             <div class="main_section-container">
                 <div class="left_panel">
                     <div class="chat_users-container">
@@ -193,7 +195,7 @@
                             <button class="chat_message_to_send_action" id="message_to_send_games"><i class="fa-solid fa-gamepad"></i></button>
                         </div>
                     </div>
-                </div>
+                </div>                
                 <div class="right_panel">
                     <div class="connection_status_panel">
                         <div class="connection_status-container">
@@ -223,7 +225,7 @@
                                     <div class="chat_user_profile_status_logo" data-status=""></div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
                         <div class="chat_user_profile-bottom_section">
                             <div class="chat_user_profile_name_username-container">
                                 <div class="chat_user_profile_name-container">
@@ -248,10 +250,65 @@
                                 <span>─</span>
                                 <span class="chat_user_profile_in_common_servers_number">1</span>
                                 <span class="chat_user_profile_in_common_servers_arrow"><i class="fa-solid fa-chevron-right"></i></span>
-                            </span>
+                            </div>
                         </div>
+                    </div>                    
+                </div>                
+            </div>
+        </div>
+        <div class="register-container">
+            <div class="register-title">Créer un compte</div>
+            <div class="register_form-container">
+                <form action="" class="register_form" id="register_form" autocomplete="off">
+                    <div class="register_field register_email-container">
+                        <label for="register_email">e-mail</label>
+                        <input type="email" name="register_email" id="register_email">
                     </div>
-                </div>
+                    <div class="register_field register_name-container">
+                        <label for="register_name">nom d'affichage</label>
+                        <input type="text" name="register_name" id="register_name">
+                    </div>
+                    <div class="register_field register_username-container">
+                        <label for="register_username">nom d'utilisateur</label>
+                        <input type="text" name="register_username" id="register_username">
+                    </div>
+                    <div class="register_field register_password-container">
+                        <label for="register_password">mot de passe</label>
+                        <input type="password" name="register_password" id="register_password">
+                    </div>
+                    <div class="register_policies_agreement-container">
+                        <input type="checkbox" id="register_policies_agreement_check" checked>
+                        <div class="register_policies_agreement_text">En t'inscrivant, tu acceptes les <a class="terms_of_service" target="_blank">Conditions d'Utilisation</a> et la <a class="privacy_policy" target="_blank">Politique de Confidentialité</a> de Discord</div>
+                    </div>
+                    <button type="submit" id="register_submit" disabled>Créer un compte</button>
+                </form>
+            </div>
+        </div>
+        <div class="login-container">
+            <div class="login-title">
+                <div></div>Ha, te revoilà !</div>
+                <div>Nous sommes si heureux de te revoir !</div>            
+            <div class="login_form-container">
+                <form action="" class="login_form" id="login_form" autocomplete="off">
+                    <div class="login_field login_email-container">
+                        <label for="login_email">e-mail ou username</label>
+                        <input type="text" name="login_email" id="login_email">
+                    </div>
+                    <div class="login_field login_password-container">
+                        <label for="login_password">mot de passe</label>
+                        <input type="password" name="login_password" id="login_password">
+                    </div>
+                    <input type="hidden" name="login_name" id="login_name">
+                    <input type="hidden" name="login_date" id="login_date">
+                    <input type="hidden" name="login_ref" id="login_ref">
+                    <input type="hidden" name="login_color" id="login_color">
+                    <input type="hidden" name="login_avatar" id="login_avatar">
+                    <input type="hidden" name="login_status" id="login_status">
+                    <button type="submit" id="login_submit" disabled>Connexion</button>
+                    <div class="login_need_register-container">
+                        <div class="login_need_register_text">Besoin d'un compte ? <a class="login_need_register_link" target="_blank">S'inscrire</a></div>
+                    </div>
+                </form>
             </div>
         </div>
     </main>

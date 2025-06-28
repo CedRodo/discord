@@ -5,13 +5,13 @@ class Chat {
     messageToSend = document.getElementById("message_to_send");
     message;
     privateMessages;
-    constructor(localChatUser, privateMessages) {
-        this.localChatUser = localChatUser;
+    constructor(localUser, privateMessages) {
+        this.localChatUser = new ChatUser(localUser);
         this.privateMessages = privateMessages;
         this.message = new Message("");
-        this.eventListeners();
+        this.events();
     }
-    eventListeners() {
+    events() {
         this.messageToSend.addEventListener("input", event => {
             this.message.content = event.target.value;
             console.log("change this.message.content:", this.message.content);

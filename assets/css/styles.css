@@ -1214,7 +1214,8 @@ main {
     }
 }
 
-.local_user_mic i, .local_user_headphones i {
+.local_user_mic i,
+.local_user_headphones i {
     transform: rotateY(180deg);
 }
 
@@ -2370,4 +2371,362 @@ main {
 
 [data-view="chatuser"] .chat_user_profile_panel {
     display: flex;
+}
+
+/* Register */
+
+.register-container {
+    --form_text_color_1: #fff;
+    --form_text_color_2: gray;
+    --form_text_bgcolor_1: #252525;
+    --form_text_bgcolor_2: #1d1d1d;
+    width: 480px;
+    height: 750px;
+    padding: 32px;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 18px;
+    background-color: #323339;
+    box-shadow: #00000033 0px 2px 10px 0px;
+}
+
+.register-title {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.register_form-container {
+    width: 100%;
+    height: 600px;
+    margin-top: 20px;
+}
+
+#register_form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+
+.register_field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#register_form label {
+    width: 100%;
+    height: 16px;
+    margin: 0;
+    margin-bottom: 8px;
+    padding: 0;
+    display: block;
+    text-align: left;
+    border: 0;
+    outline: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #DFE0E2;
+    letter-spacing: 1px;
+    line-height: 1.3333333333333333;
+    text-transform: uppercase;
+}
+
+#register_form input:not([type="checkbox"]) {
+    width: 100%;
+    height: 44px;
+    padding: 12px 10px;
+    background-color: #28282D;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff;
+    /* transition: border-color .2s ease-in-out; */
+}
+
+#register_form input:not([type="checkbox"]):-internal-autofill-selected,
+#register_form input:not([type="checkbox"]):-webkit-autofill,
+#register_form input:not([type="checkbox"]):-webkit-autofill:hover,
+#register_form input:not([type="checkbox"]):-webkit-autofill:focus,
+#register_form input:not([type="checkbox"]):-webkit-autofill:active {
+    background-color: #28282D !important;
+}
+
+.register_policies_agreement-container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+    margin-top: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#register_policies_agreement_check {
+    width: 24px;
+    height: auto;
+    aspect-ratio: 1;
+    color: #fff;
+    border-color: 1px solid #82838B;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.register_policies_agreement_text {
+    width: 376px;
+    height: 48px;
+    padding-left: 8px;
+    text-align: start;
+    vertical-align: baseline;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #C4C5C9;
+    line-height: 1.3333333333333333;
+    user-select: none;
+}
+
+.register_policies_agreement_text a {
+    text-decoration: underline;
+    color: #6D99D2;
+    cursor: pointer;
+}
+
+#register_submit {
+    width: 100%;
+    height: 44px;
+    padding: 2px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #454c96;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 16px;
+    user-select: none;
+}
+
+#register_submit:disabled {
+    color: gray;
+    cursor: not-allowed;
+}
+
+body:has(main[data-view="register"]) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & main {
+        background-image: url(../img/sign_bg.svg);
+        background-size: cover;
+        background-position: top center;
+        background-repeat: no-repeat;
+    }
+
+    & .register-container {
+        display: flex;
+    }
+
+    & .chat_sidebar,
+    .chat-container {
+        display: none;
+    }
+
+    & .chat_title,
+    .chat_app_features-container {
+        visibility: hidden;
+    }
+}
+
+/* Register */
+
+.login-container {
+    --form_text_color_1: #fff;
+    --form_text_color_2: gray;
+    --form_text_bgcolor_1: #252525;
+    --form_text_bgcolor_2: #1d1d1d;
+    width: 480px;
+    height: 416px;
+    padding: 32px;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 18px;
+    background-color: #323339;
+    box-shadow: #00000033 0px 2px 10px 0px;
+}
+
+.login-title {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-title:nth-child(1) {
+    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.login-title:nth-child(2) {
+    font-size: 16px;
+    font-weight: 400;
+    color: #D2D3D6;
+    line-height: 1.25;
+}
+
+.login_form-container {
+    width: 100%;
+    height: 600px;
+    margin-top: 20px;
+}
+
+#login_form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+
+.login_field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#login_form label {
+    width: 100%;
+    height: 16px;
+    margin: 0;
+    margin-bottom: 8px;
+    padding: 0;
+    display: block;
+    text-align: left;
+    border: 0;
+    outline: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #DFE0E2;
+    letter-spacing: 1px;
+    line-height: 1.3333333333333333;
+    text-transform: uppercase;
+}
+
+#login_form input:not([type="checkbox"]) {
+    width: 100%;
+    height: 44px;
+    padding: 12px 10px;
+    background-color: #28282D;
+    border: 1px solid #3b3b3b;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff;
+    /* transition: border-color .2s ease-in-out; */
+}
+
+#login_form input:not([type="checkbox"]):-internal-autofill-selected,
+#login_form input:not([type="checkbox"]):-webkit-autofill,
+#login_form input:not([type="checkbox"]):-webkit-autofill:hover,
+#login_form input:not([type="checkbox"]):-webkit-autofill:focus,
+#login_form input:not([type="checkbox"]):-webkit-autofill:active {
+    background-color: #28282D !important;
+}
+
+.login_need_register-container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_need_register_text {
+    width: 376px;
+    height: 18px;
+    padding-left: 8px;
+    text-align: start;
+    vertical-align: baseline;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #C4C5C9;
+    line-height: 1.3333333333333333;
+    user-select: none;
+}
+
+.login_need_register_text a {
+    text-decoration: underline;
+    color: #6D99D2;
+    cursor: pointer;
+}
+
+#login_submit {
+    width: 100%;
+    height: 44px;
+    margin-top: 10px;
+    padding: 2px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #4654C0;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 16px;
+    user-select: none;
+}
+
+#login_submit:disabled {
+    color: gray;
+    cursor: not-allowed;
+}
+
+body:has(main[data-view="login"]) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & main {
+        background-image: url(../img/sign_bg.svg);
+        background-size: cover;
+        background-position: top center;
+        background-repeat: no-repeat;
+    }
+
+    & .login-container {
+        display: flex;
+    }
+
+    & .chat_sidebar,
+    .chat-container {
+        display: none;
+    }
+
+    & .chat_title,
+    .chat_app_features-container {
+        visibility: hidden;
+    }
 }
