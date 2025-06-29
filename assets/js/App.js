@@ -19,6 +19,9 @@ class App {
     events() {
         this.elements.features.forEach(feature => feature.addEventListener("click", this.selectFeature.bind(this)));
         this.elements.showPrivateMessages.addEventListener("click", this.showPrivateMessages.bind(this));
+        document.querySelector(".server_details-container").addEventListener("click", () => {
+            document.querySelector(".server_details-container").classList.toggle("dropdown");
+        });
     }
 
     showPrivateMessages() {
@@ -45,6 +48,7 @@ class App {
         document.querySelector("main").dataset.view = "rooms";
         document.querySelector(".chat_title").textContent = serverName;
         document.querySelector(".chat_room_name-container").classList.add("hide");
+        document.querySelector(".server_details_name").textContent = serverName;
         while (this.chat.chatWindow.firstChild) {
             this.chat.chatWindow.lastChild.remove();
         }

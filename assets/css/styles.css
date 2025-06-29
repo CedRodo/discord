@@ -397,13 +397,27 @@ main {
     border-bottom: 1px solid var(--color_4);
 }
 
-.search-container {
+.search-container,
+.server_details-container {
     width: 303px;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+}
+
+.server_details-container {
+    --size_ratio_left: 75% --size_ratio_right: calc(100% - var(--size_ratio_left));
+    padding: 0 20px;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.server_details-container:hover {
+    background-color: #1d1d1e;
 }
 
 #chat_search {
@@ -424,6 +438,96 @@ main {
     text-align: center;
     color: var(--color_6);
     font-weight: 500;
+}
+
+.server_details_name {
+    width: var(--size_ratio_left);
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color_6);
+}
+
+.server_details_dropdown_icon {
+    width: var(--size_ratio_right);
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color_5);
+}
+
+.server_details_dropdown_icon .fa-xmark {
+    display: none;
+}
+
+.server_details_dropdown {
+    width: 222px;
+    height: auto;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border: 1px solid #353232;
+    border-radius: 8px;
+    background-color: var(--color_4);
+    color: var(--color_6);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    translate: -50% 6%;
+}
+
+.server_details_dropdown_join_quit_room {
+    width: 100%;
+    height: 36px;
+    padding: 0 8px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.server_details_dropdown_join_quit_room:hover {
+    background-color: #2f2f31;
+}
+
+.server_details_dropdown_join_quit_room.active {
+    background-color: #2f2f31;
+}
+
+.server_details-container.dropdown {
+    background-color: #1d1d1e;
+    & .fa-chevron-down {
+        display: none;
+    }
+    & .fa-xmark {
+        display: inline-block;
+    }
+    & .server_details_dropdown {
+        display: flex;
+    }
+}
+
+
+
+
+[data-view="chatuser"] .server_details-container {
+    display: none;
+}
+
+[data-view="rooms"] .search-container {
+    display: none;
 }
 
 /* Off chat */

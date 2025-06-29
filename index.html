@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/fonts.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
     <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script defer src="./assets/js/utils.js"></script>
     <script defer src="./assets/js/Login.js"></script>
     <script defer src="./assets/js/Register.js"></script>
     <script defer src="./assets/js/User.js"></script>
@@ -63,6 +64,11 @@
             <div class="top_section-container">
                 <div class="search-container">
                     <input class="search-input" id="chat_search" type="text" placeholder="Rechercher/lancer une conversation">
+                </div>
+                <div class="server_details-container dropdown">
+                    <div class="server_details_name"></div>
+                    <div class="server_details_dropdown_icon"><i class="fa-solid fa-chevron-down"></i><i class="fa-solid fa-xmark"></i></div>
+                    <div class="server_details_dropdown"></div>
                 </div>
                 <div class="off_chat-container">
                     <div class="users_groups_actions-container">

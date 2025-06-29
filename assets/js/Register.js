@@ -84,6 +84,8 @@ class Register {
         console.log("this.app:", this.app);
 
         this.app.elements.main.setAttribute("data-view", "chatuser");
+
+        socket.emit('new-user', localUser);
         
     }
 

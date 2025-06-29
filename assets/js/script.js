@@ -1,3 +1,4 @@
+const socket = io('http://localhost:3000');
 const app = new App();
 const settings = new Settings();
 app.setPrivateMessages(new PrivateMessages());
@@ -17,9 +18,7 @@ const user1 = new User({
     username: "onlineuser1234",
     password: "Abc12345*",
     date: "30 mars 2020",
-    // color: "#ffff00",
     color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
-    // avatar: { image: "discord_logo.png", bgcolor: "#996998" },
     avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "online",
     local: false
@@ -32,9 +31,7 @@ const user2 = new User({
     username: "busyuser",
     password: "Abc12345*",
     date: "25 septembre 2021",
-    // color: "#dc143c",
     color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
-    // avatar: { image: "discord_logo.png", bgcolor: "#70c31d" },
     avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "busy",
     local: false
@@ -47,9 +44,7 @@ const user3 = new User({
     username: "imspleeping",
     password: "Abc12345*",
     date: "2 december 2017",
-    // color: "#b53fb5",
     color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
-    // avatar: { image: "discord_logo.png", bgcolor: "#e7c2de" },
     avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "sleep",
     local: false
@@ -62,9 +57,7 @@ const user4 = new User({
     username: "offlineuser",
     password: "Abc12345*",
     date: "7 janvier 2016",
-    // color: "#763cd4",
     color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
-    // avatar: { image: "discord_logo.png", bgcolor: "#af0b0b" },
     avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "offline",
     local: false
@@ -77,9 +70,7 @@ const user5 = new User({
     username: "notvisibleuser87",
     password: "Abc12345*",
     date: "11 avril 2019",
-    // color: "#16a03f",
     color: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)],
-    // avatar: { image: "discord_logo.png", bgcolor: "#9d6bee" },
     avatar: { image: "discord_logo.png", bgcolor: settings.colorsList[Math.floor(Math.random() * settings.colorsList.length - 1)] },
     status: "invisible",
     local: false
@@ -124,50 +115,16 @@ room1.addUser(chatUser5);
 const register = new Register(app, settings);
 const login = new Login(app, settings);
 
-// const sidebarButtons = document.querySelectorAll(".sidebar_button");
+socket.on('user-connected', user => {
+    console.log("user-connected:", user);    
+    const chatUser = new ChatUser(user);
+    app.getPrivateMessages().addChatUser(chatUser);
+});
 
-// sidebarButtons.forEach((button) => {
-//     button.addEventListener("click", sidebarButtonsActivation);
-// });
-
-// function sidebarButtonsActivation(event) {
-//     sidebarButtons.forEach(button => button.classList.remove("active"));
-//     event.currentTarget.classList.add("active");
-//     if (event.currentTarget.classList.contains("show_private_messages-container")) showPrivateMessages();
-//     if (event.currentTarget.classList.contains("server-container")) showServer(event.currentTarget.dataset.name);
-// }
-
-// function showPrivateMessages() {
-//     console.log("showPrivateMessages");
-//     document.querySelector("main").dataset.view = "chatuser";
-//     document.querySelector(".chat_title").textContent = "Messages privés";
-//     document.querySelector(".chat_room_name-container").classList.add("hide");
-//     document.querySelector(".chat_user_profile_panel").classList.add("hide");
-//     document.querySelector(".chat_message_to_send-container").classList.add("hide"); 
-//     while (chat.chatWindow.firstChild) {
-//         chat.chatWindow.lastChild.remove();
-//     }
-//     chat.messageToSend.value = "";
-//     privateMessages.showChatUsers();
-// }
-
-// function showServer(serverName) {
-//     console.log("serverName:", serverName);
-//     document.querySelector("main").dataset.view = "rooms";
-//     document.querySelector(".chat_title").textContent = serverName;
-//     document.querySelector(".chat_room_name-container").classList.add("hide");
-//     while (chat.chatWindow.firstChild) {
-//         chat.chatWindow.lastChild.remove();
-//     }
-//     chat.messageToSend.value = "";
-//     const serverToShow = app.serversList.find(server => {
-//         console.log("server.name:", server.name);
-//         return server.name === serverName;
-//     });
-//     console.log("serverToShow:", serverToShow);
-
-//     serverToShow.showRooms();
-// }
+socket.on('chat-message', data => {
+    console.log("chat-message:", data);
+    app.chat.sendMessage(new Message(data.message.content), data.user);
+})
 
 
 

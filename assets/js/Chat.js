@@ -29,7 +29,8 @@ class Chat {
                     return;
                 }
                 console.log("this.message:", this.message);
-                this.sendMessage(this.message);
+                socket.emit('send-chat-message', this.message, this.localChatUser);
+                this.sendMessage(this.message, this.localChatUser);
                 this.message.content = "";
                 event.currentTarget.value = "";
             }
@@ -43,8 +44,9 @@ class Chat {
             }
         });
     }
-    async sendMessage(message) {
-        if (this.checkIfSameLastChatUser(this.localChatUser.ref)) {
+
+    async sendMessage(message, user) {
+        if (this.checkIfSameLastChatUser(user.ref)) {
             const chatMessageContainers = this.chatWindow.querySelectorAll(".chat_message-container");
             const lastChatMessageContainer = chatMessageContainers[chatMessageContainers.length - 1];
             console.log("lastChatMessageContainer:", lastChatMessageContainer);
@@ -58,8 +60,9 @@ class Chat {
             console.log("new message");
             this.chatWindow.appendChild(await this.createNewSection(message));
         }
-        this.lastChatUserRef = this.localChatUser.ref;
+        this.lastChatUserRef = user.ref;
     }
+
     checkIfSameLastChatUser(chatUserRef) {
         if (this.lastChatUserRef !== null &&
             typeof this.lastChatUserRef !== "undefined" &&
@@ -69,6 +72,7 @@ class Chat {
             return false;
         }
     }
+
     async createNewSection(message) {
         console.log("createNewSection");
         const chatMessageContainer = document.createElement("div");

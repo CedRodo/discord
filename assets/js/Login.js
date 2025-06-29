@@ -40,7 +40,8 @@ class Login {
                 user: new User({
                     ref: (Math.floor(Math.random() * 99999999 - 10000000 + 1) + 10000000).toString(),
                     email: username + "@gmail.com",
-                    name: "Kaydash",
+                    // name: "Kaydash",
+                    name: capitalize(username),
                     username: username,
                     password: "Abc12345**",
                     date: new Date().toLocaleString("fr-FR"),
@@ -110,6 +111,8 @@ class Login {
         console.log("this.app:", this.app);
 
         this.app.elements.main.setAttribute("data-view", "chatuser");
+
+        socket.emit('new-user', localUser);
         
     }
 

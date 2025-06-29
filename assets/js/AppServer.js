@@ -31,6 +31,10 @@ class AppServer {
         while (roomsContainer.firstChild) {
             roomsContainer.lastChild.remove();
         }
+        const serverDetailsDropdown = document.querySelector(".server_details_dropdown");
+        while (serverDetailsDropdown.firstChild) {
+            serverDetailsDropdown.lastChild.remove();
+        }
         this.roomsList.forEach((room, index) => {
             const roomContainer = document.createElement("div");
             roomContainer.classList.add("room-container", "left_panel_button");
@@ -56,7 +60,33 @@ class AppServer {
                 event.currentTarget.classList.add("active");
                 room.updateConnectionStatusSection();
             }
+
+            const serverDetailsDropdownJoinQuitRoom = document.createElement("div");
+            serverDetailsDropdownJoinQuitRoom.classList.add("server_details_dropdown_join_quit_room");
+            serverDetailsDropdownJoinQuitRoom.setAttribute("data-name", room.name.replaceAll(" ", "-"));
+            const serverDetailsDropdownRoomAction = document.createElement("span");
+            serverDetailsDropdownRoomAction.classList.add("server_details_dropdown_room_action");
+            serverDetailsDropdownRoomAction.setAttribute("data-action", "join");
+            serverDetailsDropdownRoomAction.textContent = "Joindre";
+            const serverDetailsDropdownRoomName = document.createElement("span");
+            serverDetailsDropdownRoomName.classList.add("server_details_dropdown_room_name");
+            serverDetailsDropdownRoomName.textContent = room.name.replaceAll(" ", "-");
+            serverDetailsDropdownJoinQuitRoom.append(serverDetailsDropdownRoomAction, serverDetailsDropdownRoomName);
+            serverDetailsDropdown.appendChild(serverDetailsDropdownJoinQuitRoom);
+
+            serverDetailsDropdownJoinQuitRoom.addEventListener("click", serverDetailsDropdownJoinQuitRoomButtonsActivation.bind(this));
+
+            function serverDetailsDropdownJoinQuitRoomButtonsActivation(event) {
+                document.querySelectorAll(".server_details_dropdown_join_quit_room").forEach(button => button.classList.remove("active"));
+                event.currentTarget.classList.add("active");
+                this.joinRoom(room);
+            }
         });
+    }
+
+    joinRoom(room) {
+        console.log("joinRoom room:", room);
+        room.addUser(app.localUser);
     }
 
     
