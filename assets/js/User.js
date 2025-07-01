@@ -10,6 +10,11 @@ class User {
         this.avatar = userData.avatar;
         this.status = userData.status;
         this.local = userData.local;
+        this.chatUser = new ChatUser(this);
+    }
+
+    getChatUser() {
+        return this.chatUser;
     }
 
     setStatus(status) {
@@ -27,6 +32,5 @@ class User {
                     
                 }
         }
-
     }
 }

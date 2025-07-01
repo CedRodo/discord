@@ -3,11 +3,13 @@ class AppServer {
     avatar;
     visibility;
     roomsList = [];
+
     constructor(serverData) {
         this.name = serverData.name;
         this.avatar = serverData.avatar;
         this.visibility = serverData.visibility;
     }
+
     addRoom(room) {
         const roomAlreadyPresent = this.roomsList.find(r => r.name === room.name);
         if (typeof roomAlreadyPresent === "undefined") {
@@ -20,6 +22,10 @@ class AppServer {
         let indexOfRoom = this.roomsList.indexOf(room);
         if (indexOfRoom > 0) this.roomsList.splice(indexOfRoom, 1);
         if (document.querySelector("main").dataset.view === "rooms") this.updateRoomsSection();
+    }
+
+    getRooms() {
+        return this.roomsList;
     }
 
     showRooms() {
@@ -56,8 +62,15 @@ class AppServer {
             roomContainer.addEventListener("click", roomContainerButtonsActivation);
 
             function roomContainerButtonsActivation(event) {
+                console.log("roomContainerButtonsActivation");                
                 document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
                 event.currentTarget.classList.add("active");
+                document.querySelector(".chat_room_name").textContent = room.name.replaceAll(" ", "-");
+                document.querySelector(".chat_room_name").dataset.name = room.name.replaceAll(" ", "-");
+                if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
+                    document.querySelector(".chat_room_name-container").classList.remove("hide");
+                if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
+                    document.querySelector(".chat_message_to_send-container").classList.remove("hide");
                 room.updateConnectionStatusSection();
             }
 
@@ -80,6 +93,7 @@ class AppServer {
                 document.querySelectorAll(".server_details_dropdown_join_quit_room").forEach(button => button.classList.remove("active"));
                 event.currentTarget.classList.add("active");
                 this.joinRoom(room);
+                roomContainerButtonsActivation(event);
             }
         });
     }
@@ -87,6 +101,7 @@ class AppServer {
     joinRoom(room) {
         console.log("joinRoom room:", room);
         room.addUser(app.localUser);
+        socket.emit('join-room', room.name.replaceAll(" ", "-"), app.localUser.username);
     }
 
     

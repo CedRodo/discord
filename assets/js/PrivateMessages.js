@@ -1,8 +1,10 @@
 class PrivateMessages {
     chatUsersList = [];
     activeRemoteChatUser = null;
+
     constructor() {
     }
+
     addChatUser(chatUser) {
         let isAlreadyPresent = false;
         this.chatUsersList.forEach(c => {
@@ -11,12 +13,18 @@ class PrivateMessages {
         if (!isAlreadyPresent) this.chatUsersList.push(chatUser);
         this.showChatUsers();
     }
+
     removeChatUser(chatUserRef) {
         this.chatUsersList.forEach((c, index) => {
             if (c.ref === chatUserRef) this.chatUsersList.slice(index, 1);
         });
         this.showChatUsers();
     }
+
+    getChatUsers(){
+        return this.chatUsersList;
+    }
+
     showChatUsers() {
         const usersPrivateContainer = document.querySelector(".users_private-container");
         while (usersPrivateContainer.firstChild) {
@@ -60,6 +68,7 @@ class PrivateMessages {
                 document.querySelector(".chat_room_avatar").src = `./assets/img/${chatUser.avatar.image}`;
                 document.querySelector(".chat_room_profile_status").dataset.status = chatUser.status;
                 document.querySelector(".chat_room_name").textContent = chatUser.name;
+                document.querySelector(".chat_room_name").dataset.name = chatUser.username;
                 if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
                     document.querySelector(".chat_room_name-container").classList.remove("hide");
                 if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
