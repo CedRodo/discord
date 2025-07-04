@@ -92,23 +92,20 @@ console.log("room2:", room2);
 server1.addRoom(room1);
 server1.addRoom(room2);
 
-app.getPrivateMessages().addChatUser(user1.getChatUser());
-app.getPrivateMessages().addChatUser(user2.getChatUser());
-app.getPrivateMessages().addChatUser(user3.getChatUser());
-app.getPrivateMessages().addChatUser(user4.getChatUser());
-app.getPrivateMessages().addChatUser(user5.getChatUser());
-console.log("app.privateMessages:", app.getPrivateMessages());
+// app.getPrivateMessages().addChatUser(user1.getChatUser());
+// app.getPrivateMessages().addChatUser(user2.getChatUser());
+// app.getPrivateMessages().addChatUser(user3.getChatUser());
+// app.getPrivateMessages().addChatUser(user4.getChatUser());
+// app.getPrivateMessages().addChatUser(user5.getChatUser());
+// console.log("app.privateMessages:", app.getPrivateMessages());
 
-console.log("user1.getChatUser():", user1.getChatUser());
-
-
-room1.addUser(user1.getChatUser());
-room2.addUser(user1.getChatUser());
-room1.addUser(user2.getChatUser());
-room1.addUser(user3.getChatUser());
-room1.addUser(user4.getChatUser());
-room2.addUser(user4.getChatUser());
-room1.addUser(user5.getChatUser());
+// room1.addUser(user1.getChatUser());
+// room2.addUser(user1.getChatUser());
+// room1.addUser(user2.getChatUser());
+// room1.addUser(user3.getChatUser());
+// room1.addUser(user4.getChatUser());
+// room2.addUser(user4.getChatUser());
+// room1.addUser(user5.getChatUser());
 
 const register = new Register(app, settings);
 const login = new Login(app, settings);
@@ -119,21 +116,25 @@ socket.on('user-connected', user => {
     app.getPrivateMessages().addChatUser(chatUser);
 });
 
+socket.on('update-room', roomName => {
+    console.log("update-room:", roomName);
+    socket.emit('room-users', roomName);
+});
+
 socket.on('receive-chat-message', data => {
     console.log("receive-chat-message data:", data);
     app.chat.sendMessage(new Message(data.message.content), data.user);
 });
 
-socket.on('room-joined', data => {
-    console.log("room-joined data:", data);
+socket.on('display-room-users', data => {
+    console.log("display-room-users:", data);
     const rooms = server1.getRooms();
     console.log("room-joined rooms:", rooms);
-    const room = rooms.find(room => room.name === data.room);
-    console.log("room-joined room:", room);
-    const user = data.user;
-    console.log("room-joined user:", user);
-    // room.addUser(user.getChatUser());
-    room.addUser(user.chatUser);
+    const room = rooms.find(room => room.name === data.roomName);
+    console.log("display-room-users room:", room);
+    const users = data.users;
+    console.log("room-joined users:", users);
+    room.updateUsersList(users);
 });
 
 

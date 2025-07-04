@@ -71,6 +71,7 @@ class AppServer {
                     document.querySelector(".chat_room_name-container").classList.remove("hide");
                 if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
                     document.querySelector(".chat_message_to_send-container").classList.remove("hide");
+                socket.emit('room-users', room.name);
                 room.updateConnectionStatusSection();
             }
 
@@ -100,7 +101,7 @@ class AppServer {
 
     joinRoom(room) {
         console.log("joinRoom room:", room);
-        room.addUser(app.localUser);
+        // room.addUser(app.localUser);
         socket.emit('join-room', room.name.replaceAll(" ", "-"), app.localUser.username);
     }
 

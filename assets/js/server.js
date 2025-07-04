@@ -30,6 +30,17 @@ io.on('connection', socket => {
         // socket.broadcast.emit('chat-message', { message: message, user: users[socket.id] });
         socket.to(name).emit('receive-chat-message', { message: message, sender: users[socket.id] });
     });
+    socket.on('room-users', async (roomName) => {
+        console.log("room-users roomName:", roomName);        
+        const sockets = await io.in(roomName).fetchSockets();
+        // console.log("sockets:", sockets);
+        const socketsIds = sockets.map(socket => socket.id);
+        console.log("socketsIds:", socketsIds);
+        const usersInRoom = socketsIds.map(id => users[id]);
+        console.log("usersInRoom:", usersInRoom);
+        io.emit('display-room-users', { roomName: roomName, users: usersInRoom });
+        // io.to(roomName).emit('display-room-users', { roomName: roomName, users: usersInRoom });
+    });
     socket.on('join-room', (roomName, userName) => {
         socket.join(roomName);
         if (!rooms[roomName]) {
@@ -44,14 +55,23 @@ io.on('connection', socket => {
                 }
             }
         }
-        rooms[roomName]["users"][socket.id] = userName;
+        let user;
+        for (const u in users) {
+            if (users[u]["username"] = userName) user = users[u];
+        }
+        console.log("user:", user);        
+        rooms[roomName]["users"][socket.id] = user;
         console.log("rooms:", rooms);
-        // socket.to(roomName).emit('room-joined', { room: roomName, user: users[socket.id] });
-        socket.broadcast.emit('room-joined', { room: roomName, user: users[socket.id] });
+        socket.emit('update-room', roomName);
     });
     socket.on('disconnect', () => {
         console.log("disconnect:", users[socket.id]);
-        // socket.emit('user-disconnected', users[socket.id])
-        delete users[socket.id]
+        for (const r in rooms) {
+            if (rooms[r]["users"][socket.id]) {
+                // console.log("socket.id:", rooms[r]["users"][socket.id]);             
+                socket.broadcast.emit('update-room', r);
+            }
+        }
+        delete users[socket.id];
     });
 });

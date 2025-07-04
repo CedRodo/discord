@@ -13,7 +13,7 @@ class Room {
         this.privateMessages = privateMessages;
     }
 
-    addUser(user) {
+    addUpdateUser(user) {
         const userAlreadyPresent = this.usersList.find(u => u.name === user.name);
         if (typeof userAlreadyPresent === "undefined") {
             this.usersList.push(user);
@@ -28,6 +28,10 @@ class Room {
                 this.offlineUsers.sort();
             }
         }
+        console.log("addUser this.usersList:", this.usersList);
+
+        // socket.emit('room-users', this.name);
+        
         if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
     }
 
@@ -43,6 +47,27 @@ class Room {
         if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
     }
 
+    updateUsersList(users) {
+        this.usersList = users;
+        this.onlineUsers.length = 0;
+        this.offlineUsers.length = 0;
+
+        this.usersList.forEach(user => {
+            if (user.status === "online" ||
+                user.status === "busy" ||
+                user.status === "sleep"
+            ) {
+                this.onlineUsers.push(user.name);
+                this.onlineUsers.sort();
+            } else {
+                this.offlineUsers.push(user.name);
+                this.offlineUsers.sort();
+            }
+        });
+        console.log("addUser this.usersList:", this.usersList);
+
+        if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
+    }
 
     updateConnectionStatusSection() {
         const onlineStatusUsersContainer = document.querySelector(".online_status_users-container");
@@ -54,6 +79,7 @@ class Room {
         while (offlineStatusUsersContainer.firstChild) {
             offlineStatusUsersContainer.lastChild.remove();
         }
+
         this.onlineUsers.forEach(userName => {
             const userToAdd = this.usersList.find(u => u.name === userName);
             const connectionStatusUserContainer = this.createConnectionStatusUser(userToAdd);
