@@ -6,11 +6,13 @@ class PrivateMessages {
     }
 
     addChatUser(chatUser) {
+        console.log("addChatUser:", chatUser);        
         let isAlreadyPresent = false;
         this.chatUsersList.forEach(c => {
             if (c.ref === chatUser.ref) isAlreadyPresent = true
         })
         if (!isAlreadyPresent) this.chatUsersList.push(chatUser);
+        console.log("addChatUser chatUsersList:", this.chatUsersList);        
         this.showChatUsers();
     }
 
@@ -63,7 +65,7 @@ class PrivateMessages {
                 document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
                 event.currentTarget.classList.add("active");
                 this.activeRemoteChatUser = chatUser;
-                chatUser.showProfile();
+                // chatUser.showProfile();
                 document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
                 document.querySelector(".chat_room_avatar").src = `./assets/img/${chatUser.avatar.image}`;
                 document.querySelector(".chat_room_profile_status").dataset.status = chatUser.status;
@@ -77,6 +79,21 @@ class PrivateMessages {
                     document.querySelector(".chat_window").lastChild.remove();
                 }
                 document.getElementById("message_to_send").value = "";
+
+                showUserPrivateProfile();
+
+                function showUserPrivateProfile() {
+                    console.log("showUserPrivateProfile");                    
+                    document.querySelector(".chat_user_profile_panel").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
+                    document.querySelector(".chat_user_profile_avatar").src = `./assets/img/${chatUser.avatar.image}`;
+                    document.querySelector(".chat_user_profile_status_logo").dataset.status = chatUser.status === "invisible" ? "offline" : chatUser.status;
+                    document.querySelector(".chat_user_profile_name").textContent = chatUser.name;
+                    document.querySelector(".chat_user_profile_username").textContent = chatUser.username;
+                    document.querySelector(".chat_user_profile_details_about_me_content").textContent = chatUser.aboutme;
+                    document.querySelector(".chat_user_profile_details_member_since_content").textContent = chatUser.membersince;
+                    if (document.querySelector(".chat_user_profile_panel").classList.contains("hide"))
+                        document.querySelector(".chat_user_profile_panel").classList.remove("hide");
+                }
             });
         });
     }

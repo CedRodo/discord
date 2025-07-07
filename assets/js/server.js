@@ -57,10 +57,22 @@ io.on('connection', socket => {
         }
         let user;
         for (const u in users) {
-            if (users[u]["username"] = userName) user = users[u];
+            if (users[u]["username"] === userName) user = users[u];
         }
         console.log("user:", user);        
         rooms[roomName]["users"][socket.id] = user;
+        console.log("rooms:", rooms);
+        socket.emit('update-room', roomName);
+    });
+    socket.on('leave-room', (roomName, userName) => {
+        socket.leave(roomName);
+        for (const r in rooms) {
+            if (rooms[r]["users"][socket.id]) {
+                console.log("socket.id:", rooms[r]["users"][socket.id]);       
+                // delete rooms[r]["users"][socket.id];
+                socket.broadcast.emit('update-room', r);
+            }
+        }
         console.log("rooms:", rooms);
         socket.emit('update-room', roomName);
     });

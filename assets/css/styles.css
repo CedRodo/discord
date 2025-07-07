@@ -508,12 +508,15 @@ main {
 
 .server_details-container.dropdown {
     background-color: #1d1d1e;
+
     & .fa-chevron-down {
         display: none;
     }
+
     & .fa-xmark {
         display: inline-block;
     }
+
     & .server_details_dropdown {
         display: flex;
     }
@@ -2041,6 +2044,7 @@ main {
     align-items: center;
     gap: 7px;
     border-radius: 9px;
+    position: relative;
     cursor: pointer;
 }
 
@@ -2146,6 +2150,318 @@ main {
 .connection_status_user-container:active {
     background-color: #333335 !important;
 }
+
+/* Connection status user aside profile */
+
+.connection_status_user_aside_profile-container {
+    --bgcolor_pref: #ffa42b;
+    --bgcolor_primary: #272729;
+    --bgcolor_secondary: #2e2e31;
+    --profile_height: 306px;
+    width: 300px;
+    height: var(--profile_height);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border-radius: 8px;
+    background-color: var(--bgcolor_primary);
+    position: absolute;
+    top: -1%;
+    left: 0;
+    translate: -105% 0;
+}
+
+.connection_status_user_aside_profile-top_section {
+    width: 100%;
+    height: 105px;
+    flex-shrink: 0;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    background-color: var(--bgcolor_pref);
+}
+
+.connection_status_user_aside_profile_features-container {
+    width: 95px;
+    height: 53px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.connection_status_user_aside_profile_feature {
+    width: 32px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #0e0e109d;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.connection_status_user_aside_profile_feature:hover {
+    background-color: #0e0e10b7;
+}
+
+.connection_status_user_aside_profile_feature::before {
+    content: "";
+    height: 31px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #272729;
+    border: 1px solid #333232;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    position: absolute;
+    top: -42px;
+    visibility: hidden;
+}
+
+.connection_status_user_aside_profile_add::before {
+    content: "Ajouter";
+    width: 72px;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.connection_status_user_aside_profile_plus::before {
+    content: "Plus";
+    width: 50px;
+    left: -73%;
+}
+
+.connection_status_user_aside_profile_feature::after {
+    content: "";
+    width: 8px;
+    height: auto;
+    aspect-ratio: 2;
+    background-color: #272729;
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    translate: -50% 0;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    visibility: hidden;
+}
+
+.connection_status_user_aside_profile_feature:hover::before,
+.connection_status_user_aside_profile_feature:hover::after {
+    visibility: visible;
+}
+
+.connection_status_user_aside_profile_avatar-container {
+    width: 92px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--bgcolor_primary);
+    position: absolute;
+    bottom: 0;
+    left: 3.55%;
+    translate: 0 46.25%;
+    cursor: pointer;
+    transition: filter 0.2s;
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_avatar-container:hover {
+    filter: brightness(60%);
+}
+
+.connection_status_user_aside_profile_avatar-wrapper {
+    --diameter: 87%;
+    width: var(--diameter);
+    height: var(--diameter);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--bgcolor_pref);
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_avatar {
+    width: 49px;
+    height: auto;
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_status_logo-wrapper {
+    width: 28px;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--bgcolor_primary);
+    position: absolute;
+    bottom: 4%;
+    right: 4%;
+}
+
+.connection_status_user_aside_profile_status_logo-wrapper:has([data-status=""]) {
+    visibility: hidden;
+}
+
+.connection_status_user_aside_profile_status_logo {
+    --diameter: 64%;
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: 50%;
+    background-color: #778181;
+}
+
+.connection_status_user_aside_profile_status_logo[data-status="online"] {
+    background-color: #778181;
+}
+
+.connection_status_user_aside_profile_status_logo[data-status="busy"] {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.connection_status_user_aside_profile_status_logo[data-status="sleep"] {
+    background-color: var(--color_1);
+    --shadow: orange;
+    box-shadow: inset 0 -5px 0 0 var(--shadow), inset 0 -5px 0 2px var(--shadow);
+    rotate: z -45deg;
+}
+
+.connection_status_user_aside_profile_status_logo[data-status="offline"],
+.connection_status_user_aside_profile_status_logo[data-status="invisible"] {
+    border: 5px solid #778181;
+    background-color: var(--bgcolor_primary);
+}
+
+.connection_status_user_aside_profile-bottom_section {
+    width: 100%;
+    height: calc(100% - 105px);
+    padding: 0 5.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    border-radius: 0 0 8px 8px;
+}
+
+.connection_status_user_aside_profile_name_username-container {
+    width: 100%;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: start;
+    flex-shrink: 0;
+}
+
+.connection_status_user_aside_profile_name-container {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 19px;
+    font-weight: 600;
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_username-container {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 14px;
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_name:hover,
+.connection_status_user_aside_profile_username:hover,
+.connection_status_user_aside_profile_in_common_servers_text-container:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.connection_status_user_aside_profile_details-container {
+    width: 100%;
+    height: 121px;
+    padding: 2% 4.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1%;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background-color: var(--bgcolor_secondary);
+}
+
+.connection_status_user_aside_profile_in_common_servers-container {
+    width: 100%;
+    height: 16px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #bbb8b8;
+    cursor: pointer;
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_in_common_servers_logo-wrapper {
+    --bgcolor_pref: #5865F2;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bgcolor_pref);
+    border-radius: 27.5%;
+    user-select: none;
+}
+
+.connection_status_user_aside_profile_in_common_servers_logo {
+    width: 8px;
+    height: auto;
+    object-fit: contain;
+}
+
+.connection_status_user_aside_profile_in_common_servers_text-container {
+    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.connection_status_user_aside_profile_in_common_servers_separator {
+    white-space: pre;
+}
+
+
+
+
 
 [data-view="rooms"] .connection_status_panel {
     display: flex;
