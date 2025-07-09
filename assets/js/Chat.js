@@ -1,95 +1,113 @@
 class Chat {
-    localChatUser;
-    lastChatUserRef;
-    chatWindow = document.querySelector(".chat_window");
-    messageToSend = document.getElementById("message_to_send");
+    sameSender = false;
+    log = { chatuser: {}, rooms: {} };
     message;
-    privateMessages;
-    constructor(localUser, privateMessages) {
-        this.localChatUser = new ChatUser(localUser);
-        this.privateMessages = privateMessages;
+    constructor() {
+        this.peer = null;
         this.message = new Message("");
-        this.events();
-    }
-    events() {
-        this.messageToSend.addEventListener("input", event => {
-            this.message.content = event.target.value;
-            console.log("change this.message.content:", this.message.content);
-        });
-        this.messageToSend.addEventListener("keyup", (event) => {
-            if (event.key === "Enter" && this.privateMessages.activeRemoteChatUser) {
-                // if (event.currentTarget.value === "\n"){
-                //     event.currentTarget.value.replace("\n", "");
-                //     console.log("substring:", event.currentTarget.value);                    
-                // }
-                console.log("event.currentTarget.value:", event.currentTarget.value);
-                console.log("this.message.content:", this.message.content);
-                if (this.message.content === "") {
-                    console.log("this.message.content === ''");                    
-                    return;
-                }
-                console.log("this.message:", this.message);
-                socket.emit('send-chat-message', this.message, this.localChatUser);
-                this.sendMessage(this.message, this.localChatUser);
-                this.message.content = "";
-                event.currentTarget.value = "";
-            }
-            if (event.key === "Pause") {
-                if (event.currentTarget.value === "") return;
-                const message = new Message(event.currentTarget.value);
-                console.log("message:", message);
-                this.sendMessage(message);
-                event.currentTarget.value = "";
-                setTimeout(() => { this.messageToSend.value = ""; }, 0);
-            }
-        });
     }
 
-    async sendMessage(message, user) {
-        if (this.checkIfSameLastChatUser(user.ref)) {
-            const chatMessageContainers = this.chatWindow.querySelectorAll(".chat_message-container");
-            const lastChatMessageContainer = chatMessageContainers[chatMessageContainers.length - 1];
-            console.log("lastChatMessageContainer:", lastChatMessageContainer);
-            const chatMessageBottomSection = lastChatMessageContainer.querySelector(".chat_message-bottom_section");
-            const chatMessage = message.createMessage();
-            console.log("chatMessage:", chatMessage);
-            chatMessageBottomSection.appendChild(chatMessage);
-            const chatMessageDate = lastChatMessageContainer.querySelector(".chat_message_date");
-            chatMessageDate.innerText = message.date.substring(0, message.date.length - 3);
+    sendMessage(message, sender, recipient) {
+        console.log("sendMessage sender:", sender);
+        console.log("sendMessage recipient:", recipient);
+        let mode; let ref;
+        if (recipient.ref.charAt(0) === "R") {
+            mode = "rooms";
+            ref = recipient.ref;
         } else {
-            console.log("new message");
-            this.chatWindow.appendChild(await this.createNewSection(message));
+            mode = "chatuser";
+            ref = sender.ref === app.localUser.ref ? recipient.ref : sender.ref;
         }
-        this.lastChatUserRef = user.ref;
+        this.updateLog(message, sender, mode, ref);
+        if (mode === app.mode) this.createMessageElements(mode, ref);
     }
 
-    checkIfSameLastChatUser(chatUserRef) {
-        if (this.lastChatUserRef !== null &&
-            typeof this.lastChatUserRef !== "undefined" &&
-            this.lastChatUserRef === chatUserRef) {
-            return true;
+    updateLog(message, sender, mode, ref) {
+        let data = {
+            chatUser: sender,
+            message: message
+        }
+        if (!this.log[mode][ref]) {
+            Object.defineProperty(this.log[mode], ref, { value: [], enumerable: true, writable: true });
+            console.log("this.log[mode][ref]:", this.log[mode][ref]);
+        }
+        if (this.log[mode][ref].length > 0) {
+            if (Object.keys(this.log[mode][ref].at(-1)).includes(sender.ref)) {
+                this.log[mode][ref].at(-1)[sender.ref].push(data);
+                this.sameSender = true;
+            } else {
+                this.log[mode][ref].push({
+                    [sender.ref]: [data]
+                });
+            }
         } else {
-            return false;
+            this.log[mode][ref].push({
+                [sender.ref]: [data]
+            });
         }
+        console.log("this.log:", this.log);
     }
 
-    async createNewSection(message) {
+    async createMessageElements(mode, ref) {
+        while (app.elements.chatWindow.firstChild) {
+            app.elements.chatWindow.lastChild.remove();
+        }
+        
+        this.log[mode][ref].forEach(async (chatUserRef, tabIndex) => {
+            console.log("chatUserRef:", chatUserRef);
+            console.log("tabIndex:", tabIndex);
+            for (const r of Object.keys(chatUserRef)) {
+                console.log("r:", r);
+                console.log("r.length:", r.length);
+                let index = 0;
+                for await (const data of chatUserRef[r]) {
+                    console.log("data:", data);
+                    console.log("index:", index);
+                    if (index >= 1) {
+                        await this.addToLastSection(data.message, data.chatUser.ref, tabIndex);
+                    } else {
+                        console.log("< 1");
+                        await this.createNewSection(data.message, data.chatUser, tabIndex);
+                    }
+                    index++;
+                };
+            }
+        });
+    }
+
+    async addToLastSection(message, ref, tabIndex) {
+        console.log("addToLastSection");
+        const lastChatMessageContainer = document.querySelector(`.chat_message-container[data-ref="${ref}"][tabIndex="${tabIndex}"]`);
+        console.log("lastChatMessageContainer:", lastChatMessageContainer);
+        const chatMessageBottomSection = lastChatMessageContainer.querySelector(".chat_message-bottom_section");
+        console.log("chatMessageBottomSection:", chatMessageBottomSection);
+        const chatMessage = message.createMessage();
+        console.log("chatMessage:", chatMessage);
+        chatMessageBottomSection.appendChild(chatMessage);
+        const chatMessageDate = lastChatMessageContainer.querySelector(".chat_message_date");
+        chatMessageDate.innerText = message.date.substring(0, message.date.length - 3);
+    }
+
+    async createNewSection(message, chatUser, tabIndex) {
         console.log("createNewSection");
         const chatMessageContainer = document.createElement("div");
         chatMessageContainer.classList.add("chat_message-container");
+        chatMessageContainer.setAttribute("data-ref", chatUser.ref);
+        chatMessageContainer.tabIndex = tabIndex;
         const chatMessageLeftSection = document.createElement("div");
         chatMessageLeftSection.classList.add("chat_message-left_section");
         const chatMessageUserAvatarWrapper = document.createElement("div");
         chatMessageUserAvatarWrapper.classList.add("chat_message_user_avatar-wrapper");
-        chatMessageUserAvatarWrapper.style.setProperty("--bgcolor_pref", this.localChatUser.avatar.bgcolor); const chatMessageUserProfileStatusWrapper = document.createElement("div");
+        chatMessageUserAvatarWrapper.style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
+        const chatMessageUserProfileStatusWrapper = document.createElement("div");
         chatMessageUserProfileStatusWrapper.classList.add("chat_message_user_profile_status-wrapper");
         const chatMessageUserProfileStatus = document.createElement("div");
         chatMessageUserProfileStatus.classList.add("chat_message_user_profile_status");
-        chatMessageUserProfileStatus.setAttribute("data-status", this.localChatUser.status === "invisible" ? "offline" : this.localChatUser.status);
+        chatMessageUserProfileStatus.setAttribute("data-status", chatUser.status === "invisible" ? "offline" : chatUser.status);
         chatMessageUserProfileStatusWrapper.appendChild(chatMessageUserProfileStatus);
         const chatMessageUserAvatar = document.createElement("img");
         chatMessageUserAvatar.classList.add("chat_message_user_avatar");
-        chatMessageUserAvatar.src = `./assets/img/${this.localChatUser.avatar.image}`;
+        chatMessageUserAvatar.src = `./assets/img/${chatUser.avatar.image}`;
         chatMessageUserAvatarWrapper.append(chatMessageUserAvatar, chatMessageUserProfileStatusWrapper);
         chatMessageLeftSection.appendChild(chatMessageUserAvatarWrapper);
         const chatMessageMainSection = document.createElement("div");
@@ -98,7 +116,7 @@ class Chat {
         chatMessageTopSection.classList.add("chat_message-top_section");
         const chatMessageUserName = document.createElement("div");
         chatMessageUserName.classList.add("chat_message_user_name");
-        chatMessageUserName.innerText = this.localChatUser.name;
+        chatMessageUserName.innerText = chatUser.name;
         const chatMessageDate = document.createElement("div");
         chatMessageDate.classList.add("chat_message_date");
         chatMessageDate.innerText = message.date.substring(0, message.date.length - 3);
@@ -109,6 +127,6 @@ class Chat {
         chatMessageBottomSection.appendChild(chatMessage);
         chatMessageMainSection.append(chatMessageTopSection, chatMessageBottomSection);
         chatMessageContainer.append(chatMessageLeftSection, chatMessageMainSection);
-        return chatMessageContainer;
+        app.elements.chatWindow.appendChild(chatMessageContainer);
     }
 }

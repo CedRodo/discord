@@ -1,14 +1,4 @@
 class Register {
-    elements = {
-        form: document.getElementById("register_form"),
-        inputs: document.querySelectorAll("input"),
-        email: document.getElementById("register_email"),
-        name: document.getElementById("register_name"),
-        username: document.getElementById("register_username"),
-        password: document.getElementById("register_password"),
-        policies: document.getElementById("register_policies_agreement_check"),
-        submit: document.getElementById("register_submit")
-    }
     userData = {
         email: null,
         name: null,
@@ -19,6 +9,7 @@ class Register {
     app;
     settings;
     constructor(app, settings) {
+        this.elements = new Element().getRegisterElements();
         this.app = app;
         this.settings = settings;
         this.presets();
@@ -79,7 +70,6 @@ class Register {
         localStorage.setItem("discord", JSON.stringify(discordData));
 
         this.app.setLocalUser(localUser);
-        this.app.setChat(new Chat(this.app.getLocalUser(), this.app.getPrivateMessages()));
 
         console.log("this.app:", this.app);
 

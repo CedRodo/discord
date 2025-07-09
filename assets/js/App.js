@@ -1,18 +1,15 @@
 class App {
     localUser;
     serversList = [];
-    elements = {
-        main: document.querySelector("main"),
-        sidebarButtons: document.querySelectorAll(".sidebar_button"),
-        showPrivateMessages: document.querySelector(".show_private_messages-container"),
-        servers: document.querySelectorAll(".server-container"),
-        features: document.querySelectorAll(".feature")    }
     chat;
     privateMessages;
 
-    constructor(localUser, chat) {
-        this.localUser = localUser;
-        this.chat = chat;
+    constructor() {
+        this.currentServer = null;
+        this.mode = "";
+        this.elements = new Element().getAppElements();
+        this.privateMessages = new PrivateMessages();
+        this.chat = new Chat();
         this.events();
     }
 
@@ -21,6 +18,42 @@ class App {
         this.elements.showPrivateMessages.addEventListener("click", this.showPrivateMessages.bind(this));
         document.querySelector(".server_details-container").addEventListener("click", () => {
             document.querySelector(".server_details-container").classList.toggle("dropdown");
+        });
+        this.elements.messageToSend.addEventListener("input", event => {
+            this.chat.message.content = event.target.value;
+            console.log("input this.chat.message.content:", this.chat.message.content);
+        });
+        this.elements.messageToSend.addEventListener("keyup", (event) => {
+            // if (event.key === "Enter" && this.privateMessages.activeRemoteChatUser) {
+            if (event.key === "Enter") {
+                // if (event.currentTarget.value === "\n"){
+                //     event.currentTarget.value.replace("\n", "");
+                //     console.log("substring:", event.currentTarget.value);                    
+                // }
+                console.log("event.currentTarget.value:", event.currentTarget.value);
+                console.log("this.chat.message.content:", this.chat.message.content);
+                if (this.chat.message.content === "") {
+                    console.log("this.chat.message.content === ''");
+                    return;
+                }
+
+                console.log("this.chat.message:", this.chat.message);
+
+                socket.emit('send-chat-message', this.chat.message, this.chat.peer, this.mode);
+
+                // socket.emit('send-chat-message', this.chat.message, this.localUser.chatUser);
+                // this.chat.sendMessage(this.chat.message, this.localUser.chatUser);
+                this.chat.message.content = "";
+                event.currentTarget.value = "";
+            }
+            if (event.key === "Pause") {
+                // if (event.currentTarget.value === "") return;
+                // this.chat.message = new Message(event.currentTarget.value);
+                // console.log("message:", this.chat.message);
+                // this.sendMessage(this.chat.message);
+                // event.currentTarget.value = "";
+                // setTimeout(() => { this.messageToSend.value = ""; }, 0);
+            }
         });
     }
 
@@ -33,10 +66,11 @@ class App {
         document.querySelector(".chat_room_name-container").classList.add("hide");
         document.querySelector(".chat_user_profile_panel").classList.add("hide");
         document.querySelector(".chat_message_to_send-container").classList.add("hide");
-        while (this.chat.chatWindow.firstChild) {
-            this.chat.chatWindow.lastChild.remove();
+        while (this.elements.chatWindow.firstChild) {
+            this.elements.chatWindow.lastChild.remove();
         }
-        this.chat.messageToSend.value = "";
+        this.elements.messageToSend.value = "";
+        app.mode = "chatuser";
         this.privateMessages.showChatUsers();
     }
 
@@ -49,29 +83,31 @@ class App {
         document.querySelector(".chat_title").textContent = serverName;
         document.querySelector(".chat_room_name-container").classList.add("hide");
         document.querySelector(".server_details_name").textContent = serverName;
-        while (this.chat.chatWindow.firstChild) {
-            this.chat.chatWindow.lastChild.remove();
+        while (this.elements.chatWindow.firstChild) {
+            this.elements.chatWindow.lastChild.remove();
         }
-        this.chat.messageToSend.value = "";
+        this.elements.messageToSend.value = "";
         const serverToShow = this.serversList.find(server => {
             console.log("server.name:", server.name);
             return server.name === serverName;
         });
+        app.mode = "rooms";
         console.log("serverToShow:", serverToShow);
-
+        app.setCurrentServer(serverToShow);
         serverToShow.showRooms();
     }
 
-    setChat(chat) {
-        this.chat = chat;
+    setCurrentServer(server) {
+        this.currentServer = server;
     }
 
-    setPrivateMessages(privateMessages) {
-        this.privateMessages = privateMessages;
+    getCurrentServer() {
+        return this.currentServer;
     }
 
     setLocalUser(user) {
         this.localUser = user;
+        this.localChatUser = new ChatUser(this.localUser);
         console.log("setLocalUser this.localUser:", this.localUser);        
         document.querySelector(".local_user_avatar-wrapper").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
         document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
@@ -189,6 +225,39 @@ class App {
         serverAvatarWrapper.appendChild(serverAvatar);
         serverContainer.append(serverAvatarWrapper);
         return serverContainer;
+    }
+
+    addUserPrivateNotification(user) {
+        console.log("addUserPrivateNotification user:", user);        
+        if (!document.querySelector(`.show_private_messages-container[data-username="${user.username}"]`)) {
+            const showLastChatContainer = document.createElement("div");
+            showLastChatContainer.classList.add("show_last_chat-container", "sidebar_button");
+            showLastChatContainer.setAttribute("data-username", user.username);
+            showLastChatContainer.title = user.name;
+            const showLastChatAvatarWrapper = document.createElement("div");
+            showLastChatAvatarWrapper.classList.add("show_last_chat_avatar-wrapper");
+            showLastChatAvatarWrapper.style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
+            const showLastChatAvatar = document.createElement("img");
+            showLastChatAvatar.classList.add("show_last_chat_avatar");
+            showLastChatAvatar.src = `./assets/img/${user.avatar.image}`;
+            showLastChatAvatarWrapper.appendChild(showLastChatAvatar);
+            showLastChatContainer.appendChild(showLastChatAvatarWrapper);
+            document.querySelector(".private_messages_last_chat-container").appendChild(showLastChatContainer);
+
+            showLastChatContainer.addEventListener("click", showUserPrivateMessage.bind(this));
+
+            function showUserPrivateMessage() {
+                console.log("showUserPrivateMessage user:", user);
+                document.querySelector("main").dataset.view = "chatuser";
+
+                document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
+                // event.currentTarget.classList.add("active");
+                this.privateMessages.activeRemoteChatUser = user;
+                // chatUser.showProfile();
+                app.mode = "chatuser";
+                app.showUserPrivateChatDetails(user);
+            }
+        }
     }
 
     selectFeature(event) {

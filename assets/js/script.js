@@ -1,7 +1,6 @@
 const socket = io('http://localhost:3000');
 const app = new App();
 const settings = new Settings();
-app.setPrivateMessages(new PrivateMessages());
 
 const server1 = new AppServer({
     name: "Server 1",
@@ -77,11 +76,13 @@ const user5 = new User({
 });
 
 const room1 = new Room({
+    ref: "R" + (Math.floor(Math.random() * 9999999 - 1000000 + 1) + 1000000).toString(),
     name: "room 1",
     visibility: "public"
 }, app.getPrivateMessages());
 
 const room2 = new Room({
+    ref: "R" + (Math.floor(Math.random() * 9999999 - 1000000 + 1) + 1000000).toString(),
     name: "room 2",
     visibility: "public"
 }, app.getPrivateMessages());
@@ -116,18 +117,24 @@ socket.on('user-connected', user => {
     app.getPrivateMessages().addChatUser(chatUser);
 });
 
-socket.on('update-room', roomName => {
+socket.on('update-room', (roomName, type) => {
     console.log("update-room:", roomName);
-    socket.emit('room-users', roomName);
+    socket.emit('room-users', roomName, type);
 });
 
 socket.on('receive-chat-message', data => {
     console.log("receive-chat-message data:", data);
-    app.chat.sendMessage(new Message(data.message.content), data.user);
+    app.chat.sendMessage(new Message(data.message.content), data.sender.chatUser, data.recipient);
 });
 
-socket.on('display-room-users', data => {
-    console.log("display-room-users:", data);
+socket.on('send-message-notification', sender => {
+    console.log("send-message-notification sender ref:", sender.ref);
+    console.log("send-message-notification app.chat.peer ref:", app.chat.peer.ref);
+    if (app.chat.peer.ref !== sender.ref) app.addUserPrivateNotification(sender);
+});
+
+socket.on('display-room-users', (data, type) => {
+    console.log("display-room-users data:", data);
     const rooms = server1.getRooms();
     console.log("room-joined rooms:", rooms);
     const room = rooms.find(room => room.name === data.roomName);
@@ -135,6 +142,8 @@ socket.on('display-room-users', data => {
     const users = data.users;
     console.log("room-joined users:", users);
     room.updateUsersList(users);
+    if (app.getCurrentServer()) app.getCurrentServer().setCurrentRoom(type === "join" ? room : null);
+    type === "join" ? app.chat.peer = room : app.chat.peer = null;
 });
 
 

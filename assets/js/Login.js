@@ -1,17 +1,4 @@
 class Login {
-    elements = {
-        form: document.getElementById("login_form"),
-        inputs: document.querySelectorAll("input"),
-        email: document.getElementById("login_email"),
-        name: document.getElementById("login_name"),
-        password: document.getElementById("login_password"),
-        date: document.getElementById("login_date"),
-        ref: document.getElementById("login_ref"),
-        color: document.getElementById("login_color"),
-        avatar: document.getElementById("login_avatar"),
-        status: document.getElementById("login_status"),
-        submit: document.getElementById("login_submit")
-    }
     userData = {
         email: null,
         name: null,
@@ -24,6 +11,7 @@ class Login {
     };
     app;
     constructor(app, settings) {
+        this.elements = new Element().getLoginElements();
         this.app = app;
         this.settings = settings;
         this.presets();
@@ -106,7 +94,6 @@ class Login {
         localStorage.setItem("discord", JSON.stringify(discordData));
 
         this.app.setLocalUser(localUser);
-        this.app.setChat(new Chat(this.app.getLocalUser(), this.app.getPrivateMessages()));
 
         console.log("this.app:", this.app);
 

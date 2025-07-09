@@ -66,35 +66,41 @@ class PrivateMessages {
                 event.currentTarget.classList.add("active");
                 this.activeRemoteChatUser = chatUser;
                 // chatUser.showProfile();
-                document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
-                document.querySelector(".chat_room_avatar").src = `./assets/img/${chatUser.avatar.image}`;
-                document.querySelector(".chat_room_profile_status").dataset.status = chatUser.status;
-                document.querySelector(".chat_room_name").textContent = chatUser.name;
-                document.querySelector(".chat_room_name").dataset.name = chatUser.username;
-                if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
-                    document.querySelector(".chat_room_name-container").classList.remove("hide");
-                if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
-                    document.querySelector(".chat_message_to_send-container").classList.remove("hide");
-                while (document.querySelector(".chat_window").firstChild) {
-                    document.querySelector(".chat_window").lastChild.remove();
-                }
-                document.getElementById("message_to_send").value = "";
-
-                showUserPrivateProfile();
-
-                function showUserPrivateProfile() {
-                    console.log("showUserPrivateProfile");                    
-                    document.querySelector(".chat_user_profile_panel").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
-                    document.querySelector(".chat_user_profile_avatar").src = `./assets/img/${chatUser.avatar.image}`;
-                    document.querySelector(".chat_user_profile_status_logo").dataset.status = chatUser.status === "invisible" ? "offline" : chatUser.status;
-                    document.querySelector(".chat_user_profile_name").textContent = chatUser.name;
-                    document.querySelector(".chat_user_profile_username").textContent = chatUser.username;
-                    document.querySelector(".chat_user_profile_details_about_me_content").textContent = chatUser.aboutme;
-                    document.querySelector(".chat_user_profile_details_member_since_content").textContent = chatUser.membersince;
-                    if (document.querySelector(".chat_user_profile_panel").classList.contains("hide"))
-                        document.querySelector(".chat_user_profile_panel").classList.remove("hide");
-                }
+                this.showUserPrivateChatDetails(chatUser);
             });
         });
+    }
+
+    showUserPrivateChatDetails(chatUser) {
+        console.log("showUserPrivateChatDetails chatUser:", chatUser);        
+        app.chat.peer = chatUser;
+        app.elements.chatRoomAvatarWrapper.style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
+        app.elements.chatRoomAvatar.src = `./assets/img/${chatUser.avatar.image}`;
+        app.elements.chatRoomProfileStatus.dataset.status = chatUser.status;
+        app.elements.chatRoomName.textContent = chatUser.name;
+        app.elements.chatRoomName.dataset.name = chatUser.username;
+        if (app.elements.chatRoomNameContainer.classList.contains("hide"))
+            app.elements.chatRoomNameContainer.classList.remove("hide");
+        if (app.elements.chatMessageToSendContainer.classList.contains("hide"))
+            app.elements.chatMessageToSendContainer.classList.remove("hide");
+        while (app.elements.chatWindow.firstChild) {
+            app.elements.chatWindow.lastChild.remove();
+        }
+        app.elements.messageToSend.value = "";
+
+        showUserPrivateProfile();
+
+        function showUserPrivateProfile() {
+            console.log("showUserPrivateProfile");
+            document.querySelector(".chat_user_profile_panel").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
+            document.querySelector(".chat_user_profile_avatar").src = `./assets/img/${chatUser.avatar.image}`;
+            document.querySelector(".chat_user_profile_status_logo").dataset.status = chatUser.status === "invisible" ? "offline" : chatUser.status;
+            document.querySelector(".chat_user_profile_name").textContent = chatUser.name;
+            document.querySelector(".chat_user_profile_username").textContent = chatUser.username;
+            document.querySelector(".chat_user_profile_details_about_me_content").textContent = chatUser.aboutme;
+            document.querySelector(".chat_user_profile_details_member_since_content").textContent = chatUser.membersince;
+            if (document.querySelector(".chat_user_profile_panel").classList.contains("hide"))
+                document.querySelector(".chat_user_profile_panel").classList.remove("hide");
+        }
     }
 }

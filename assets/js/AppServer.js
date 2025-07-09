@@ -5,6 +5,7 @@ class AppServer {
     roomsList = [];
 
     constructor(serverData) {
+        this.currentRoom = null;
         this.name = serverData.name;
         this.avatar = serverData.avatar;
         this.visibility = serverData.visibility;
@@ -15,13 +16,21 @@ class AppServer {
         if (typeof roomAlreadyPresent === "undefined") {
             this.roomsList.push(room);
         }
-        if (document.querySelector("main").dataset.view === "rooms") this.updateRoomsSection();
+        if (app.mode === "rooms") this.updateRoomsSection();
     }
 
     removeRoom(room) {
         let indexOfRoom = this.roomsList.indexOf(room);
         if (indexOfRoom > 0) this.roomsList.splice(indexOfRoom, 1);
-        if (document.querySelector("main").dataset.view === "rooms") this.updateRoomsSection();
+        if (app.mode === "rooms") this.updateRoomsSection();
+    }
+
+    setCurrentRoom(room) {
+        this.currentRoom = room;
+    }
+
+    getCurrentRoom() {
+        return this.currentRoom;
     }
 
     getRooms() {
@@ -135,7 +144,7 @@ class AppServer {
         // console.log("roomContainer:", roomContainer);        
         // roomContainer.classList.add("active");
         // roomContainer.setAttribute("aria-selected", true);
-        socket.emit('join-room', room.name, app.localUser.username);
+        socket.emit('join-room', room.name);
     }
 
     leaveRoom(room) {

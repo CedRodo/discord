@@ -1,4 +1,5 @@
 class Room {
+    ref;
     name;
     visibility;
     usersList = [];
@@ -8,6 +9,7 @@ class Room {
     privateMessages;
 
     constructor(roomData, privateMessages) {
+        this.ref = roomData.ref;
         this.name = roomData.name.replaceAll(" ", "-");
         this.visibility = roomData.visibility;
         this.privateMessages = privateMessages;
@@ -32,7 +34,7 @@ class Room {
 
         // socket.emit('room-users', this.name);
         
-        if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
+        if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
 
     removeUser(user) {
@@ -44,7 +46,7 @@ class Room {
         if (this.offlineUsers.includes(user.name)) {
             this.offlineUsers.splice(this.offlineUsers.indexOf(user.name), 1);
         }
-        if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
+        if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
 
     getUsersList() {
@@ -70,7 +72,7 @@ class Room {
         });
         console.log("addUser this.usersList:", this.usersList);
 
-        if (document.querySelector("main").dataset.view === "rooms") this.updateConnectionStatusSection();
+        if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
 
     updateConnectionStatusSection() {
@@ -254,7 +256,7 @@ class Room {
 
     }
 
-    addUserPrivate(event) {
+    addUserPrivate() {
         console.log("addUserPrivate");
         const userName = document.querySelector(".connection_status_user_aside_profile-container").dataset.username;
         console.log("addUserPrivate userName:", userName);
@@ -262,8 +264,6 @@ class Room {
         const user = this.usersList.find(u => u.username === userName);
         if (user) {
             console.log("addUserPrivate user:", user);
-            document.querySelector("main").dataset.view = "chatuser";
-
             app.elements.sidebarButtons.forEach(button => button.classList.remove("active"));
             app.elements.showPrivateMessages.classList.add("active");
             document.querySelector("main").dataset.view = "chatuser";
@@ -271,10 +271,10 @@ class Room {
             document.querySelector(".chat_room_name-container").classList.add("hide");
             document.querySelector(".chat_user_profile_panel").classList.add("hide");
             document.querySelector(".chat_message_to_send-container").classList.add("hide");
-            while (app.chat.chatWindow.firstChild) {
-                app.chat.chatWindow.lastChild.remove();
+            while (app.elements.chatWindow.firstChild) {
+                app.elements.chatWindow.lastChild.remove();
             }
-            app.chat.messageToSend.value = "";
+            app.elements.messageToSend.value = "";
 
 
             // document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
@@ -289,9 +289,10 @@ class Room {
             //     document.querySelector(".chat_window").lastChild.remove();
             // }
             // document.getElementById("message_to_send").value = "";   
-            
-            
+
+            app.mode = "chatuser";
             this.privateMessages.addChatUser(user.chatUser);
+            socket.emit('join-user', user.username);
         }
     }
 
