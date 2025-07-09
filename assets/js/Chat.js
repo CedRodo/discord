@@ -11,7 +11,7 @@ class Chat {
         console.log("sendMessage sender:", sender);
         console.log("sendMessage recipient:", recipient);
         let mode; let ref;
-        if (recipient.ref.charAt(0) === "R") {
+        if (recipient.ref.charAt(0) === "r") {
             mode = "rooms";
             ref = recipient.ref;
         } else {

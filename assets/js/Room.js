@@ -9,7 +9,7 @@ class Room {
     privateMessages;
 
     constructor(roomData, privateMessages) {
-        this.ref = roomData.ref;
+        this.ref = roomData.ref.replaceAll(" ", "-");
         this.name = roomData.name.replaceAll(" ", "-");
         this.visibility = roomData.visibility;
         this.privateMessages = privateMessages;

@@ -76,13 +76,13 @@ const user5 = new User({
 });
 
 const room1 = new Room({
-    ref: "R" + (Math.floor(Math.random() * 9999999 - 1000000 + 1) + 1000000).toString(),
+    ref: "r_" + "room 1",
     name: "room 1",
     visibility: "public"
 }, app.getPrivateMessages());
 
 const room2 = new Room({
-    ref: "R" + (Math.floor(Math.random() * 9999999 - 1000000 + 1) + 1000000).toString(),
+    ref: "r_" + "room 2",
     name: "room 2",
     visibility: "public"
 }, app.getPrivateMessages());
