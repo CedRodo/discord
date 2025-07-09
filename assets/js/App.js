@@ -39,11 +39,8 @@ class App {
                 }
 
                 console.log("this.chat.message:", this.chat.message);
-
                 socket.emit('send-chat-message', this.chat.message, this.chat.peer, this.mode);
 
-                // socket.emit('send-chat-message', this.chat.message, this.localUser.chatUser);
-                // this.chat.sendMessage(this.chat.message, this.localUser.chatUser);
                 this.chat.message.content = "";
                 event.currentTarget.value = "";
             }
@@ -299,6 +296,7 @@ class App {
                 this.privateMessages.showUserPrivateChatDetails(user);
                 showLastChatContainer.removeEventListener("click", showUserPrivateMessage);
                 showLastChatContainer.remove();
+                socket.emit('join-user', user.username);
             }
         }
     }
