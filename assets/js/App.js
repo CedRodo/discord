@@ -1,5 +1,6 @@
 class App {
     localUser;
+    usersList = [];
     serversList = [];
     chat;
     privateMessages;
@@ -55,6 +56,7 @@ class App {
                 // setTimeout(() => { this.messageToSend.value = ""; }, 0);
             }
         });
+        this.elements.chatUserProfileAdd.addEventListener("click", this.addUserPrivate.bind(this))
     }
 
     showPrivateMessages() {
@@ -171,6 +173,23 @@ class App {
         }
 
     }
+    
+    getLocalUser() {
+        return this.localUser;
+    }
+
+    getUsers() {
+        return this.usersList;
+    }
+
+    setUsers(users) {
+        this.usersList = users;
+    }
+
+    addUser(user) {
+        const userAlreadyPresent = this.usersList.find(u => u.ref === user.ref);
+        if (typeof userAlreadyPresent === "undefined") this.usersList.push(user);
+    }
 
     getChat() {
         return this.chat;
@@ -178,10 +197,6 @@ class App {
 
     getPrivateMessages() {
         return this.privateMessages;
-    }
-
-    getLocalUser() {
-        return this.localUser;
     }
 
     addServer(server) {
@@ -227,6 +242,32 @@ class App {
         return serverContainer;
     }
 
+    addUserPrivate(event) {
+        console.log("addUserPrivate");
+        const userRef = event.currentTarget.dataset.ref;
+        console.log("addUserPrivate userRef:", userRef);
+        console.log("addUserPrivate this.getUsers():", this.getUsers());
+        const user = this.getUsers().find(u => u.ref === userRef);
+        if (user) {
+            console.log("addUserPrivate user:", user);
+            app.elements.sidebarButtons.forEach(button => button.classList.remove("active"));
+            app.elements.showPrivateMessages.classList.add("active");
+            document.querySelector("main").dataset.view = "chatuser";
+            document.querySelector(".chat_title").textContent = "Messages privés";
+            document.querySelector(".chat_room_name-container").classList.add("hide");
+            document.querySelector(".chat_user_profile_panel").classList.add("hide");
+            document.querySelector(".chat_message_to_send-container").classList.add("hide");
+            while (app.elements.chatWindow.firstChild) {
+                app.elements.chatWindow.lastChild.remove();
+            }
+            app.elements.messageToSend.value = "";
+
+            app.mode = "chatuser";
+            this.privateMessages.addChatUser(user.chatUser);
+            socket.emit('join-user', user.username);
+        }
+    }
+
     addUserPrivateNotification(user) {
         console.log("addUserPrivateNotification user:", user);        
         if (!document.querySelector(`.show_private_messages-container[data-username="${user.username}"]`)) {
@@ -249,13 +290,15 @@ class App {
             function showUserPrivateMessage() {
                 console.log("showUserPrivateMessage user:", user);
                 document.querySelector("main").dataset.view = "chatuser";
-
+                document.querySelector(".chat_title").textContent = "Messages privés";
                 document.querySelectorAll(".left_panel_button").forEach(button => button.classList.remove("active"));
                 // event.currentTarget.classList.add("active");
                 this.privateMessages.activeRemoteChatUser = user;
                 // chatUser.showProfile();
                 app.mode = "chatuser";
-                app.showUserPrivateChatDetails(user);
+                this.privateMessages.showUserPrivateChatDetails(user);
+                showLastChatContainer.removeEventListener("click", showUserPrivateMessage);
+                showLastChatContainer.remove();
             }
         }
     }

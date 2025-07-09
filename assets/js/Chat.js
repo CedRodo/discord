@@ -52,6 +52,9 @@ class Chat {
         while (app.elements.chatWindow.firstChild) {
             app.elements.chatWindow.lastChild.remove();
         }
+        console.log("this.log:", this.log);
+
+        if (!this.log[mode][ref]) return;
         
         this.log[mode][ref].forEach(async (chatUserRef, tabIndex) => {
             console.log("chatUserRef:", chatUserRef);

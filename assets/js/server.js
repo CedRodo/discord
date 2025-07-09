@@ -20,7 +20,12 @@ io.on('connection', socket => {
     socket.on('new-user', user => {
         console.log("new user:", user.username);
         users[socket.id] = user;
-        // socket.broadcast.emit('user-connected', user);
+        let usersList = [];
+        for (const sckt in users) {
+            usersList.push(users[sckt]);
+        }
+        console.log("usersList:", usersList);
+        io.emit('update-users', usersList);
     });
     socket.on('send-chat-message', (message, recipient, type) => {
         console.log("send-chat-message message:", message);

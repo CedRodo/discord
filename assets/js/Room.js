@@ -2,7 +2,7 @@ class Room {
     ref;
     name;
     visibility;
-    usersList = [];
+    usersLists = [];
     onlineUsers = [];
     offlineUsers = [];
     nbOfUsers = 0;
@@ -16,9 +16,8 @@ class Room {
     }
 
     addUpdateUser(user) {
-        const userAlreadyPresent = this.usersList.find(u => u.username === user.username);
+        const userAlreadyPresent = this.getUsers().find(u => u.username === user.username);
         if (typeof userAlreadyPresent === "undefined") {
-            this.usersList.push(user);
             if (user.status === "online" ||
                 user.status === "busy" ||
                 user.status === "sleep"
@@ -30,7 +29,7 @@ class Room {
                 this.offlineUsers.sort();
             }
         }
-        console.log("addUser this.usersList:", this.usersList);
+        console.log("addUser this.getUsers():", this.getUsers());
 
         // socket.emit('room-users', this.name);
         
@@ -38,8 +37,8 @@ class Room {
     }
 
     removeUser(user) {
-        let indexOfUser = this.usersList.indexOf(user);
-        if (indexOfUser > 0) this.usersList.splice(indexOfUser, 1);
+        let indexOfUser = this.getUsers().indexOf(user);
+        if (indexOfUser > 0) this.getUsers().splice(indexOfUser, 1);
         if (this.onlineUsers.includes(user.name)) {
             this.onlineUsers.splice(this.onlineUsers.indexOf(user.name), 1);
         }
@@ -49,16 +48,20 @@ class Room {
         if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
 
-    getUsersList() {
+    getUsers() {
         return this.usersList;
     }
 
-    updateUsersList(users) {
+    setUsers(users) {
         this.usersList = users;
+    }
+
+    updateUsersList(users) {
+        this.setUsers(users);
         this.onlineUsers.length = 0;
         this.offlineUsers.length = 0;
 
-        this.usersList.forEach(user => {
+        this.getUsers().forEach(user => {
             if (user.status === "online" ||
                 user.status === "busy" ||
                 user.status === "sleep"
@@ -70,7 +73,7 @@ class Room {
                 this.offlineUsers.sort();
             }
         });
-        console.log("addUser this.usersList:", this.usersList);
+        console.log("addUser this.getUsers():", this.getUsers());
 
         if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
@@ -87,12 +90,12 @@ class Room {
         }
 
         this.onlineUsers.forEach(userName => {
-            const userToAdd = this.usersList.find(u => u.name === userName);
+            const userToAdd = this.getUsers().find(u => u.name === userName);
             const connectionStatusUserContainer = this.createConnectionStatusUser(userToAdd);
             onlineStatusUsersContainer.appendChild(connectionStatusUserContainer);
         });
         this.offlineUsers.forEach(userName => {
-            const userToAdd = this.usersList.find(u => u.name === userName);
+            const userToAdd = this.getUsers().find(u => u.name === userName);
             const connectionStatusUserContainer = this.createConnectionStatusUser(userToAdd);
             offlineStatusUsersContainer.appendChild(connectionStatusUserContainer);
         });
@@ -134,22 +137,6 @@ class Room {
             document.querySelectorAll(".connection_status_user-container").forEach(button => button.classList.remove("active"));
             event.currentTarget.classList.add("active");
 
-            // console.log("this.privateMessages:", this.privateMessages);
-            // this.privateMessages.activeRemoteChatUser = user;
-            
-            // document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
-            // document.querySelector(".chat_room_avatar").src = `./assets/img/${user.avatar.image}`;
-            // document.querySelector(".chat_room_profile_status").dataset.status = user.status;
-            // document.querySelector(".chat_room_name").textContent = user.name;
-            // if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
-            //     document.querySelector(".chat_room_name-container").classList.remove("hide");
-            // if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
-            //     document.querySelector(".chat_message_to_send-container").classList.remove("hide");
-            // while (document.querySelector(".chat_window").firstChild) {
-            //     document.querySelector(".chat_window").lastChild.remove();
-            // }
-            // document.getElementById("message_to_send").value = "";
-
             this.showConnectionStatusUserProfile(user, connectionStatusUserContainer);
         }
 
@@ -177,6 +164,7 @@ class Room {
         connectionStatusUserAsideProfileFeaturesContainer.classList.add("connection_status_user_aside_profile_features-container");
         const connectionStatusUserAsideProfileAdd = document.createElement("div");
         connectionStatusUserAsideProfileAdd.classList.add("connection_status_user_aside_profile_feature", "connection_status_user_aside_profile_add");
+        connectionStatusUserAsideProfileAdd.setAttribute("data-ref", user.ref);
         const connectionStatusUserAsideProfileAddIcon = document.createElement("i");
         connectionStatusUserAsideProfileAddIcon.classList.add("fa-solid", "fa-user-plus");
         connectionStatusUserAsideProfileAdd.appendChild(connectionStatusUserAsideProfileAddIcon);
@@ -251,49 +239,9 @@ class Room {
         if (user.ref === app.localUser.ref) {
             connectionStatusUserAsideProfileFeaturesContainer.remove();
         } else {
-            connectionStatusUserAsideProfileAdd.addEventListener("click", this.addUserPrivate.bind(this));
+            connectionStatusUserAsideProfileAdd.addEventListener("click", app.addUserPrivate.bind(this));
         }
 
-    }
-
-    addUserPrivate() {
-        console.log("addUserPrivate");
-        const userName = document.querySelector(".connection_status_user_aside_profile-container").dataset.username;
-        console.log("addUserPrivate userName:", userName);
-        console.log("addUserPrivate this.usersList:", this.usersList);
-        const user = this.usersList.find(u => u.username === userName);
-        if (user) {
-            console.log("addUserPrivate user:", user);
-            app.elements.sidebarButtons.forEach(button => button.classList.remove("active"));
-            app.elements.showPrivateMessages.classList.add("active");
-            document.querySelector("main").dataset.view = "chatuser";
-            document.querySelector(".chat_title").textContent = "Messages privés";
-            document.querySelector(".chat_room_name-container").classList.add("hide");
-            document.querySelector(".chat_user_profile_panel").classList.add("hide");
-            document.querySelector(".chat_message_to_send-container").classList.add("hide");
-            while (app.elements.chatWindow.firstChild) {
-                app.elements.chatWindow.lastChild.remove();
-            }
-            app.elements.messageToSend.value = "";
-
-
-            // document.querySelector(".chat_room_avatar-wrapper").style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
-            // document.querySelector(".chat_room_avatar").src = `./assets/img/${user.avatar.image}`;
-            // document.querySelector(".chat_room_profile_status").dataset.status = user.status;
-            // document.querySelector(".chat_room_name").textContent = user.name;
-            // if (document.querySelector(".chat_room_name-container").classList.contains("hide"))
-            //     document.querySelector(".chat_room_name-container").classList.remove("hide");
-            // if (document.querySelector(".chat_message_to_send-container").classList.contains("hide"))
-            //     document.querySelector(".chat_message_to_send-container").classList.remove("hide");
-            // while (document.querySelector(".chat_window").firstChild) {
-            //     document.querySelector(".chat_window").lastChild.remove();
-            // }
-            // document.getElementById("message_to_send").value = "";   
-
-            app.mode = "chatuser";
-            this.privateMessages.addChatUser(user.chatUser);
-            socket.emit('join-user', user.username);
-        }
     }
 
 }

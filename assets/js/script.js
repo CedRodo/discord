@@ -111,6 +111,13 @@ server1.addRoom(room2);
 const register = new Register(app, settings);
 const login = new Login(app, settings);
 
+socket.on('update-users', users => {
+    console.log("update-users:", users);
+    users.forEach(user => {
+        app.addUser(user);
+    });
+});
+
 socket.on('user-connected', user => {
     console.log("user-connected:", user);    
     const chatUser = new ChatUser(user);

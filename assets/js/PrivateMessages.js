@@ -93,6 +93,7 @@ class PrivateMessages {
         function showUserPrivateProfile() {
             console.log("showUserPrivateProfile");
             document.querySelector(".chat_user_profile_panel").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
+            document.querySelector(".chat_user_profile_add").setAttribute("data-ref", chatUser.ref);
             document.querySelector(".chat_user_profile_avatar").src = `./assets/img/${chatUser.avatar.image}`;
             document.querySelector(".chat_user_profile_status_logo").dataset.status = chatUser.status === "invisible" ? "offline" : chatUser.status;
             document.querySelector(".chat_user_profile_name").textContent = chatUser.name;
@@ -102,5 +103,8 @@ class PrivateMessages {
             if (document.querySelector(".chat_user_profile_panel").classList.contains("hide"))
                 document.querySelector(".chat_user_profile_panel").classList.remove("hide");
         }
+
+        app.chat.createMessageElements(app.mode, chatUser.ref);
+
     }
 }

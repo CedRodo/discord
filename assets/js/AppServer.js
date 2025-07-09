@@ -12,16 +12,17 @@ class AppServer {
     }
 
     addRoom(room) {
-        const roomAlreadyPresent = this.roomsList.find(r => r.name === room.name);
+        console.log("addRoom room:", room);        
+        const roomAlreadyPresent = this.getRooms().find(r => r.name === room.name);
         if (typeof roomAlreadyPresent === "undefined") {
-            this.roomsList.push(room);
+            this.getRooms().push(room);
         }
         if (app.mode === "rooms") this.updateRoomsSection();
     }
 
     removeRoom(room) {
-        let indexOfRoom = this.roomsList.indexOf(room);
-        if (indexOfRoom > 0) this.roomsList.splice(indexOfRoom, 1);
+        let indexOfRoom = this.getRooms().indexOf(room);
+        if (indexOfRoom > 0) this.getRooms().splice(indexOfRoom, 1);
         if (app.mode === "rooms") this.updateRoomsSection();
     }
 
@@ -50,7 +51,7 @@ class AppServer {
         while (serverDetailsDropdown.firstChild) {
             serverDetailsDropdown.lastChild.remove();
         }
-        this.roomsList.forEach((room, index) => {
+        this.getRooms().forEach((room, index) => {
             const roomContainer = document.createElement("div");
             roomContainer.classList.add("room-container", "left_panel_button");
             roomContainer.setAttribute("aria-selected", false);
@@ -90,17 +91,19 @@ class AppServer {
 
             let isPresentInRoom = false;
 
-            const roomUsersList = room.getUsersList();
-            console.log("roomUsersList:", roomUsersList);            
+            if (room.getUsers()) {
+                const roomUsersList = room.getUsers();
+                console.log("roomUsersList:", roomUsersList);
 
-            console.log("app.localUser.username:", app.localUser.username);            
+                console.log("app.localUser.username:", app.localUser.username);
 
-            roomUsersList.forEach(u => {
-                console.log("room u.username:", u.username);                
-                if (u.username === app.localUser.username) isPresentInRoom = true;
-            });
+                roomUsersList.forEach(u => {
+                    console.log("room u.username:", u.username);
+                    if (u.username === app.localUser.username) isPresentInRoom = true;
+                });
 
-            console.log("isPresentInRoom:", isPresentInRoom);   
+                console.log("isPresentInRoom:", isPresentInRoom); 
+            }  
 
             const serverDetailsDropdownJoinQuitRoom = document.createElement("div");
             serverDetailsDropdownJoinQuitRoom.classList.add("server_details_dropdown_join_quit_room");

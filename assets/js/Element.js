@@ -29,6 +29,7 @@ class Element {
             showPrivateMessages: document.querySelector(".show_private_messages-container"),
             servers: document.querySelectorAll(".server-container"),
             features: document.querySelectorAll(".feature"),
+            chatUserProfileAdd: document.querySelector(".chat_user_profile_add"),
             messageToSend: document.getElementById("message_to_send"),
             chatRoomAvatarWrapper: document.querySelector(".chat_room_avatar-wrapper"),
             chatRoomAvatar: document.querySelector(".chat_room_avatar"),
