@@ -30,6 +30,8 @@ class Element {
             servers: document.querySelectorAll(".server-container"),
             features: document.querySelectorAll(".feature"),
             chatUserProfileAdd: document.querySelector(".chat_user_profile_add"),
+            localUserProfileSettingsContainer: document.querySelector(".local_user_profile_settings-container"),
+            localUserProfileStatusSelections: document.querySelectorAll(".local_user_profile_status_selection"),
             messageToSend: document.getElementById("message_to_send"),
             chatRoomAvatarWrapper: document.querySelector(".chat_room_avatar-wrapper"),
             chatRoomAvatar: document.querySelector(".chat_room_avatar"),
@@ -39,6 +41,8 @@ class Element {
             chatMessageToSendContainer: document.querySelector(".chat_message_to_send-container"),
             chatWindow: document.querySelector(".chat_window")
         }
+        console.log("this.app.sidebarButtons:", this.app.sidebarButtons);
+        
     }
 
     getLoginElements() {

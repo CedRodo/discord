@@ -94,6 +94,12 @@ io.on('connection', socket => {
         console.log("rooms:", rooms);
         socket.emit('update-room', roomName, "leave");
     });
+    socket.on('update-local-user', (user) => {
+        console.log("update-local-user:", user);
+        for (const prop in users[socket.id]) {
+            if (users[socket.id][prop] !== user[prop]) users[socket.id][prop] = user[prop];
+        };
+    });
     socket.on('join-user', (userName) => {
         console.log("join-user userName:", userName);
         let userSocket;

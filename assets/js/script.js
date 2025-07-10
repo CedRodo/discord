@@ -143,7 +143,7 @@ socket.on('send-message-notification', sender => {
 socket.on('display-room-users', (data, type) => {
     console.log("display-room-users data:", data);
     const rooms = server1.getRooms();
-    console.log("room-joined rooms:", rooms);
+    console.log("display-room-users rooms:", rooms);
     const room = rooms.find(room => room.name === data.roomName);
     console.log("display-room-users room:", room);
     const users = data.users;

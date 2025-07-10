@@ -126,6 +126,7 @@ class AppServer {
                 switch (serverDetailsDropdownRoomAction.dataset.action) {
                     case "join":
                         this.joinRoom(room);
+                        app.localUser.setRoom(room);
                         serverDetailsDropdownRoomAction.setAttribute("data-action", "leave");
                         serverDetailsDropdownRoomAction.textContent = "Quitter";
                         break;

@@ -2,9 +2,7 @@ class Room {
     ref;
     name;
     visibility;
-    usersLists = [];
-    onlineUsers = [];
-    offlineUsers = [];
+    usersList = [];
     nbOfUsers = 0;
     privateMessages;
 
@@ -15,36 +13,9 @@ class Room {
         this.privateMessages = privateMessages;
     }
 
-    addUpdateUser(user) {
-        const userAlreadyPresent = this.getUsers().find(u => u.username === user.username);
-        if (typeof userAlreadyPresent === "undefined") {
-            if (user.status === "online" ||
-                user.status === "busy" ||
-                user.status === "sleep"
-            ) {
-                this.onlineUsers.push(user.name);
-                this.onlineUsers.sort();
-            } else {
-                this.offlineUsers.push(user.name);
-                this.offlineUsers.sort();
-            }
-        }
-        console.log("addUser this.getUsers():", this.getUsers());
-
-        // socket.emit('room-users', this.name);
-        
-        if (app.mode === "rooms") this.updateConnectionStatusSection();
-    }
-
     removeUser(user) {
         let indexOfUser = this.getUsers().indexOf(user);
         if (indexOfUser > 0) this.getUsers().splice(indexOfUser, 1);
-        if (this.onlineUsers.includes(user.name)) {
-            this.onlineUsers.splice(this.onlineUsers.indexOf(user.name), 1);
-        }
-        if (this.offlineUsers.includes(user.name)) {
-            this.offlineUsers.splice(this.offlineUsers.indexOf(user.name), 1);
-        }
         if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
 
@@ -56,51 +27,49 @@ class Room {
         this.usersList = users;
     }
 
-    updateUsersList(users) {
-        this.setUsers(users);
-        this.onlineUsers.length = 0;
-        this.offlineUsers.length = 0;
-
-        this.getUsers().forEach(user => {
-            if (user.status === "online" ||
-                user.status === "busy" ||
-                user.status === "sleep"
-            ) {
-                this.onlineUsers.push(user.name);
-                this.onlineUsers.sort();
-            } else {
-                this.offlineUsers.push(user.name);
-                this.offlineUsers.sort();
+    updateUserInUsersList(user) {
+        this.getUsers().forEach(u => {
+            if (user.ref === u.ref) {
+                u = user;
             }
         });
-        console.log("addUser this.getUsers():", this.getUsers());
-
+        console.log("updateUserInUsersList this.getUsers():", this.getUsers());
         if (app.mode === "rooms") this.updateConnectionStatusSection();
     }
 
+    updateUsersList(users) {
+        this.setUsers(users);
+        console.log("addUser this.getUsers():", this.getUsers());        
+        if (app.mode === "rooms") this.updateConnectionStatusSection();
+    }
+    
     updateConnectionStatusSection() {
         const onlineStatusUsersContainer = document.querySelector(".online_status_users-container");
         const offlineStatusUsersContainer = document.querySelector(".offline_status_users-container");
-
+        
         while (onlineStatusUsersContainer.firstChild) {
             onlineStatusUsersContainer.lastChild.remove();
         }
         while (offlineStatusUsersContainer.firstChild) {
             offlineStatusUsersContainer.lastChild.remove();
         }
+        
+        let count = { online: 0, offline: 0 };
+        let onlineStatuses = ["online", "busy", "sleep"];
+        
+        this.getUsers().forEach(user => {
+            const connectionStatusUserContainer = this.createConnectionStatusUser(user);
+            if (onlineStatuses.includes(user.status)) {
+                onlineStatusUsersContainer.appendChild(connectionStatusUserContainer);
+                count.online++;
+            } else {
+                offlineStatusUsersContainer.appendChild(connectionStatusUserContainer);
+                count.offline++;
+            }
+        });
 
-        this.onlineUsers.forEach(userName => {
-            const userToAdd = this.getUsers().find(u => u.name === userName);
-            const connectionStatusUserContainer = this.createConnectionStatusUser(userToAdd);
-            onlineStatusUsersContainer.appendChild(connectionStatusUserContainer);
-        });
-        this.offlineUsers.forEach(userName => {
-            const userToAdd = this.getUsers().find(u => u.name === userName);
-            const connectionStatusUserContainer = this.createConnectionStatusUser(userToAdd);
-            offlineStatusUsersContainer.appendChild(connectionStatusUserContainer);
-        });
-        document.getElementById("online_users_number").innerText = this.onlineUsers.length;
-        document.getElementById("offline_users_number").innerText = this.offlineUsers.length;
+        document.getElementById("online_users_number").innerText = count.online;
+        document.getElementById("offline_users_number").innerText = count.offline;
     }
 
     createConnectionStatusUser(user) {
@@ -239,7 +208,7 @@ class Room {
         if (user.ref === app.localUser.ref) {
             connectionStatusUserAsideProfileFeaturesContainer.remove();
         } else {
-            connectionStatusUserAsideProfileAdd.addEventListener("click", app.addUserPrivate.bind(this));
+            connectionStatusUserAsideProfileAdd.addEventListener("click", (event) => { app.addUserPrivate(event); });
         }
 
     }

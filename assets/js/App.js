@@ -15,16 +15,16 @@ class App {
     }
 
     events() {
-        this.elements.features.forEach(feature => feature.addEventListener("click", this.selectFeature.bind(this)));
-        this.elements.showPrivateMessages.addEventListener("click", this.showPrivateMessages.bind(this));
+        this.getElements().features.forEach(feature => feature.addEventListener("click", this.selectFeature.bind(this)));
+        this.getElements().showPrivateMessages.addEventListener("click", this.showPrivateMessages.bind(this));
         document.querySelector(".server_details-container").addEventListener("click", () => {
             document.querySelector(".server_details-container").classList.toggle("dropdown");
         });
-        this.elements.messageToSend.addEventListener("input", event => {
+        this.getElements().messageToSend.addEventListener("input", event => {
             this.chat.message.content = event.target.value;
             console.log("input this.chat.message.content:", this.chat.message.content);
         });
-        this.elements.messageToSend.addEventListener("keyup", (event) => {
+        this.getElements().messageToSend.addEventListener("keyup", (event) => {
             // if (event.key === "Enter" && this.privateMessages.activeRemoteChatUser) {
             if (event.key === "Enter") {
                 // if (event.currentTarget.value === "\n"){
@@ -38,61 +38,118 @@ class App {
                     return;
                 }
 
+                const name = this.getElements().chatRoomName.dataset.name;
+
                 console.log("this.chat.message:", this.chat.message);
+                if (this.mode === "rooms") {
+                    const room = this.localUser.getRooms().find(r => r.name === name);
+                    console.log("room:", room);
+                    this.chat.peer = room;                 
+                }
+                if (this.mode === "chatuser") {
+                    const user = this.getUsers().find(u => u.username === name);
+                    console.log("user:", user);                    
+                }
                 socket.emit('send-chat-message', this.chat.message, this.chat.peer, this.mode);
 
                 this.chat.message.content = "";
                 event.currentTarget.value = "";
             }
-            if (event.key === "Pause") {
-                // if (event.currentTarget.value === "") return;
-                // this.chat.message = new Message(event.currentTarget.value);
-                // console.log("message:", this.chat.message);
-                // this.sendMessage(this.chat.message);
-                // event.currentTarget.value = "";
-                // setTimeout(() => { this.messageToSend.value = ""; }, 0);
-            }
         });
-        this.elements.chatUserProfileAdd.addEventListener("click", this.addUserPrivate.bind(this))
+        // this.getElements().chatUserProfileAdd.addEventListener("click", this.addUserPrivate.bind(this));
+        this.getElements().chatUserProfileAdd.addEventListener("click", this.addUserPrivate.bind(this));
+        this.getElements().localUserProfileStatusSelections.forEach(selection => {
+            selection.addEventListener("click", this.selectStatus.bind(this));
+        });
+
+        document.querySelector(".local_user_name_status_display-container").addEventListener("click", this.showLocalUserProfile.bind(this));
+        document.querySelector(".local_user_avatar-wrapper").addEventListener("click", this.showLocalUserProfile.bind(this));
+
+        document.querySelector(".local_user_mic").addEventListener("click", this.micOnOff.bind(this));
+        document.querySelector(".local_user_headphones").addEventListener("click", this.soundOnOff.bind(this));
+    }
+
+    selectStatus(event) {
+        console.log("selectStatus evvent:", event.currentTarget);
+        const status = event.currentTarget.dataset.selection;
+        console.log("status:", status);
+        this.localUser.status = status;
+        this.localUser.chatUser.status = status;
+
+        socket.emit('update-local-user', this.localUser);
+
+        this.updateUserInRooms();
+
+        this.setlocalUserProfileDetails();        
+    }
+
+    updateUserInRooms() {
+        console.log("updateUserInRooms this.localUser.getRooms():", this.localUser.getRooms());
+        
+        this.localUser.getRooms().forEach(room => {
+            room.usersList.forEach(u => {
+                if (u.ref === this.localUser.ref) {
+                    console.log("updateUserInRooms u:", u);
+                    console.log("updateUserInRooms this.localUser:", this.localUser);
+                    for (const prop in u) {
+                        if (u[prop] !== this.localUser[prop]) {
+                            u[prop] = this.localUser[prop];
+                        }
+                    }
+                    u = this.localUser;
+                    console.log("updateUserInRooms u => this.localUser:", u);
+                    socket.emit('room-users', room.name, "");
+                }
+            });
+            console.log("updateUserInRooms room:", room);
+        });
+        if (document.querySelector("main").dataset.view === "rooms") {
+            if (this.getCurrentServer()) {
+                if (this.getCurrentServer().getCurrentRoom()) {
+                    this.getCurrentServer().getCurrentRoom().updateConnectionStatusSection();
+                }
+            }
+        };
+
     }
 
     showPrivateMessages() {
         console.log("showPrivateMessages");
-        this.elements.sidebarButtons.forEach(button => button.classList.remove("active"));
-        this.elements.showPrivateMessages.classList.add("active");
+        this.getElements().sidebarButtons.forEach(button => button.classList.remove("active"));
+        this.getElements().showPrivateMessages.classList.add("active");
         document.querySelector("main").dataset.view = "chatuser";
         document.querySelector(".chat_title").textContent = "Messages privés";
         document.querySelector(".chat_room_name-container").classList.add("hide");
         document.querySelector(".chat_user_profile_panel").classList.add("hide");
         document.querySelector(".chat_message_to_send-container").classList.add("hide");
-        while (this.elements.chatWindow.firstChild) {
-            this.elements.chatWindow.lastChild.remove();
+        while (this.getElements().chatWindow.firstChild) {
+            this.getElements().chatWindow.lastChild.remove();
         }
-        this.elements.messageToSend.value = "";
-        app.mode = "chatuser";
+        this.getElements().messageToSend.value = "";
+        this.mode = "chatuser";
         this.privateMessages.showChatUsers();
     }
 
     showServer(event) {
         const serverName = event.currentTarget.dataset.name;
         console.log("serverName:", serverName);
-        this.elements.sidebarButtons.forEach(button => button.classList.remove("active"));
+        this.getElements().sidebarButtons.forEach(button => button.classList.remove("active"));
         event.currentTarget.classList.add("active");
         document.querySelector("main").dataset.view = "rooms";
         document.querySelector(".chat_title").textContent = serverName;
         document.querySelector(".chat_room_name-container").classList.add("hide");
         document.querySelector(".server_details_name").textContent = serverName;
-        while (this.elements.chatWindow.firstChild) {
-            this.elements.chatWindow.lastChild.remove();
+        while (this.getElements().chatWindow.firstChild) {
+            this.getElements().chatWindow.lastChild.remove();
         }
-        this.elements.messageToSend.value = "";
+        this.getElements().messageToSend.value = "";
         const serverToShow = this.serversList.find(server => {
             console.log("server.name:", server.name);
             return server.name === serverName;
         });
-        app.mode = "rooms";
+        this.mode = "rooms";
         console.log("serverToShow:", serverToShow);
-        app.setCurrentServer(serverToShow);
+        this.setCurrentServer(serverToShow);
         serverToShow.showRooms();
     }
 
@@ -105,13 +162,26 @@ class App {
     }
 
     setLocalUser(user) {
+        console.log("setLocalUser this.localUser:", this.localUser);        
         this.localUser = user;
         this.localChatUser = new ChatUser(this.localUser);
-        console.log("setLocalUser this.localUser:", this.localUser);        
+
+        this.setlocalUserProfileDetails();
+
+    }
+
+    setlocalUserProfileDetails() {
         document.querySelector(".local_user_avatar-wrapper").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
         document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
         document.querySelector(".local_user_status_logo").dataset.status = this.localUser.status;
         document.querySelector(".local_user_name_display").textContent = this.localUser.name;
+        document.querySelector(".local_user_status_display .content").textContent = this.translateStatus().charAt(0).toUpperCase() + this.translateStatus().slice(1);
+        document.querySelector(".local_user_status_display .content").setAttribute("data-username", this.localUser.username);
+        document.querySelector(".local_user_profile_select_status_title").textContent = this.translateStatus();
+        this.getElements().localUserProfileSettingsContainer.style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
+    }
+
+    translateStatus() {
         let status = "";
         switch (this.localUser.status) {
             case "online":
@@ -127,48 +197,7 @@ class App {
                 status = "invisible";
                 break;
         }
-        document.querySelector(".local_user_status_display").textContent = status;
-        document.querySelector(".local_user_profile_settings-container").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
-        document.querySelector(".local_user_name_status_display-container").addEventListener("click", showLocalUserProfile.bind(this));
-        document.querySelector(".local_user_avatar-wrapper").addEventListener("click", showLocalUserProfile.bind(this));
-
-        function showLocalUserProfile() {
-            console.log("showLocalUserProfile localUser:", this.localUser);
-            document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
-            if (!document.querySelector(".local_user_profile_panel").classList.contains("d-none")) {
-                document.querySelector(".local_user_profile_settings-container").dataset.status = this.localUser.status;
-                document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
-                document.querySelector(".local_user_profile_name").textContent = this.localUser.name;
-                document.querySelector(".local_user_profile_username").textContent = this.localUser.username;
-                document.querySelector(".local_user_profile_select_status_title").textContent = status;
-            }
-        }
-        
-        document.querySelector(".local_user_mic").addEventListener("click", micOnOff);
-        document.querySelector(".local_user_headphones").addEventListener("click", soundOnOff);
-
-        function micOnOff() {
-            switch (document.querySelector(".local_user_options-container").dataset.mic) {
-                case "off":
-                    document.querySelector(".local_user_options-container").dataset.mic = "on";
-                    break;
-                case "on":
-                    document.querySelector(".local_user_options-container").dataset.mic = "off";
-                    break;
-            }
-        }
-
-        function soundOnOff() {
-            switch (document.querySelector(".local_user_options-container").dataset.sound) {
-                case "off":
-                    document.querySelector(".local_user_options-container").dataset.sound = "on";
-                    break;
-                case "on":
-                    document.querySelector(".local_user_options-container").dataset.sound = "off";
-                    break;
-            }
-        }
-
+        return status;
     }
     
     getLocalUser() {
@@ -186,6 +215,10 @@ class App {
     addUser(user) {
         const userAlreadyPresent = this.usersList.find(u => u.ref === user.ref);
         if (typeof userAlreadyPresent === "undefined") this.usersList.push(user);
+    }
+
+    getElements() {
+        return this.elements;
     }
 
     getChat() {
@@ -214,9 +247,9 @@ class App {
             const serverContainer = this.createServer(server);
             serversContainer.appendChild(serverContainer);
         });
-        this.elements.sidebarButtons = document.querySelectorAll(".sidebar_button");
-        this.elements.servers = document.querySelectorAll(".server-container");
-        this.elements.servers.forEach((button) => {
+        this.getElements().sidebarButtons = document.querySelectorAll(".sidebar_button");
+        this.getElements().servers = document.querySelectorAll(".server-container");
+        this.getElements().servers.forEach((button) => {
             button.addEventListener("click", this.showServer.bind(this));
         });
     }
@@ -244,22 +277,23 @@ class App {
         const userRef = event.currentTarget.dataset.ref;
         console.log("addUserPrivate userRef:", userRef);
         console.log("addUserPrivate this.getUsers():", this.getUsers());
+        console.log("addUserPrivate this:", this);
         const user = this.getUsers().find(u => u.ref === userRef);
         if (user) {
             console.log("addUserPrivate user:", user);
-            app.elements.sidebarButtons.forEach(button => button.classList.remove("active"));
-            app.elements.showPrivateMessages.classList.add("active");
+            this.getElements().sidebarButtons.forEach(button => button.classList.remove("active"));
+            this.getElements().showPrivateMessages.classList.add("active");
             document.querySelector("main").dataset.view = "chatuser";
             document.querySelector(".chat_title").textContent = "Messages privés";
             document.querySelector(".chat_room_name-container").classList.add("hide");
             document.querySelector(".chat_user_profile_panel").classList.add("hide");
             document.querySelector(".chat_message_to_send-container").classList.add("hide");
-            while (app.elements.chatWindow.firstChild) {
-                app.elements.chatWindow.lastChild.remove();
+            while (this.getElements().chatWindow.firstChild) {
+                this.getElements().chatWindow.lastChild.remove();
             }
-            app.elements.messageToSend.value = "";
+            this.getElements().messageToSend.value = "";
 
-            app.mode = "chatuser";
+            this.mode = "chatuser";
             this.privateMessages.addChatUser(user.chatUser);
             socket.emit('join-user', user.username);
         }
@@ -292,7 +326,7 @@ class App {
                 // event.currentTarget.classList.add("active");
                 this.privateMessages.activeRemoteChatUser = user;
                 // chatUser.showProfile();
-                app.mode = "chatuser";
+                this.mode = "chatuser";
                 this.privateMessages.showUserPrivateChatDetails(user);
                 showLastChatContainer.removeEventListener("click", showUserPrivateMessage);
                 showLastChatContainer.remove();
@@ -310,6 +344,40 @@ class App {
         document.querySelector(".chat_room_name").textContent = "";
         document.querySelector(".chat_room_name-container").classList.add("hide");
         document.querySelector(".chat_user_profile_panel").classList.add("hide");
+    }
+
+    showLocalUserProfile() {
+        console.log("showLocalUserProfile localUser:", this.localUser);
+        document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
+        if (!document.querySelector(".local_user_profile_panel").classList.contains("d-none")) {
+            this.getElements().localUserProfileSettingsContainer.dataset.status = this.localUser.status;
+            document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
+            document.querySelector(".local_user_profile_name").textContent = this.localUser.name;
+            document.querySelector(".local_user_profile_username").textContent = this.localUser.username;
+            document.querySelector(".local_user_profile_select_status_title").textContent = this.translateStatus();
+        }
+    }
+
+    micOnOff() {
+        switch (document.querySelector(".local_user_options-container").dataset.mic) {
+            case "off":
+                document.querySelector(".local_user_options-container").dataset.mic = "on";
+                break;
+            case "on":
+                document.querySelector(".local_user_options-container").dataset.mic = "off";
+                break;
+        }
+    }
+
+    soundOnOff() {
+        switch (document.querySelector(".local_user_options-container").dataset.sound) {
+            case "off":
+                document.querySelector(".local_user_options-container").dataset.sound = "on";
+                break;
+            case "on":
+                document.querySelector(".local_user_options-container").dataset.sound = "off";
+                break;
+        }
     }
 
 

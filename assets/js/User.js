@@ -11,10 +11,23 @@ class User {
         this.status = userData.status;
         this.local = userData.local;
         this.chatUser = new ChatUser(this);
+        this.roomsList = [];
     }
 
     getChatUser() {
         return this.chatUser;
+    }
+
+    getRooms() {
+        return this.roomsList;
+    }
+
+    setRoom(room) {
+        let isAlreadyPresent = false;
+        this.roomsList.forEach(r => {
+            if (r.ref === room.ref) isAlreadyPresent = true
+        });
+        if (!isAlreadyPresent) this.roomsList.push(room);
     }
 
     setStatus(status) {

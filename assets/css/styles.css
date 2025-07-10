@@ -27,6 +27,7 @@ body {
     /* overflow: hidden; */
     background-color: var(--color_1);
     color: var(--color_6);
+    overflow: hidden;
 }
 
 .d-none {
@@ -1261,8 +1262,30 @@ main {
     display: flex;
     justify-content: start;
     align-items: start;
-    font-size: 13px;
     color: var(--color_5);
+    overflow: hidden;
+}
+
+.local_user_profile_settings-container .content {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    position: relative;
+    transition: transform 0.25s;
+}
+
+.local_user_profile_settings-container .content::after {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    translate: 0 100%;
+    content: attr(data-username);
+}
+
+.local_user_profile_settings-container:hover .content {
+    transform: translateY(-100%);
 }
 
 .local_user_options-container {
@@ -1692,7 +1715,7 @@ main {
 }
 
 .local_user_profile_settings-container:has([data-status="sleep"]) .local_user_profile_select_status_logo_display {
-    background-color: #2d2d2f;
+    background-color: transparent;
     --shadow: orange;
     box-shadow: inset 0 -4px 0 0 var(--shadow), inset 0 -4px 0 1px var(--shadow);
     rotate: z -45deg;
@@ -1701,7 +1724,172 @@ main {
 .local_user_profile_settings-container:has([data-status="offline"]) .local_user_profile_select_status_logo_display,
 .local_user_profile_settings-container:has([data-status="invisible"]) .local_user_profile_select_status_logo_display {
     border: 4px solid #778181;
-    background-color: var(--color_1);
+    background-color: transparent;
+}
+
+/* Local user profile status selection */
+
+.local_user_profile_status_selection-wrapper {
+    width: 331px;
+    height: 248px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    /* background-color: #f0f8ff1f; */
+    position: absolute;
+    bottom: -61px;
+    right: 27px;
+    z-index: 1000;
+    translate: 100% 0;
+    user-select: none;
+}
+
+.local_user_profile_status_selection-container {
+    --top_section: 18%;
+    --bottom_section: calc(100% - var(--top_section));
+    width: 300px;
+    height: 100%;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9px;
+    border: 1px solid #2e2e2e;
+    background-color: #212123;
+    color: var(--color_6);
+}
+
+.local_user_profile_panel:has(.local_user_profile_select_status-container:hover) .local_user_profile_status_selection-wrapper,
+.local_user_profile_status_selection-wrapper:hover {
+    display: flex;
+}
+
+.local_user_profile_status_selection-top_section {
+    width: 100%;
+    height: var(--top_section);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    border-bottom: 1px solid #2e2e2e;
+}
+
+.local_user_profile_status_selection-bottom_section {
+    width: 100%;
+    height: var(--bottom_section);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+}
+
+.local_user_profile_status_selection {
+    --left_side: 8%;
+    --right_side: calc(100% - var(--left_side));
+    width: 100%;
+    height: fit-content;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 5px;
+    /* background-color: #43424247; */
+}
+
+.local_user_profile_status_selection[data-selection="online"] {
+    height: 32px;
+}
+
+.local_user_profile_status_selection[data-selection="busy"] {
+    height: 63px;
+}
+
+.local_user_profile_status_selection[data-selection="sleep"] {
+    height: 32px;
+}
+
+.local_user_profile_status_selection[data-selection="invisible"] {
+    height: 77px;
+}
+
+.local_user_profile_status_selection:hover {
+    background-color: #43424247;
+    cursor: pointer;
+}
+
+.local_user_profile_status_selection:hover .local_user_profile_status_selection_logo {
+    filter: brightness(200%);
+}
+
+.local_user_profile_status_selection_logo-container {
+    width: var(--left_side);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.local_user_profile_status_selection_logo {
+    width: 11px;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #778181;
+}
+
+.local_user_profile_status_selection[data-selection="busy"] .local_user_profile_status_selection_logo {
+    background-color: red;
+    clip-path: polygon(0 0, 15% 37.5%, 15% 62.5%, 85% 62.5%, 85% 37.5%, 15% 37.5%, 0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.local_user_profile_status_selection[data-selection="sleep"] .local_user_profile_status_selection_logo {
+    background-color: transparent;
+    --shadow: orange;
+    box-shadow: inset 0 -3px 0 0 var(--shadow), inset 0 -3px 0 1px var(--shadow);
+    rotate: z -45deg;
+}
+
+.local_user_profile_status_selection[data-selection="offline"] .local_user_profile_status_selection_logo,
+.local_user_profile_status_selection[data-selection="invisible"] .local_user_profile_status_selection_logo {
+    border: 3px solid #778181;
+    background-color: transparent;
+}
+
+.local_user_profile_status_selection[data-selection=""] .local_user_profile_status_selection_logo {
+    visibility: hidden;
+}
+
+.local_user_profile_status_selection_text {
+    width: var(--right_side);
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.title,
+.explanation {
+    display: inline-block;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+.title {
+    font-size: 15px;
+}
+
+.explanation {
+    font-size: 12px;
 }
 
 /* Chat window */
