@@ -8,6 +8,7 @@ import "dotenv/config";
 const __dirname = path.resolve();
 
 console.log("process.env.APP_ENV", process.env.APP_ENV);
+console.log("process.env.PORT", process.env.PORT);
 
 const APP_ENV = process.env.APP_ENV;
 
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-const httpServer = createServer();
+const httpServer = createServer(app);
 
 let host;
 
@@ -42,6 +43,8 @@ switch (APP_ENV) {
         host = "http://localhost";
         break;
 }
+
+console.log("host", host);
 
 const PORT = process.env.PORT;
 
