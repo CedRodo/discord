@@ -88,7 +88,7 @@ class Room {
         connectionStatusUserProfileStatusLogoWrapper.appendChild(connectionStatusUserProfileStatusLogo);
         const connectionStatusUserAvatar = document.createElement("img");
         connectionStatusUserAvatar.classList.add("connection_status_user_avatar");
-        connectionStatusUserAvatar.src = `./assets/img/${user.avatar.image}`;
+        connectionStatusUserAvatar.src = `./public/img/${user.avatar.image}`;
         connectionStatusUserAvatarWrapper.append(connectionStatusUserAvatar, connectionStatusUserProfileStatusLogoWrapper);
         const connectionStatusUserName = document.createElement("div");
         connectionStatusUserName.classList.add("connection_status_user_name");
@@ -150,7 +150,7 @@ class Room {
         connectionStatusUserAsideProfileAvatarWrapper.classList.add("connection_status_user_aside_profile_avatar-wrapper");
         const connectionStatusUserAsideProfileAvatar = document.createElement("img");
         connectionStatusUserAsideProfileAvatar.classList.add("connection_status_user_aside_profile_avatar");
-        connectionStatusUserAsideProfileAvatar.src = `./assets/img/${user.avatar.image}`;
+        connectionStatusUserAsideProfileAvatar.src = `./public/img/${user.avatar.image}`;
         connectionStatusUserAsideProfileAvatarWrapper.appendChild(connectionStatusUserAsideProfileAvatar);
         const connectionStatusUserAsideProfileStatusLogoWrapper = document.createElement("div");
         connectionStatusUserAsideProfileStatusLogoWrapper.classList.add("connection_status_user_aside_profile_status_logo-wrapper");
@@ -182,7 +182,7 @@ class Room {
         connectionStatusUserAsideProfileInCommonServersLogoWrapper.classList.add("connection_status_user_aside_profile_in_common_servers_logo-wrapper");
         const connectionStatusUserAsideProfileInCommonServersLogo = document.createElement("img");
         connectionStatusUserAsideProfileInCommonServersLogo.classList.add("connection_status_user_aside_profile_in_common_servers_logo");
-        connectionStatusUserAsideProfileInCommonServersLogo.src = `./assets/img/${user.avatar.image}`;
+        connectionStatusUserAsideProfileInCommonServersLogo.src = `./public/img/${user.avatar.image}`;
         connectionStatusUserAsideProfileInCommonServersLogoWrapper.appendChild(connectionStatusUserAsideProfileInCommonServersLogo);
         const connectionStatusUserAsideProfileInCommonServersTextContainer = document.createElement("div");
         connectionStatusUserAsideProfileInCommonServersTextContainer.classList.add("connection_status_user_aside_profile_in_common_servers_text-container");

@@ -1,15 +1,57 @@
+import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import cors from "cors";
+import path from "path";
+import "dotenv/config";
+
+const __dirname = path.resolve();
+
+console.log("process.env.APP_ENV", process.env.APP_ENV);
+
+const APP_ENV = process.env.APP_ENV;
+
+const app = express();
+
+app.set('views', './views');
+app.set('view engine', 'ejs');
+app.use(cors());
+app.use("/public", express.static(path.join(__dirname + "/public")));
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+    console.log("home");
+    res.render('index');
+});
 
 const httpServer = createServer();
 
+let host;
+
+switch (APP_ENV) {
+    case "PROD":
+        host = "https://discord.electronglitch.com"
+        break;
+    case "PROD2":
+        host = "https://discord.onrender.com";
+        break;
+    case "DEV":
+        host = "http://localhost";
+        break;
+    default:
+        host = "http://localhost";
+        break;
+}
+
+const PORT = process.env.PORT;
+
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost"
+        origin: host
     }
 });
 
-httpServer.listen(3000);
+httpServer.listen(PORT);
 
 const users = {};
 const rooms = {};

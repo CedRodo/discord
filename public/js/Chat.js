@@ -110,7 +110,7 @@ class Chat {
         chatMessageUserProfileStatusWrapper.appendChild(chatMessageUserProfileStatus);
         const chatMessageUserAvatar = document.createElement("img");
         chatMessageUserAvatar.classList.add("chat_message_user_avatar");
-        chatMessageUserAvatar.src = `./assets/img/${chatUser.avatar.image}`;
+        chatMessageUserAvatar.src = `./public/img/${chatUser.avatar.image}`;
         chatMessageUserAvatarWrapper.append(chatMessageUserAvatar, chatMessageUserProfileStatusWrapper);
         chatMessageLeftSection.appendChild(chatMessageUserAvatarWrapper);
         const chatMessageMainSection = document.createElement("div");

@@ -50,7 +50,7 @@ class PrivateMessages {
             userPrivateProfileStatusLogoWrapper.appendChild(userPrivateProfileStatusLogo);
             const userPrivateAvatar = document.createElement("img");
             userPrivateAvatar.classList.add("user_private_avatar");
-            userPrivateAvatar.src = `./assets/img/${chatUser.avatar.image}`;
+            userPrivateAvatar.src = `./public/img/${chatUser.avatar.image}`;
             userPrivateAvatarWrapper.append(userPrivateAvatar, userPrivateProfileStatusLogoWrapper);
             const userPrivateName = document.createElement("div");
             userPrivateName.classList.add("user_private_name");
@@ -75,7 +75,7 @@ class PrivateMessages {
         console.log("showUserPrivateChatDetails chatUser:", chatUser);        
         app.chat.peer = chatUser;
         app.elements.chatRoomAvatarWrapper.style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
-        app.elements.chatRoomAvatar.src = `./assets/img/${chatUser.avatar.image}`;
+        app.elements.chatRoomAvatar.src = `./public/img/${chatUser.avatar.image}`;
         app.elements.chatRoomProfileStatus.dataset.status = chatUser.status;
         app.elements.chatRoomName.textContent = chatUser.name;
         app.elements.chatRoomName.dataset.name = chatUser.username;
@@ -94,7 +94,7 @@ class PrivateMessages {
             console.log("showUserPrivateProfile");
             document.querySelector(".chat_user_profile_panel").style.setProperty("--bgcolor_pref", chatUser.avatar.bgcolor);
             document.querySelector(".chat_user_profile_add").setAttribute("data-ref", chatUser.ref);
-            document.querySelector(".chat_user_profile_avatar").src = `./assets/img/${chatUser.avatar.image}`;
+            document.querySelector(".chat_user_profile_avatar").src = `./public/img/${chatUser.avatar.image}`;
             document.querySelector(".chat_user_profile_status_logo").dataset.status = chatUser.status === "invisible" ? "offline" : chatUser.status;
             document.querySelector(".chat_user_profile_name").textContent = chatUser.name;
             document.querySelector(".chat_user_profile_username").textContent = chatUser.username;

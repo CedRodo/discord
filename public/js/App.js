@@ -172,7 +172,7 @@ class App {
 
     setlocalUserProfileDetails() {
         document.querySelector(".local_user_avatar-wrapper").style.setProperty("--bgcolor_pref", this.localUser.avatar.bgcolor);
-        document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
+        document.querySelector(".local_user_avatar").src = `./public/img/${this.localUser.avatar.image}`;
         document.querySelector(".local_user_status_logo").dataset.status = this.localUser.status;
         document.querySelector(".local_user_name_display").textContent = this.localUser.name;
         document.querySelector(".local_user_status_display .content").textContent = this.translateStatus().charAt(0).toUpperCase() + this.translateStatus().slice(1);
@@ -266,7 +266,7 @@ class App {
         serverAvatarWrapper.style.setProperty("--bgcolor_pref", server.avatar.bgcolor);
         const serverAvatar = document.createElement("img");
         serverAvatar.classList.add("server_avatar");
-        serverAvatar.src = `./assets/img/${server.avatar.image}`;
+        serverAvatar.src = `./public/img/${server.avatar.image}`;
         serverAvatarWrapper.appendChild(serverAvatar);
         serverContainer.append(serverAvatarWrapper);
         return serverContainer;
@@ -311,7 +311,7 @@ class App {
             showLastChatAvatarWrapper.style.setProperty("--bgcolor_pref", user.avatar.bgcolor);
             const showLastChatAvatar = document.createElement("img");
             showLastChatAvatar.classList.add("show_last_chat_avatar");
-            showLastChatAvatar.src = `./assets/img/${user.avatar.image}`;
+            showLastChatAvatar.src = `./public/img/${user.avatar.image}`;
             showLastChatAvatarWrapper.appendChild(showLastChatAvatar);
             showLastChatContainer.appendChild(showLastChatAvatarWrapper);
             document.querySelector(".private_messages_last_chat-container").appendChild(showLastChatContainer);
@@ -351,7 +351,7 @@ class App {
         document.querySelector(".local_user_profile_panel").classList.toggle("d-none");
         if (!document.querySelector(".local_user_profile_panel").classList.contains("d-none")) {
             this.getElements().localUserProfileSettingsContainer.dataset.status = this.localUser.status;
-            document.querySelector(".local_user_avatar").src = `./assets/img/${this.localUser.avatar.image}`;
+            document.querySelector(".local_user_avatar").src = `./public/img/${this.localUser.avatar.image}`;
             document.querySelector(".local_user_profile_name").textContent = this.localUser.name;
             document.querySelector(".local_user_profile_username").textContent = this.localUser.username;
             document.querySelector(".local_user_profile_select_status_title").textContent = this.translateStatus();
