@@ -33,7 +33,7 @@ switch (APP_ENV) {
         host = "https://discord.electronglitch.com"
         break;
     case "PROD2":
-        host = "https://discord.onrender.com";
+        host = "https://discord-ofna.onrender.com";
         break;
     case "DEV":
         host = "http://localhost";
